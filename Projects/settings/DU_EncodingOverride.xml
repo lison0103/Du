@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\App\app.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\BSP.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\bsp_rtc_1307.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\bsp_usart.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\spi.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\spi_flash.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\spi_flash.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\src\diskio.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Projects\includes.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Projects\main.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+

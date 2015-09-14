@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\app.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\display.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\lcd_text.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\menu_error_record.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\menu_setting.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\App\sub_comm.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Bsp\BSP.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Bsp\bsp_rtc_1307.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Bsp\bsp_usart.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Projects\includes.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Projects\main.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\Projects\os_cfg.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM_API.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\TXM\&#x684C;&#x9762;\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM_DRV.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\App\app.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\Bsp\BSP.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\Bsp\bsp_usart.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\Projects\includes.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\Projects\main.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM_API.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Documents and Settings\xiangmiaotu\Desktop\DU00\IAR ucos 2.91 demo\ZTM_LIB\ZTM_DRV.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\App\app.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\App\lcd_text.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\BSP.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\bsp_usart.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\spi.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Bsp\spi_flash.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\exfuns\exfuns.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\exfuns\exfuns.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\exfuns\fattester.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\exfuns\fattester.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\FATFS\src\diskio.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\HW\FLASH\flash.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\HW\FLASH\flash.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\HW\SPI\spi.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\HW\SPI\spi.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\MALLOC\malloc.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\MALLOC\malloc.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Projects\includes.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>F:\TKE\&#x7A0B;&#x5e8F;\DUT 00\DU00\IAR ucos 2.91 demo\Projects\main.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+
