@@ -973,6 +973,7 @@ void base_para_display(void)
 
 /*******************************************************************************
 *******************************************************************************/
+extern u8 USER_RIGHT_LEVEL;
 void menu_para_base(void)
 {
   u8 *m_keydata,err=0;
@@ -1037,10 +1038,11 @@ void menu_para_base(void)
         
         if(PS_Flag==0)
         {  
-          TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "    "); 
-          TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "设置"); 
           
-          TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
+            TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "    "); 
+            TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "设置"); 
+            
+            TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
         }        
       } 
       else
@@ -1059,14 +1061,15 @@ void menu_para_base(void)
             base_para_get();
             break;
           case KEY_F3:
-            
-            PS_Flag = 1;
-            
-            TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "确定"); 
-            TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "返回"); 
+            if(USER_RIGHT_LEVEL >= (BaseParameter[Para_Number].user_right + 1))
+            {
+              PS_Flag = 1;
+              
+              TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "确定"); 
+              TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "返回"); 
 
-            TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
-            
+              TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
+            }
             break;
         }          
       }  

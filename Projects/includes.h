@@ -189,5 +189,9 @@ extern u16 *DuSysBuff;
 
 extern u8 TimeBuff[6];
 
+void menu_password_cfg(void);
+
+extern u8 USER_RIGHT_LEVEL;
+
 #endif //__INCLUDES_H__
 

@@ -132,7 +132,7 @@ void menu_process(void)
       else
       {
         Menu_Level=0;
-        MenuItem = 2;
+        MenuItem = 3;
         MenuItem_Max=9;
         
         disFlag = 0;
@@ -202,7 +202,7 @@ void menu_process(void)
               menu_time_set();
               break;
             case 7: 
-              
+              menu_password_cfg();
               break;
             case 8: 
               menu_language_cfg();

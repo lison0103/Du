@@ -2056,6 +2056,9 @@
       <name>$PROJ_DIR$\..\User\menu_language.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\User\menu_password_manage.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\User\menu_process.c</name>
     </file>
     <file>
