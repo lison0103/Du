@@ -30,7 +30,7 @@ u8 USER_RIGHT_VALIDITY = 0;
 u8 validity_date,already_usedate = 0;
 u32 last_set_date,current_set_date = 0;
 
-//u8 *m_buff,m_buff_temp[100];
+u8 m_buff_temp[10];
 
 
 
@@ -125,7 +125,7 @@ void validity_cfg(void)
       Password_num_buff[4] = (Password_num%100)/10 + 0x30;
       Password_num_buff[5] = Password_num%10 + 0x30;      
 
-//      m_buff_temp[0] = validity_date;
+      m_buff_temp[0] = validity_date + 0x30;
 //      m_buff_temp[1] = "天";
   
       ZTM_FullScreenImageDisp(310);
@@ -139,7 +139,8 @@ void validity_cfg(void)
       ZTM_RectangleFill (0, 30,239, 54,DGRAY); 
       TXM_StringDisplay(0,30,30,24,1,BLUE ,DGRAY, "剩余使用有效期");
       ZTM_RectangleFill (0, 60,239, 84,DGRAY); 
-      TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, "0 天");
+      TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)m_buff_temp);
+	  TXM_StringDisplay(0,148,60,24,0,BLUE ,DGRAY, "天");
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 100,239, 124,DGRAY); 
@@ -188,10 +189,19 @@ void validity_cfg(void)
         validity_date = 180;
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
-        
-//        m_buff = "1";//validity_date；
-//        Flash_W25X_Write(m_buff_temp,R_PASS_ADDR,4);
-//        Flash_W25X_Write(m_buff,R_PASS_ADDR + 4,1);
+             		
+        m_buff_temp[0] = last_set_date/100000;
+        m_buff_temp[1] = (last_set_date%100000)/10000;
+        m_buff_temp[2] = (last_set_date%10000)/1000;
+        m_buff_temp[3] = (last_set_date%1000)/100 ;
+        m_buff_temp[4] = (last_set_date%100)/10;
+        m_buff_temp[5] = last_set_date%10; 		
+		
+        Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR,6);
+		
+		m_buff_temp[0] = USER_RIGHT_VALIDITY;
+		
+		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码正确");
         TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, "180 天");
@@ -205,8 +215,19 @@ void validity_cfg(void)
         validity_date = 180;
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
-//        Flash_W25X_Write(&last_set_date,R_PASS_ADDR,4);
-//        Flash_W25X_Write(&validity_date,R_PASS_ADDR + 4,1);
+		
+        m_buff_temp[0] = last_set_date/100000;
+        m_buff_temp[1] = (last_set_date%100000)/10000;
+        m_buff_temp[2] = (last_set_date%10000)/1000;
+        m_buff_temp[3] = (last_set_date%1000)/100 ;
+        m_buff_temp[4] = (last_set_date%100)/10;
+        m_buff_temp[5] = last_set_date%10; 		
+		
+        Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR,6);
+		
+		m_buff_temp[0] = USER_RIGHT_VALIDITY;
+		
+		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码正确");
         TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, "180 天");
@@ -216,6 +237,11 @@ void validity_cfg(void)
       else
       {
         USER_RIGHT_VALIDITY = 0;
+		
+		m_buff_temp[0] = USER_RIGHT_VALIDITY;
+		
+		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
+		
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码错误");
       }     
     }    
