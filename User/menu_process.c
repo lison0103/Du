@@ -201,8 +201,11 @@ void menu_process(void)
             case 6: 
               menu_time_set();
               break;
-            case 7: 
-              menu_password_cfg();
+            case 7: //√‹¬Îπ‹¿Ì
+              if(USER_RIGHT_VALIDITY == 1)
+              {
+                menu_password_cfg();
+              }
               break;
             case 8: 
               menu_language_cfg();

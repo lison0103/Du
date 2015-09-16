@@ -195,7 +195,31 @@ void AppTask_Main(void *p_arg)
   
   esc_bk_init();
 
-
+  //有效期小于1个月，每次开机提醒
+  
+//  extern u8 *m_buff,m_buff_temp[100];
+  
+//  Flash_W25X_Read(&last_set_date,R_PASS_ADDR,4);
+//  Flash_W25X_Read(m_buff_temp,R_PASS_ADDR + 4,1); 
+  
+//  validity_date = m_buff_temp[0];
+  
+  if(USER_RIGHT_VALIDITY == 1)
+  {
+    u8 TimeBuff[6];
+    RTCC_GetTime(TimeBuff);
+    already_usedate = (Get_Current_Date(TimeBuff) - last_set_date);
+    validity_date = 180 - already_usedate;
+    if(validity_date <= 30)
+    {
+        validity_cfg();
+    }
+  }
+  else
+  {
+    validity_cfg();
+  
+  }
   while(1)
   {
     if(!start_main_display)

@@ -1878,6 +1878,9 @@
     <file>
       <name>$PROJ_DIR$\..\App\time_display.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\App\validity_display.c</name>
+    </file>
   </group>
   <group>
     <name>BSP</name>

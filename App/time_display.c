@@ -2,7 +2,7 @@
 #include "includes.h"
 
 static u8 Para_Choice=0,PS_Flag=0,Para_Data[6];
-
+static u32 temp_date = 0;
 /*******************************************************************************
 *******************************************************************************/
 void time_display_oneline(u16 dw,u16 x,u16 y, u8 *tb, u8 set_bit)
@@ -123,7 +123,20 @@ void time_display(u16 dw,u16 tw,u8 *tb)
   dis_data[25] = 0;
   TXM_FillTextWidget (tw, (void*)&dis_data[12]);
 }
-
+/*******************************************************************************
+*******************************************************************************/
+u32 Get_Current_Date(u8 *tb)
+{
+  u8 date[6];
+	date[0] = (tb[0]/10);
+	date[1] = (tb[0]%10);
+	date[2] = (tb[1]/10);
+	date[3] = (tb[1]%10);
+	date[4] = (tb[2]/10);
+	date[5] = (tb[2]%10);  
+               
+        return (date[0]*(100000) + date[1]*(10000) + date[2]*(1000) + date[3]*(100) + date[4]*(10) + date[5]);
+}
 /*******************************************************************************
 *******************************************************************************/
 void menu_time_set(void)
@@ -232,6 +245,12 @@ void menu_time_set(void)
           
           Para_Choice=0;
           TXM_StringDisplay(0,190,290,24,1,LGRAY ,BLACK, "设置");
+          
+          //获取当前设置时间，记录与上次设置时间的时间差值，再记录本次设置时间
+          //获取当前设置时间
+          current_set_date = Get_Current_Date(Para_Data);
+          
+          last_set_date = current_set_date;
         }  
       } 
       else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
@@ -244,6 +263,9 @@ void menu_time_set(void)
         
         TXM_StringDisplay(0,190,290,24,1,WHITE ,BLACK, "确定");
         PS_Flag = 1; 
+        
+        temp_date = Get_Current_Date(Para_Data);
+        already_usedate += (temp_date - last_set_date);
       }
       else if(m_keydata[0]==KEY_F1)
       {        

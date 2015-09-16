@@ -1,7 +1,14 @@
-
+/****************************************Copyright (c)****************************************************
+** File Name:           menu_password_manage.c
+** Created By:          lisonchen
+** Created date:        2015-09-15
+** Version:             v1.00
+** Descriptions:        密码管理菜单
+**
+*********************************************************************************************************/
 #include "includes.h"
 
-#define PASS_DES_MAX  9
+#define PASS_DES_MAX  10
 #define PASS_LEN      6
   
 /*******************************************************************************
@@ -11,13 +18,14 @@ static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; //Para_Data=0,
 static u8 Para_Choice=0,PS_Flag=0;
 
 static char const password_num[7] = {"000000"};
-static char const Password_Code[11] = {"0123456789"};
+static char const Password_Code[11] = {"-0123456789"};
                                     
 const char Password_Title[2][20]={"输入密码","Enter Password"}; 
 const char input_item[][20]={"输入","Input","确定","comfirm","修改","change"}; 
 
 u8 USER_RIGHT_LEVEL = 0;
-static u8 *Temp = "------";
+u8 *Temp = "------";
+u8 Set_Flag = 0;
 /*******************************************************************************
 *******************************************************************************/
 void menu_password_display(u8 set_bit)
@@ -138,7 +146,7 @@ void menu_password_cfg(void)
           case KEY_SET:
           case KEY_F3:  
             PS_Flag = 0;
-            
+            Set_Flag = 1;
             Para_Choice=0;
             TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
             
@@ -146,20 +154,7 @@ void menu_password_cfg(void)
 //            {
 //              PASS_Buff[i] = PASS_Temp[i];
 //            }  
-            if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (3 + 0x30) 
-               && PASS_Temp[3] == (4 + 0x30) && PASS_Temp[4] == (5 + 0x30) && PASS_Temp[5] == (6 + 0x30) )
-            {
-              USER_RIGHT_LEVEL = 2;
-              
-            }
-            else if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (1 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
-               && PASS_Temp[3] == (1 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (1 + 0x30) )
-            {
-              USER_RIGHT_LEVEL = 1;
-              
-            }
-            else
-              USER_RIGHT_LEVEL = 0;
+
 //            modbus_write(MB_COM_PORT, 509, 8);
 
             break; 
@@ -191,8 +186,30 @@ void menu_password_cfg(void)
         TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);
         PS_Flag = 1; 
       }
-      
       menu_password_display(Para_Choice);
+      
+      if(Set_Flag)
+      {
+        Set_Flag = 0;
+        if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (3 + 0x30) 
+           && PASS_Temp[3] == (4 + 0x30) && PASS_Temp[4] == (5 + 0x30) && PASS_Temp[5] == (6 + 0x30) )
+        {
+          USER_RIGHT_LEVEL = 2;
+          break;
+        }
+        else if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (1 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
+                && PASS_Temp[3] == (1 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (1 + 0x30) )
+        {
+          USER_RIGHT_LEVEL = 1;
+          break;
+        }
+        else
+        {
+          USER_RIGHT_LEVEL = 0;
+        }
+        Set_Flag = 0;
+      }
+      
     }  
   }  
 }

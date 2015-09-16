@@ -189,9 +189,22 @@ extern u16 *DuSysBuff;
 
 extern u8 TimeBuff[6];
 
+//// @add by lisonchen  
 void menu_password_cfg(void);
 
 extern u8 USER_RIGHT_LEVEL;
+
+void validity_cfg(void);
+
+u32 Get_Current_Date(u8 *tb);
+
+extern u8 USER_RIGHT_VALIDITY;
+
+extern u8 validity_date,already_usedate;
+extern u32 last_set_date,current_set_date;
+
+#define R_PASS_ADDR ((2*1024 + 512)*1024)
+//// @end
 
 #endif //__INCLUDES_H__
 
