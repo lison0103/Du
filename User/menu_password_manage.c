@@ -14,18 +14,18 @@
 /*******************************************************************************
 *******************************************************************************/
 
-static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; //Para_Data=0,
+static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; 
 static u8 Para_Choice=0,PS_Flag=0;
 
-static char const password_num[7] = {"000000"};
 static char const Password_Code[11] = {"-0123456789"};
                                     
 const char Password_Title[2][20]={"输入密码","Enter Password"}; 
-const char input_item[][20]={"输入","Input","确定","comfirm","修改","change"}; 
+const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse"}; 
 
 u8 USER_RIGHT_LEVEL = 0;
 u8 *Temp = "------";
 u8 Set_Flag = 0;
+u8 EARSE_CHIP = 0;
 /*******************************************************************************
 *******************************************************************************/
 void menu_password_display(u8 set_bit)
@@ -89,8 +89,8 @@ void menu_password_cfg(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Password_Title[LANGUAGE]);  
-  TXM_StringDisplay(0,190,290,24,0,RED ,0, (void*)input_item[0 + LANGUAGE]);
-  TXM_StringDisplay(0,130,290,24,0,RED ,0, (void*)input_item[4 + LANGUAGE]);
+  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
+  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);
 
   PASS_Buff = Temp;
   
@@ -122,8 +122,32 @@ void menu_password_cfg(void)
     } 
     else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
     {
+      EARSE_CHIP = 0;
       break;
-    } 
+    }
+    //擦除有效期管理的几个数据
+    else if(EARSE_CHIP == 1)
+    {
+      if(m_keydata[0]==KEY_F1)
+      {
+        
+        u8 earse_buff[10] = {0xff};
+        EARSE_CHIP = 0;
+        TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "正在擦除数据...");
+        
+//        SPI_W25X_ChipErase();
+        for(u8 i = 0;i<10;i++)
+        {
+          earse_buff[i] = 0xff;
+        }
+        Flash_W25X_Write((u8 *)earse_buff,V_FLAG_ADDR,9);
+        OSTimeDlyHMSM(0, 0,1,0);
+        TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "   擦除完成!   ");
+        OSTimeDlyHMSM(0, 0,2,0);
+        break;
+      }
+      
+    }
     else 
     {
       if(PS_Flag)
@@ -140,7 +164,7 @@ void menu_password_cfg(void)
             }  
             
             Para_Choice=0;
-            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
             
             break; 
           case KEY_SET:
@@ -148,14 +172,13 @@ void menu_password_cfg(void)
             PS_Flag = 0;
             Set_Flag = 1;
             Para_Choice=0;
-            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
             
 //            for(i=0;i<PASS_LEN;i++)
 //            {
 //              PASS_Buff[i] = PASS_Temp[i];
 //            }  
 
-//            modbus_write(MB_COM_PORT, 509, 8);
 
             break; 
           case KEY_UP:
@@ -183,9 +206,10 @@ void menu_password_cfg(void)
         Para_Choice = 1;
         Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
         
-        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);
+        TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);
         PS_Flag = 1; 
       }
+     
       menu_password_display(Para_Choice);
       
       if(Set_Flag)
@@ -202,6 +226,13 @@ void menu_password_cfg(void)
         {
           USER_RIGHT_LEVEL = 1;
           break;
+        }
+        //打开擦除数据隐藏功能
+        else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
+                && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
+        {
+            EARSE_CHIP = 1;
+            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);
         }
         else
         {

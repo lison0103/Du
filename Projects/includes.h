@@ -203,7 +203,16 @@ extern u8 USER_RIGHT_VALIDITY;
 extern u8 validity_date,already_usedate;
 extern u32 last_set_date,current_set_date;
 
-#define R_PASS_ADDR ((2*1024 + 512)*1024)
+//第一次写入标志
+#define V_FLAG_ADDR ((2*1024 + 512)*1024)
+//已获得有效期使用标志
+#define V_VLDT_ADDR (((2*1024 + 512)*1024) + 1)
+//还剩余有效期天数
+#define V_AUDE_ADDR (((2*1024 + 512)*1024) + 2)
+//上次激活或更改记录的日期
+#define V_LSDE_ADDR (((2*1024 + 512)*1024) + 3)
+
+void SPI_W25X_ChipErase(void);
 //// @end
 
 #endif //__INCLUDES_H__

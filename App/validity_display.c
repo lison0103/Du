@@ -11,13 +11,35 @@
 #define VDPASS_DES_MAX  10
 #define VDPASS_LEN      6
 
+
+const char validity_disp_item[][25]={
+"     忽略 输入",
+"   Ignore Input",
+" 剩余使用有效期",
+"Validity  Date",
+"天",
+"Day",
+"    验 证 码 ：",
+"Verification code:",
+"   动 态 密 码 ：",
+"Dynamic password:",
+"     忽略 确定",
+"    Ignore  OK ",
+"密码正确",
+"  RIGHT ",
+"密码错误",
+"  Error ",
+"180 天",
+"180 Day"
+}; 
+
 static char const Password_Code[11] = {"-0123456789"};
 static u8 *Temp = "------";
 static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; //Para_Data=0,
 static u8 Para_Choice=0,PS_Flag=0;
 
 
-static u32 Cpu_LockID;
+//static u32 Cpu_LockID;
 static u8 TimeBuff[6];
 static u32 Current_Date;
 
@@ -37,19 +59,35 @@ u8 m_buff_temp[10];
 
 u32 GetLockCode(void)
 {
-  u32 Lock_Code;
-  u32 CpuID[3];
-//获取CPU唯一ID
+    u32 Lock_Code;
+    u32 CpuID[3];
+    
+    //获取CPU唯一ID
     CpuID[0]=*(vu32*)(0x1ffff7e8);
     CpuID[1]=*(vu32*)(0x1ffff7ec);
     CpuID[2]=*(vu32*)(0x1ffff7f0);
-//加密算法,很简单的加密算法
+    
+    //加密算法,很简单的加密算法
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
-
+    
+    RTCC_GetTime(TimeBuff);
+    Current_Date = Get_Current_Date(TimeBuff);
+    Lock_Code = Lock_Code/1000 + Current_Date;
+    
     return Lock_Code;
 }
 
+u32 GetDynamicPassNum(void)
+{
+  u32 Pass_Num,Lock_Num;
+  
+  Lock_Num = GetLockCode();
 
+  Pass_Num = ((Lock_Num*2)/3) + 3;
+  
+  return Pass_Num;
+  
+}
 
 
 void validity_display(u8 set_bit)
@@ -103,11 +141,8 @@ void validity_cfg(void)
 {
   u8  i,*m_keydata,err=0;
            
-      RTCC_GetTime(TimeBuff);
-      Current_Date = Get_Current_Date(TimeBuff);
-      Cpu_LockID = GetLockCode();
       
-      Confirm_word = Cpu_LockID/1000 + Current_Date;
+      Confirm_word = GetLockCode();
       
       PASS_Temp[0] = Confirm_word/100000 + 0x30;
       PASS_Temp[1] = (Confirm_word%100000)/10000 + 0x30;
@@ -116,7 +151,7 @@ void validity_cfg(void)
       PASS_Temp[4] = (Confirm_word%100)/10 + 0x30;
       PASS_Temp[5] = Confirm_word%10 + 0x30;
       
-      Password_num = Confirm_word*2/3 + 3;
+      Password_num = GetDynamicPassNum();
       
       Password_num_buff[0] = Password_num/100000 + 0x30;
       Password_num_buff[1] = (Password_num%100000)/10000 + 0x30;
@@ -133,25 +168,25 @@ void validity_cfg(void)
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 280,239, 319,BLACK); 
-      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, "     忽略 输入");
+      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, (void*)validity_disp_item[0 + LANGUAGE]);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 30,239, 54,DGRAY); 
-      TXM_StringDisplay(0,30,30,24,1,BLUE ,DGRAY, "剩余使用有效期");
+      TXM_StringDisplay(0,20,30,24,1,BLUE ,DGRAY, (void*)validity_disp_item[2 + LANGUAGE]);
       ZTM_RectangleFill (0, 60,239, 84,DGRAY); 
       TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)m_buff_temp);
-	  TXM_StringDisplay(0,148,60,24,0,BLUE ,DGRAY, "天");
+      TXM_StringDisplay(0,148,60,24,0,BLUE ,DGRAY, (void*)validity_disp_item[4 + LANGUAGE]);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 100,239, 124,DGRAY); 
-      TXM_StringDisplay(0,60,100,24,1,BLUE ,DGRAY, "验 证 码 ：");
+      TXM_StringDisplay(0,20,100,24,1,BLUE ,DGRAY, (void*)validity_disp_item[6 + LANGUAGE]);
       ZTM_RectangleFill (0, 130,239, 154,DGRAY); 
 //      TXM_StringDisplay(0,60,130,24,0,BLUE ,DGRAY, "1 2 3 4 5 6");
       TXM_StringDisplay(0,80,130,24,1,BLUE ,DGRAY, (void*)PASS_Temp);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 170,239, 194,DGRAY); 
-      TXM_StringDisplay(0,60,170,24,1,BLUE ,DGRAY, "动 态 密 码 ：");
+      TXM_StringDisplay(0,20,170,24,1,BLUE ,DGRAY, (void*)validity_disp_item[8 + LANGUAGE]);
       ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
 //      TXM_StringDisplay(0,80,230,24,0,BLUE ,LGRAY, "------");
       OSTimeDlyHMSM(0, 0,0,10);
@@ -187,24 +222,29 @@ void validity_cfg(void)
       {
         USER_RIGHT_VALIDITY = 1;
         validity_date = 180;
+        already_usedate = 0;
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
-             		
+        
         m_buff_temp[0] = last_set_date/100000;
         m_buff_temp[1] = (last_set_date%100000)/10000;
         m_buff_temp[2] = (last_set_date%10000)/1000;
         m_buff_temp[3] = (last_set_date%1000)/100 ;
         m_buff_temp[4] = (last_set_date%100)/10;
         m_buff_temp[5] = last_set_date%10; 		
-		
-        Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR,6);
-		
-		m_buff_temp[0] = USER_RIGHT_VALIDITY;
-		
-		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
         
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码正确");
-        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, "180 天");
+        Flash_W25X_Write((u8 *)m_buff_temp,V_LSDE_ADDR,6);
+        
+        m_buff_temp[0] = USER_RIGHT_VALIDITY;
+        
+        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
+        
+        m_buff_temp[0] = already_usedate;
+        
+        Flash_W25X_Write((u8 *)m_buff_temp,V_AUDE_ADDR,1);
+        
+        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
+        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
         OSTimeDlyHMSM(0, 0,2,0);
         break;
       }
@@ -213,36 +253,41 @@ void validity_cfg(void)
       {
         USER_RIGHT_VALIDITY = 1;
         validity_date = 180;
+        already_usedate = 0;
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
-		
+        
         m_buff_temp[0] = last_set_date/100000;
         m_buff_temp[1] = (last_set_date%100000)/10000;
         m_buff_temp[2] = (last_set_date%10000)/1000;
         m_buff_temp[3] = (last_set_date%1000)/100 ;
         m_buff_temp[4] = (last_set_date%100)/10;
         m_buff_temp[5] = last_set_date%10; 		
-		
-        Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR,6);
-		
-		m_buff_temp[0] = USER_RIGHT_VALIDITY;
-		
-		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
         
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码正确");
-        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, "180 天");
+        Flash_W25X_Write((u8 *)m_buff_temp,V_LSDE_ADDR,6);
+        
+        m_buff_temp[0] = USER_RIGHT_VALIDITY;
+        
+        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
+        
+        m_buff_temp[0] = already_usedate;
+        
+        Flash_W25X_Write((u8 *)m_buff_temp,V_AUDE_ADDR,1);
+        
+        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
+        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
         OSTimeDlyHMSM(0, 0,2,0);
         break;
       }
       else
       {
         USER_RIGHT_VALIDITY = 0;
-		
-		m_buff_temp[0] = USER_RIGHT_VALIDITY;
-		
-		Flash_W25X_Write((u8 *)m_buff_temp,R_PASS_ADDR + 6,1);
-		
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, "密码错误");
+        
+        m_buff_temp[0] = USER_RIGHT_VALIDITY;
+        
+        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
+        
+        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);
       }     
     }    
     
@@ -272,7 +317,7 @@ void validity_cfg(void)
             }  
             
             Para_Choice=0;
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, "     忽略 输入");
+            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
             
             break; 
           case KEY_SET:
@@ -280,7 +325,7 @@ void validity_cfg(void)
             PS_Flag = 0;
             
             Para_Choice=0;
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, "     忽略 输入");
+            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
             input_flag = 1;
 //            for(i=0;i<VDPASS_LEN;i++)
 //            {
@@ -315,7 +360,7 @@ void validity_cfg(void)
         Para_Choice = 1;
         Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
         
-        TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, "     忽略 确定");
+        TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[10 + LANGUAGE]);
         PS_Flag = 1; 
       }
       

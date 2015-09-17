@@ -1061,6 +1061,7 @@ void menu_para_base(void)
             base_para_get();
             break;
           case KEY_F3:
+            //@用户权限需要大于0才能设置
             if(USER_RIGHT_LEVEL >= (BaseParameter[Para_Number].user_right + 1))
             {
               PS_Flag = 1;
@@ -1070,6 +1071,7 @@ void menu_para_base(void)
 
               TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
             }
+            //@end
             break;
         }          
       }  

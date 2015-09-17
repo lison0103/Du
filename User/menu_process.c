@@ -201,11 +201,13 @@ void menu_process(void)
             case 6: 
               menu_time_set();
               break;
-            case 7: //密码管理
+            case 7: 
+              //@密码管理
               if(USER_RIGHT_VALIDITY == 1)
               {
                 menu_password_cfg();
               }
+              //@end
               break;
             case 8: 
               menu_language_cfg();
