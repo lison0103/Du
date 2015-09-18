@@ -105,6 +105,18 @@
 
 #define RECORD_ESC_NUMBER     DuSysBuff[10]
 
+//@使用有效期需要保存的数据
+
+#define FIRST_FLAG               DuSysBuff[15]  
+
+#define VALIDITY_FLAG            DuSysBuff[20]
+
+#define VALIDITY_USE_DATE        DuSysBuff[25]
+
+#define VALIDITY_LAST_DATE       DuSysBuff[30]
+
+//@end
+
 typedef struct errordescripitem
 {
 	u16 ucID; 
@@ -203,6 +215,7 @@ extern u8 USER_RIGHT_VALIDITY;
 extern u8 validity_date,already_usedate;
 extern u32 last_set_date,current_set_date;
 
+#if 0
 //第一次写入标志
 #define V_FLAG_ADDR ((2*1024 + 512)*1024)
 //已获得有效期使用标志
@@ -211,6 +224,8 @@ extern u32 last_set_date,current_set_date;
 #define V_AUDE_ADDR (((2*1024 + 512)*1024) + 2)
 //上次激活或更改记录的日期
 #define V_LSDE_ADDR (((2*1024 + 512)*1024) + 3)
+
+#endif
 
 void SPI_W25X_ChipErase(void);
 //// @end

@@ -226,22 +226,18 @@ void validity_cfg(void)
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
         
-        m_buff_temp[0] = last_set_date/100000;
-        m_buff_temp[1] = (last_set_date%100000)/10000;
-        m_buff_temp[2] = (last_set_date%10000)/1000;
-        m_buff_temp[3] = (last_set_date%1000)/100 ;
-        m_buff_temp[4] = (last_set_date%100)/10;
-        m_buff_temp[5] = last_set_date%10; 		
+        DuSysBuff[30] = last_set_date/100000;
+        DuSysBuff[31] = (last_set_date%100000)/10000;
+        DuSysBuff[32] = (last_set_date%10000)/1000;
+        DuSysBuff[33] = (last_set_date%1000)/100 ;
+        DuSysBuff[34] = (last_set_date%100)/10;
+        DuSysBuff[35] = last_set_date%10; 		
+                
+        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
+                
+        VALIDITY_USE_DATE = already_usedate;
         
-        Flash_W25X_Write((u8 *)m_buff_temp,V_LSDE_ADDR,6);
-        
-        m_buff_temp[0] = USER_RIGHT_VALIDITY;
-        
-        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
-        
-        m_buff_temp[0] = already_usedate;
-        
-        Flash_W25X_Write((u8 *)m_buff_temp,V_AUDE_ADDR,1);
+        du_sys_data_write();
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
         TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
@@ -257,22 +253,18 @@ void validity_cfg(void)
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
         
-        m_buff_temp[0] = last_set_date/100000;
-        m_buff_temp[1] = (last_set_date%100000)/10000;
-        m_buff_temp[2] = (last_set_date%10000)/1000;
-        m_buff_temp[3] = (last_set_date%1000)/100 ;
-        m_buff_temp[4] = (last_set_date%100)/10;
-        m_buff_temp[5] = last_set_date%10; 		
+        DuSysBuff[30] = last_set_date/100000;
+        DuSysBuff[31] = (last_set_date%100000)/10000;
+        DuSysBuff[32] = (last_set_date%10000)/1000;
+        DuSysBuff[33] = (last_set_date%1000)/100 ;
+        DuSysBuff[34] = (last_set_date%100)/10;
+        DuSysBuff[35] = last_set_date%10; 		
+                
+        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
+                
+        VALIDITY_USE_DATE = already_usedate;
         
-        Flash_W25X_Write((u8 *)m_buff_temp,V_LSDE_ADDR,6);
-        
-        m_buff_temp[0] = USER_RIGHT_VALIDITY;
-        
-        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
-        
-        m_buff_temp[0] = already_usedate;
-        
-        Flash_W25X_Write((u8 *)m_buff_temp,V_AUDE_ADDR,1);
+        du_sys_data_write();
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
         TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
@@ -283,9 +275,9 @@ void validity_cfg(void)
       {
         USER_RIGHT_VALIDITY = 0;
         
-        m_buff_temp[0] = USER_RIGHT_VALIDITY;
+        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
         
-        Flash_W25X_Write((u8 *)m_buff_temp,V_VLDT_ADDR,1);
+        du_sys_data_write();
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);
       }     

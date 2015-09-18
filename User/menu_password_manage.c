@@ -131,17 +131,25 @@ void menu_password_cfg(void)
       if(m_keydata[0]==KEY_F1)
       {
         
-        u8 earse_buff[10] = {0xff};
+//        u8 earse_buff[10] = {0xff};
         EARSE_CHIP = 0;
         TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "正在擦除数据...");
         
-//        SPI_W25X_ChipErase();
-        for(u8 i = 0;i<10;i++)
+        for(u8 i = 0;i<100;i++)
         {
-          earse_buff[i] = 0xff;
+          DuSysBuff[i] = 0;
         }
-        Flash_W25X_Write((u8 *)earse_buff,V_FLAG_ADDR,9);
-        OSTimeDlyHMSM(0, 0,1,0);
+        du_sys_data_write();
+        OSTimeDlyHMSM(0, 0,1,0);        
+        
+        
+//        SPI_W25X_ChipErase();
+//        for(u8 i = 0;i<10;i++)
+//        {
+//          earse_buff[i] = 0xff;
+//        }
+//        Flash_W25X_Write((u8 *)earse_buff,V_FLAG_ADDR,9);
+//        OSTimeDlyHMSM(0, 0,1,0);
         TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "   擦除完成!   ");
         OSTimeDlyHMSM(0, 0,2,0);
         break;

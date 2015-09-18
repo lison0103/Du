@@ -142,6 +142,33 @@ u32 Get_Current_Date(u8 *tb)
                
         return (date[0]*(100000) + date[1]*(10000) + date[2]*(1000) + date[3]*(100) + date[4]*(10) + date[5]);
 }
+
+//获取所使用的时间
+u8 Get_Use_Date(u32 CurrentDate, u32 LastRecordDate)
+{
+        u8 Temp1[6],Temp2[6];
+  
+        Temp1[0] = CurrentDate/100000;
+        Temp1[1] = (CurrentDate%100000)/10000;
+        Temp1[2] = (CurrentDate%10000)/1000;
+        Temp1[3] = (CurrentDate%1000)/100 ;
+        Temp1[4] = (CurrentDate%100)/10;
+        Temp1[5] = CurrentDate%10;      
+        
+        Temp2[0] = LastRecordDate/100000;
+        Temp2[1] = (LastRecordDate%100000)/10000;
+        Temp2[2] = (LastRecordDate%10000)/1000;
+        Temp2[3] = (LastRecordDate%1000)/100 ;
+        Temp2[4] = (LastRecordDate%100)/10;
+        Temp2[5] = LastRecordDate%10;     
+        
+        
+        
+        
+
+}
+
+
 //@endif
 /*******************************************************************************
 *******************************************************************************/
@@ -257,14 +284,14 @@ void menu_time_set(void)
           current_set_date = Get_Current_Date(Para_Data);          
           last_set_date = current_set_date;
           
-          record_buff[0] = last_set_date/100000;
-          record_buff[1] = (last_set_date%100000)/10000;
-          record_buff[2] = (last_set_date%10000)/1000;
-          record_buff[3] = (last_set_date%1000)/100 ;
-          record_buff[4] = (last_set_date%100)/10;
-          record_buff[5] = last_set_date%10; 
-        
-          Flash_W25X_Write((u8 *)record_buff,V_LSDE_ADDR,6);
+          DuSysBuff[30] = last_set_date/100000;
+          DuSysBuff[31] = (last_set_date%100000)/10000;
+          DuSysBuff[32] = (last_set_date%10000)/1000;
+          DuSysBuff[33] = (last_set_date%1000)/100 ;
+          DuSysBuff[34] = (last_set_date%100)/10;
+          DuSysBuff[35] = last_set_date%10; 
+          
+          du_sys_data_write();
           //@end
         }  
       } 
@@ -283,8 +310,8 @@ void menu_time_set(void)
         temp_date = Get_Current_Date(Para_Data);
         already_usedate += (temp_date - last_set_date);
         
-        record_buff[0] = already_usedate;
-        Flash_W25X_Write((u8 *)record_buff,V_AUDE_ADDR,1);
+        VALIDITY_USE_DATE = already_usedate;
+        du_sys_data_write();
         //@end
         
       }

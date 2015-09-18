@@ -1876,6 +1876,9 @@
       <name>$PROJ_DIR$\..\App\sub_comm.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\App\time_calculate.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\App\time_display.c</name>
     </file>
     <file>

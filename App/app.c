@@ -197,31 +197,57 @@ void AppTask_Main(void *p_arg)
 
   
 //@  开机使用有效期判断
-  u8 m_buff[10] = "9";
+//  u8 m_buff[10] = "9";
+//  
+//  Flash_W25X_Read(m_buff,V_FLAG_ADDR,1);
+//  if(m_buff[0] != 1)
+//  {
+//	  m_buff[0] = 0;		
+//	  Flash_W25X_Write((u8 *)m_buff,V_VLDT_ADDR,1);
+//	  m_buff[0] = 1;		
+//	  Flash_W25X_Write((u8 *)m_buff,V_FLAG_ADDR,1);
+//  }
+//  Flash_W25X_Read(m_buff,V_VLDT_ADDR,1); 
+//  
+//  USER_RIGHT_VALIDITY = m_buff[0];
+//  
+//  if(USER_RIGHT_VALIDITY == 1)
+//  {
+//    u8 TimeBuff[6];
+//    RTCC_GetTime(TimeBuff);
+//    Flash_W25X_Read(m_buff,V_LSDE_ADDR,6);
+//    
+//    last_set_date = m_buff[0]*(100000) + m_buff[1]*(10000) + m_buff[2]*(1000) + m_buff[3]*(100) + m_buff[4]*(10) + m_buff[5];
+//    
+//    Flash_W25X_Read(m_buff,V_AUDE_ADDR,1); 
+//    
+//    already_usedate = m_buff[0] + (Get_Current_Date(TimeBuff) - last_set_date);
+//    validity_date = 180 - already_usedate;
+//    
+//    //有效期小于1个月，每次开机提醒
+//    if(validity_date <= 30)
+//    {
+//      validity_cfg();
+//    }
+//  }
+//  else
+//  {
+//    validity_cfg();
+//  
+//  } 
   
-  Flash_W25X_Read(m_buff,V_FLAG_ADDR,1);
-  if(m_buff[0] != 1)
-  {
-	  m_buff[0] = 0;		
-	  Flash_W25X_Write((u8 *)m_buff,V_VLDT_ADDR,1);
-	  m_buff[0] = 1;		
-	  Flash_W25X_Write((u8 *)m_buff,V_FLAG_ADDR,1);
-  }
-  Flash_W25X_Read(m_buff,V_VLDT_ADDR,1); 
+
   
-  USER_RIGHT_VALIDITY = m_buff[0];
+  USER_RIGHT_VALIDITY = VALIDITY_FLAG;
   
   if(USER_RIGHT_VALIDITY == 1)
   {
     u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
-    Flash_W25X_Read(m_buff,V_LSDE_ADDR,6);
     
-    last_set_date = m_buff[0]*(100000) + m_buff[1]*(10000) + m_buff[2]*(1000) + m_buff[3]*(100) + m_buff[4]*(10) + m_buff[5];
-    
-    Flash_W25X_Read(m_buff,V_AUDE_ADDR,1); 
-    
-    already_usedate = m_buff[0] + (Get_Current_Date(TimeBuff) - last_set_date);
+    last_set_date = DuSysBuff[80]*(100000) + DuSysBuff[81]*(10000) + DuSysBuff[82]*(1000) + DuSysBuff[83]*(100) + DuSysBuff[84]*(10) + DuSysBuff[85];
+       
+    already_usedate = VALIDITY_USE_DATE + (Get_Current_Date(TimeBuff) - last_set_date);
     validity_date = 180 - already_usedate;
     
     //有效期小于1个月，每次开机提醒
@@ -234,7 +260,9 @@ void AppTask_Main(void *p_arg)
   {
     validity_cfg();
   
-  } 
+  }   
+  
+  
 //@end 
   
   while(1)
