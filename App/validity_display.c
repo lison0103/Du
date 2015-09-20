@@ -50,7 +50,7 @@ static u8 input_flag = 0;
 
 u8 USER_RIGHT_VALIDITY = 0;
 u8 validity_date,already_usedate = 0;
-u32 last_set_date,current_set_date = 0;
+u8 last_set_date[6],current_set_date[6];
 
 u8 m_buff_temp[10];
 
@@ -226,12 +226,12 @@ void validity_cfg(void)
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
         
-        DuSysBuff[30] = last_set_date/100000;
-        DuSysBuff[31] = (last_set_date%100000)/10000;
-        DuSysBuff[32] = (last_set_date%10000)/1000;
-        DuSysBuff[33] = (last_set_date%1000)/100 ;
-        DuSysBuff[34] = (last_set_date%100)/10;
-        DuSysBuff[35] = last_set_date%10; 		
+        DuSysBuff[30] = last_set_date[0];
+        DuSysBuff[31] = last_set_date[1];
+        DuSysBuff[32] = last_set_date[2];
+        DuSysBuff[33] = last_set_date[3];
+        DuSysBuff[34] = last_set_date[4];
+        DuSysBuff[35] = last_set_date[5]; 		
                 
         VALIDITY_FLAG = USER_RIGHT_VALIDITY;
                 
@@ -253,12 +253,12 @@ void validity_cfg(void)
         RTCC_GetTime(TimeBuff);
         last_set_date = Get_Current_Date(TimeBuff);
         
-        DuSysBuff[30] = last_set_date/100000;
-        DuSysBuff[31] = (last_set_date%100000)/10000;
-        DuSysBuff[32] = (last_set_date%10000)/1000;
-        DuSysBuff[33] = (last_set_date%1000)/100 ;
-        DuSysBuff[34] = (last_set_date%100)/10;
-        DuSysBuff[35] = last_set_date%10; 		
+        DuSysBuff[30] = last_set_date[0];
+        DuSysBuff[31] = last_set_date[1];
+        DuSysBuff[32] = last_set_date[2];
+        DuSysBuff[33] = last_set_date[3];
+        DuSysBuff[34] = last_set_date[4];
+        DuSysBuff[35] = last_set_date[5]; 		
                 
         VALIDITY_FLAG = USER_RIGHT_VALIDITY;
                 

@@ -245,9 +245,14 @@ void AppTask_Main(void *p_arg)
     u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
     
-    last_set_date = DuSysBuff[80]*(100000) + DuSysBuff[81]*(10000) + DuSysBuff[82]*(1000) + DuSysBuff[83]*(100) + DuSysBuff[84]*(10) + DuSysBuff[85];
+    last_set_date[0] = DuSysBuff[30];
+    last_set_date[1] = DuSysBuff[31];
+    last_set_date[2] = DuSysBuff[32];
+    last_set_date[3] = DuSysBuff[33];
+    last_set_date[4] = DuSysBuff[34];
+    last_set_date[5] = DuSysBuff[35];
        
-    already_usedate = VALIDITY_USE_DATE + (Get_Current_Date(TimeBuff) - last_set_date);
+    already_usedate = VALIDITY_USE_DATE + Calculate(Get_Current_Date(TimeBuff),last_set_date);
     validity_date = 180 - already_usedate;
     
     //有效期小于1个月，每次开机提醒

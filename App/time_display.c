@@ -2,8 +2,9 @@
 #include "includes.h"
 
 static u8 Para_Choice=0,PS_Flag=0,Para_Data[6];
-static u32 temp_date = 0;
+
 //@
+u8 temp_date[6];
 u8 record_buff[10];
 //@end
 /*******************************************************************************
@@ -129,7 +130,7 @@ void time_display(u16 dw,u16 tw,u8 *tb)
 /*******************************************************************************
 *******************************************************************************/
 //@获取当前年月日，格式150915
-u32 Get_Current_Date(u8 *tb)
+u8 * Get_Current_Date(u8 *tb)
 {
         u8 date[6];
   
@@ -140,7 +141,7 @@ u32 Get_Current_Date(u8 *tb)
 	date[4] = (tb[2]/10);
 	date[5] = (tb[2]%10);  
                
-        return (date[0]*(100000) + date[1]*(10000) + date[2]*(1000) + date[3]*(100) + date[4]*(10) + date[5]);
+        return date;
 }
 
 //获取所使用的时间
@@ -284,12 +285,12 @@ void menu_time_set(void)
           current_set_date = Get_Current_Date(Para_Data);          
           last_set_date = current_set_date;
           
-          DuSysBuff[30] = last_set_date/100000;
-          DuSysBuff[31] = (last_set_date%100000)/10000;
-          DuSysBuff[32] = (last_set_date%10000)/1000;
-          DuSysBuff[33] = (last_set_date%1000)/100 ;
-          DuSysBuff[34] = (last_set_date%100)/10;
-          DuSysBuff[35] = last_set_date%10; 
+          DuSysBuff[30] = last_set_date[0];
+          DuSysBuff[31] = last_set_date[1];
+          DuSysBuff[32] = last_set_date[2];
+          DuSysBuff[33] = last_set_date[3];
+          DuSysBuff[34] = last_set_date[4];
+          DuSysBuff[35] = last_set_date[5]; 
           
           du_sys_data_write();
           //@end
@@ -308,7 +309,7 @@ void menu_time_set(void)
         
         //@获取当前设置时间，记录与上次设置时间的时间差值
         temp_date = Get_Current_Date(Para_Data);
-        already_usedate += (temp_date - last_set_date);
+        already_usedate += Calculate(temp_date,last_set_date);
         
         VALIDITY_USE_DATE = already_usedate;
         du_sys_data_write();

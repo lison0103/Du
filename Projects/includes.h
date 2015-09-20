@@ -208,12 +208,12 @@ extern u8 USER_RIGHT_LEVEL;
 
 void validity_cfg(void);
 
-u32 Get_Current_Date(u8 *tb);
+u8 * Get_Current_Date(u8 *tb);
 
 extern u8 USER_RIGHT_VALIDITY;
 
 extern u8 validity_date,already_usedate;
-extern u32 last_set_date,current_set_date;
+extern u8 last_set_date[6],current_set_date[6];
 
 #if 0
 //第一次写入标志
@@ -226,6 +226,8 @@ extern u32 last_set_date,current_set_date;
 #define V_LSDE_ADDR (((2*1024 + 512)*1024) + 3)
 
 #endif
+
+ u32 Calculate(u8 begin[],u8 end[]);
 
 void SPI_W25X_ChipErase(void);
 //// @end
