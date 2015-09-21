@@ -130,9 +130,8 @@ void time_display(u16 dw,u16 tw,u8 *tb)
 /*******************************************************************************
 *******************************************************************************/
 //@获取当前年月日，格式150915
-u8 * Get_Current_Date(u8 *tb)
+void Get_Current_Date(u8 date[], u8 *tb)
 {
-        u8 date[6];
   
 	date[0] = (tb[0]/10);
 	date[1] = (tb[0]%10);
@@ -141,35 +140,7 @@ u8 * Get_Current_Date(u8 *tb)
 	date[4] = (tb[2]/10);
 	date[5] = (tb[2]%10);  
                
-        return date;
 }
-
-//获取所使用的时间
-u8 Get_Use_Date(u32 CurrentDate, u32 LastRecordDate)
-{
-        u8 Temp1[6],Temp2[6];
-  
-        Temp1[0] = CurrentDate/100000;
-        Temp1[1] = (CurrentDate%100000)/10000;
-        Temp1[2] = (CurrentDate%10000)/1000;
-        Temp1[3] = (CurrentDate%1000)/100 ;
-        Temp1[4] = (CurrentDate%100)/10;
-        Temp1[5] = CurrentDate%10;      
-        
-        Temp2[0] = LastRecordDate/100000;
-        Temp2[1] = (LastRecordDate%100000)/10000;
-        Temp2[2] = (LastRecordDate%10000)/1000;
-        Temp2[3] = (LastRecordDate%1000)/100 ;
-        Temp2[4] = (LastRecordDate%100)/10;
-        Temp2[5] = LastRecordDate%10;     
-        
-        
-        
-        
-
-}
-
-
 //@endif
 /*******************************************************************************
 *******************************************************************************/
@@ -282,17 +253,27 @@ void menu_time_set(void)
           
           
           //@获取当前设置时间,记录为上次设置日期
-          current_set_date = Get_Current_Date(Para_Data);          
-          last_set_date = current_set_date;
-          
-          DuSysBuff[30] = last_set_date[0];
-          DuSysBuff[31] = last_set_date[1];
-          DuSysBuff[32] = last_set_date[2];
-          DuSysBuff[33] = last_set_date[3];
-          DuSysBuff[34] = last_set_date[4];
-          DuSysBuff[35] = last_set_date[5]; 
-          
-          du_sys_data_write();
+#if 1
+          if(USER_RIGHT_VALIDITY == 1)
+          {
+              Get_Current_Date(current_set_date, Para_Data);     
+              
+              for(u8 j = 0; j < 6; j++)
+              {
+                last_set_date[j] = current_set_date[j];
+              
+              }
+              
+              DuSysBuff[30] = last_set_date[0];
+              DuSysBuff[31] = last_set_date[1];
+              DuSysBuff[32] = last_set_date[2];
+              DuSysBuff[33] = last_set_date[3];
+              DuSysBuff[34] = last_set_date[4];
+              DuSysBuff[35] = last_set_date[5]; 
+              
+              du_sys_data_write();
+          }
+#endif
           //@end
         }  
       } 
@@ -308,11 +289,15 @@ void menu_time_set(void)
         PS_Flag = 1; 
         
         //@获取当前设置时间，记录与上次设置时间的时间差值
-        temp_date = Get_Current_Date(Para_Data);
-        already_usedate += Calculate(temp_date,last_set_date);
-        
-        VALIDITY_USE_DATE = already_usedate;
-        du_sys_data_write();
+#if 1
+        if(USER_RIGHT_VALIDITY == 1)
+        {
+            Get_Current_Date(temp_date, Para_Data);
+            VALIDITY_USE_DATE += Calculate(last_set_date,temp_date);
+            
+            du_sys_data_write();
+        }
+#endif
         //@end
         
       }

@@ -35,7 +35,7 @@ const char validity_disp_item[][25]={
 
 static char const Password_Code[11] = {"-0123456789"};
 static u8 *Temp = "------";
-static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; //Para_Data=0,
+static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; 
 static u8 Para_Choice=0,PS_Flag=0;
 
 
@@ -48,8 +48,7 @@ static u32 Password_num;
 static u8 Password_num_buff[10];
 static u8 input_flag = 0;
 
-u8 USER_RIGHT_VALIDITY = 0;
-u8 validity_date,already_usedate = 0;
+u8 validity_date = 0;
 u8 last_set_date[6],current_set_date[6];
 
 u8 m_buff_temp[10];
@@ -71,7 +70,8 @@ u32 GetLockCode(void)
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
     
     RTCC_GetTime(TimeBuff);
-    Current_Date = Get_Current_Date(TimeBuff);
+    Get_Current_Date(current_set_date, TimeBuff);
+    Current_Date = current_set_date[0]*100000 + current_set_date[1]*10000 + current_set_date[2]*1000 + current_set_date[3]*100 + current_set_date[4]*10 + current_set_date[5];
     Lock_Code = Lock_Code/1000 + Current_Date;
     
     return Lock_Code;
@@ -160,7 +160,8 @@ void validity_cfg(void)
       Password_num_buff[4] = (Password_num%100)/10 + 0x30;
       Password_num_buff[5] = Password_num%10 + 0x30;      
 
-      m_buff_temp[0] = validity_date + 0x30;
+      m_buff_temp[0] = validity_date/10 + 0x30;
+      m_buff_temp[1] = validity_date%10 + 0x30;
 //      m_buff_temp[1] = "Ìì";
   
       ZTM_FullScreenImageDisp(310);
@@ -222,20 +223,17 @@ void validity_cfg(void)
       {
         USER_RIGHT_VALIDITY = 1;
         validity_date = 180;
-        already_usedate = 0;
+        VALIDITY_USE_DATE = 0;
         RTCC_GetTime(TimeBuff);
-        last_set_date = Get_Current_Date(TimeBuff);
+        Get_Current_Date(last_set_date, TimeBuff);
         
         DuSysBuff[30] = last_set_date[0];
         DuSysBuff[31] = last_set_date[1];
         DuSysBuff[32] = last_set_date[2];
         DuSysBuff[33] = last_set_date[3];
         DuSysBuff[34] = last_set_date[4];
-        DuSysBuff[35] = last_set_date[5]; 		
+        DuSysBuff[35] = last_set_date[5]; 		                
                 
-        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
-                
-        VALIDITY_USE_DATE = already_usedate;
         
         du_sys_data_write();
         
@@ -249,21 +247,17 @@ void validity_cfg(void)
       {
         USER_RIGHT_VALIDITY = 1;
         validity_date = 180;
-        already_usedate = 0;
+        VALIDITY_USE_DATE = 0;
         RTCC_GetTime(TimeBuff);
-        last_set_date = Get_Current_Date(TimeBuff);
+        Get_Current_Date(last_set_date, TimeBuff);
         
         DuSysBuff[30] = last_set_date[0];
         DuSysBuff[31] = last_set_date[1];
         DuSysBuff[32] = last_set_date[2];
         DuSysBuff[33] = last_set_date[3];
         DuSysBuff[34] = last_set_date[4];
-        DuSysBuff[35] = last_set_date[5]; 		
-                
-        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
-                
-        VALIDITY_USE_DATE = already_usedate;
-        
+        DuSysBuff[35] = last_set_date[5]; 		             
+                      
         du_sys_data_write();
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
@@ -274,9 +268,7 @@ void validity_cfg(void)
       else
       {
         USER_RIGHT_VALIDITY = 0;
-        
-        VALIDITY_FLAG = USER_RIGHT_VALIDITY;
-        
+               
         du_sys_data_write();
         
         TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);

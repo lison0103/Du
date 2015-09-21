@@ -107,9 +107,7 @@
 
 //@使用有效期需要保存的数据
 
-#define FIRST_FLAG               DuSysBuff[15]  
-
-#define VALIDITY_FLAG            DuSysBuff[20]
+#define USER_RIGHT_VALIDITY      DuSysBuff[20]
 
 #define VALIDITY_USE_DATE        DuSysBuff[25]
 
@@ -208,11 +206,9 @@ extern u8 USER_RIGHT_LEVEL;
 
 void validity_cfg(void);
 
-u8 * Get_Current_Date(u8 *tb);
+void Get_Current_Date(u8 date[], u8 *tb);
 
-extern u8 USER_RIGHT_VALIDITY;
-
-extern u8 validity_date,already_usedate;
+extern u8 validity_date;
 extern u8 last_set_date[6],current_set_date[6];
 
 #if 0

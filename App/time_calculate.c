@@ -10,7 +10,6 @@ u32 month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 //0--失败
 //修改:
 //备注:
-//fast_sky@sina.com
  
  u32 Leap_Year(u32 year)
 {
@@ -23,7 +22,6 @@ u32 month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 //sum---转化的天数
 //修改:
 //备注:
-//fast_sky@sina.com
  u32 Year_To_Day(u8 year_begin[], u8 year_end[])
 {
          u32 sum = 0;
@@ -44,19 +42,19 @@ u32 month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 //-----转化完成的天数
 //修改:
 //备注:
-//fast_sky@sina.com
  u32 Month_To_Day(u8 Month[])
 {
-         u32 i, day = 0;
+         u32 i;
          u32 year = 2000 + Month[0]*10 + Month[1];
          u32 mmonth = Month[2]*10 + Month[3];
+         u32 day = Month[4]*10 + Month[5];
  
          for (i = 0; i < mmonth - 1; ++i)
          {
                    day = day + month[i];
          }
  
-         return (mmonth >= 3) ? day + day + Leap_Year(year) :  day + day;
+         return (mmonth >= 3) ? day + Leap_Year(year) :  day;
  
 }
 //功能:计算两个日期之间的差值
@@ -67,7 +65,6 @@ u32 month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 //---算出的时间差值
 //修改:
 //备注:
-//fast_sky@sina.com
 //且begin <= end
  u32 Calculate(u8 begin[],u8 end[])
 {

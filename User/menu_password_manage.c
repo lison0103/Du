@@ -23,7 +23,8 @@ const char Password_Title[2][20]={"输入密码","Enter Password"};
 const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse"}; 
 
 u8 USER_RIGHT_LEVEL = 0;
-u8 *Temp = "------";
+u8 Temp[] = "------";
+u8 Temp1[] = "******";
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 /*******************************************************************************
@@ -182,11 +183,6 @@ void menu_password_cfg(void)
             Para_Choice=0;
             TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
             
-//            for(i=0;i<PASS_LEN;i++)
-//            {
-//              PASS_Buff[i] = PASS_Temp[i];
-//            }  
-
 
             break; 
           case KEY_UP:
@@ -216,10 +212,18 @@ void menu_password_cfg(void)
         
         TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);
         PS_Flag = 1; 
+        
+        PASS_Buff = Temp;
+        
+        for(i=0;i<6;i++)
+        {
+          PASS_Temp[i] = PASS_Buff[i];
+        } 
       }
      
       menu_password_display(Para_Choice);
       
+      //验证密码是否正确
       if(Set_Flag)
       {
         Set_Flag = 0;
@@ -240,6 +244,8 @@ void menu_password_cfg(void)
                 && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
         {
             EARSE_CHIP = 1;
+            ZTM_RectangleFill (0,280,239,319,BLACK);
+            OSTimeDlyHMSM(0, 0,0,10);
             TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);
         }
         else
@@ -250,6 +256,7 @@ void menu_password_cfg(void)
       }
       
     }  
+
   }  
 }
 

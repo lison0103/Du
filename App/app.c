@@ -194,52 +194,8 @@ void AppTask_Main(void *p_arg)
   
   
   esc_bk_init();
-
   
-//@  开机使用有效期判断
-//  u8 m_buff[10] = "9";
-//  
-//  Flash_W25X_Read(m_buff,V_FLAG_ADDR,1);
-//  if(m_buff[0] != 1)
-//  {
-//	  m_buff[0] = 0;		
-//	  Flash_W25X_Write((u8 *)m_buff,V_VLDT_ADDR,1);
-//	  m_buff[0] = 1;		
-//	  Flash_W25X_Write((u8 *)m_buff,V_FLAG_ADDR,1);
-//  }
-//  Flash_W25X_Read(m_buff,V_VLDT_ADDR,1); 
-//  
-//  USER_RIGHT_VALIDITY = m_buff[0];
-//  
-//  if(USER_RIGHT_VALIDITY == 1)
-//  {
-//    u8 TimeBuff[6];
-//    RTCC_GetTime(TimeBuff);
-//    Flash_W25X_Read(m_buff,V_LSDE_ADDR,6);
-//    
-//    last_set_date = m_buff[0]*(100000) + m_buff[1]*(10000) + m_buff[2]*(1000) + m_buff[3]*(100) + m_buff[4]*(10) + m_buff[5];
-//    
-//    Flash_W25X_Read(m_buff,V_AUDE_ADDR,1); 
-//    
-//    already_usedate = m_buff[0] + (Get_Current_Date(TimeBuff) - last_set_date);
-//    validity_date = 180 - already_usedate;
-//    
-//    //有效期小于1个月，每次开机提醒
-//    if(validity_date <= 30)
-//    {
-//      validity_cfg();
-//    }
-//  }
-//  else
-//  {
-//    validity_cfg();
-//  
-//  } 
-  
-
-  
-  USER_RIGHT_VALIDITY = VALIDITY_FLAG;
-  
+//@ 有效期判断  
   if(USER_RIGHT_VALIDITY == 1)
   {
     u8 TimeBuff[6];
@@ -251,9 +207,17 @@ void AppTask_Main(void *p_arg)
     last_set_date[3] = DuSysBuff[33];
     last_set_date[4] = DuSysBuff[34];
     last_set_date[5] = DuSysBuff[35];
-       
-    already_usedate = VALIDITY_USE_DATE + Calculate(Get_Current_Date(TimeBuff),last_set_date);
-    validity_date = 180 - already_usedate;
+    
+    Get_Current_Date(current_set_date, TimeBuff);   
+    VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
+    validity_date = 180 - VALIDITY_USE_DATE;
+    
+    if(validity_date <= 0)
+    {
+        USER_RIGHT_VALIDITY = 0;
+        
+        du_sys_data_write();
+    }       
     
     //有效期小于1个月，每次开机提醒
     if(validity_date <= 30)
@@ -265,10 +229,9 @@ void AppTask_Main(void *p_arg)
   {
     validity_cfg();
   
-  }   
-  
-  
+  }     
 //@end 
+  
   
   while(1)
   {
