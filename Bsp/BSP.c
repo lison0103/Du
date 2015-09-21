@@ -18,7 +18,8 @@ void NVIC_Configuration(void)
     NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0); //Ram中调试
 #else  /* VECT_TAB_FLASH  */
     // Set the Vector Table base location at 0x08000000
-    NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0); //Flash中调试
+//    NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0); //Flash中调试
+    NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x10000); //Flash中调试
 #endif
 /*                                                                        
   //设置NVIC优先级分组为Group2：0-3抢占式优先级，0-3的响应式优先级       
