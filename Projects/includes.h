@@ -226,6 +226,16 @@ extern u8 last_set_date[6],current_set_date[6];
  u32 Calculate(u8 begin[],u8 end[]);
 
 void SPI_W25X_ChipErase(void);
+
+
+//¶ÁÈ¡Ó²¼þ°æ±¾
+void hardware_init(void);
+u8 GetHardwareVerison(void);
+
+#define HARDWARE_VERSION  GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6)
+#define HARDWARE_V1	1		 
+#define HARDWARE_V2	2
+
 //// @end
 
 #endif //__INCLUDES_H__

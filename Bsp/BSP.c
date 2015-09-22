@@ -190,6 +190,34 @@ void test(void)
   
   while(1);
 }
+/***************************************************************************************************
+***************************************************************************************************/
+//硬件版本
+void hardware_init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct;  
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+  
+  //上拉
+  GPIO_InitStruct.GPIO_Pin = GPIO_Pin_6;
+  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;  
+  GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOB , &GPIO_InitStruct);
+}
+
+
+u8 GetHardwareVerison(void)
+{
+    if(HARDWARE_VERSION == 0)
+    {
+        return HARDWARE_V2;
+    }
+    else
+    {
+        return HARDWARE_V1;
+    }
+
+}
 
 /***************************************************************************************************
 ***************************************************************************************************/
@@ -200,6 +228,8 @@ void ini_device(void)
   prot_init();
   
   NVIC_Configuration();
+  
+  hardware_init();
   
   //lcd_initial();
   //lcd_init(); 
