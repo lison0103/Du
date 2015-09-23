@@ -40,7 +40,7 @@ static u8 Para_Choice=0,PS_Flag=0;
 
 
 //static u32 Cpu_LockID;
-static u8 TimeBuff[6];
+//static u8 TimeBuff[6];
 static u32 Current_Date;
 
 static u32 Confirm_word;
@@ -54,8 +54,9 @@ u8 last_set_date[6],current_set_date[6];
 u8 m_buff_temp[10];
 
 
-
-
+/*******************************************************************************
+//获取验证码
+*******************************************************************************/
 u32 GetLockCode(void)
 {
     u32 Lock_Code;
@@ -69,7 +70,7 @@ u32 GetLockCode(void)
     //加密算法,很简单的加密算法
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
     
-    RTCC_GetTime(TimeBuff);
+//    RTCC_GetTime(TimeBuff);
     Get_Current_Date(current_set_date, TimeBuff);
     Current_Date = current_set_date[0]*100000 + current_set_date[1]*10000 + current_set_date[2]*1000 + current_set_date[3]*100 + current_set_date[4]*10 + current_set_date[5];
     Lock_Code = Lock_Code/1000 + Current_Date;
@@ -77,6 +78,9 @@ u32 GetLockCode(void)
     return Lock_Code;
 }
 
+/*******************************************************************************
+//获取动态密码
+*******************************************************************************/
 u32 GetDynamicPassNum(void)
 {
   u32 Pass_Num,Lock_Num;
@@ -89,7 +93,9 @@ u32 GetDynamicPassNum(void)
   
 }
 
-
+/*******************************************************************************
+//密码动态显示函数
+*******************************************************************************/
 void validity_display(u8 set_bit)
 {      
       char i,a[20];
@@ -162,7 +168,6 @@ void validity_cfg(void)
 
       m_buff_temp[0] = validity_date/10 + 0x30;
       m_buff_temp[1] = validity_date%10 + 0x30;
-//      m_buff_temp[1] = "天";
   
       ZTM_FullScreenImageDisp(310);
       ZTM_RectangleFill (0,0,239,25,BLUE);
@@ -182,174 +187,166 @@ void validity_cfg(void)
       ZTM_RectangleFill (0, 100,239, 124,DGRAY); 
       TXM_StringDisplay(0,20,100,24,1,BLUE ,DGRAY, (void*)validity_disp_item[6 + LANGUAGE]);
       ZTM_RectangleFill (0, 130,239, 154,DGRAY); 
-//      TXM_StringDisplay(0,60,130,24,0,BLUE ,DGRAY, "1 2 3 4 5 6");
+
       TXM_StringDisplay(0,80,130,24,1,BLUE ,DGRAY, (void*)PASS_Temp);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 170,239, 194,DGRAY); 
       TXM_StringDisplay(0,20,170,24,1,BLUE ,DGRAY, (void*)validity_disp_item[8 + LANGUAGE]);
       ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
-//      TXM_StringDisplay(0,80,230,24,0,BLUE ,LGRAY, "------");
+
       OSTimeDlyHMSM(0, 0,0,10);
 
-  PASS_Buff = Temp;
   
-//  for(i=0;i<6;i++)
-//  {  
-//    if((PASS_Buff[i]<0X30)&&(PASS_Buff[i]>0X39))//(PASS_Buff[i]>0X30)&&(PASS_Buff[i]<0X39)
-//    {
-//      PASS_Buff[i] = password_num[i];
-//    }  
-//  }
+      PASS_Buff = Temp;
   
-  for(i=0;i<6;i++)
-  {
-    PASS_Temp[i] = PASS_Buff[i];
-  }  
-  
-  Para_Choice=0;
-  PS_Flag=0;  
-  
-  validity_display(Para_Choice);
-  
-  while(1)
-  {
-    if(input_flag == 1)
-    {
-      input_flag = 0;
+      for(i=0;i<6;i++)
+      {
+        PASS_Temp[i] = PASS_Buff[i];
+      }  
       
-      if( PASS_Temp[0] == Password_num_buff[0] && PASS_Temp[1] == Password_num_buff[1] && PASS_Temp[2] == Password_num_buff[2]
-         && PASS_Temp[3] == Password_num_buff[3] && PASS_Temp[4] == Password_num_buff[4] && PASS_Temp[5] == Password_num_buff[5] )
-      {
-        USER_RIGHT_VALIDITY = 1;
-        validity_date = 180;
-        VALIDITY_USE_DATE = 0;
-        RTCC_GetTime(TimeBuff);
-        Get_Current_Date(last_set_date, TimeBuff);
-        
-        DuSysBuff[30] = last_set_date[0];
-        DuSysBuff[31] = last_set_date[1];
-        DuSysBuff[32] = last_set_date[2];
-        DuSysBuff[33] = last_set_date[3];
-        DuSysBuff[34] = last_set_date[4];
-        DuSysBuff[35] = last_set_date[5]; 		                
-                
-        
-        du_sys_data_write();
-        
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
-        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
-        OSTimeDlyHMSM(0, 0,2,0);
-        break;
-      }
-      else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
-              && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
-      {
-        USER_RIGHT_VALIDITY = 1;
-        validity_date = 180;
-        VALIDITY_USE_DATE = 0;
-        RTCC_GetTime(TimeBuff);
-        Get_Current_Date(last_set_date, TimeBuff);
-        
-        DuSysBuff[30] = last_set_date[0];
-        DuSysBuff[31] = last_set_date[1];
-        DuSysBuff[32] = last_set_date[2];
-        DuSysBuff[33] = last_set_date[3];
-        DuSysBuff[34] = last_set_date[4];
-        DuSysBuff[35] = last_set_date[5]; 		             
-                      
-        du_sys_data_write();
-        
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
-        TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
-        OSTimeDlyHMSM(0, 0,2,0);
-        break;
-      }
-      else
-      {
-        USER_RIGHT_VALIDITY = 0;
-               
-        du_sys_data_write();
-        
-        TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);
-      }     
-    }    
-    
-    m_keydata = OSMboxPend(KeyMbox,60000,&err);
-    
-    if(err == OS_ERR_TIMEOUT)
-    {
-      break;
-    } 
-    else if((!PS_Flag) && ((m_keydata[0] == KEY_ESC) || (m_keydata[0] == KEY_F2)))
-    {
-      break;
-    } 
-    else 
-    {
-      if(PS_Flag)
-      {
-        switch(m_keydata[0])
-        {
-          case KEY_ESC:
-            
-            PS_Flag = 0;
-
-            for(i=0;i<VDPASS_LEN;i++)
-            {
-              PASS_Temp[i] = PASS_Buff[i];
-            }  
-            
-            Para_Choice=0;
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
-            
-            break; 
-          case KEY_SET:
-          case KEY_F3:  
-            PS_Flag = 0;
-            
-            Para_Choice=0;
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
-            input_flag = 1;
-//            for(i=0;i<VDPASS_LEN;i++)
-//            {
-//              PASS_Buff[i] = PASS_Temp[i];
-//            }  
-            
-//            modbus_write(MB_COM_PORT, 509, 8);
-
-            break; 
-          case KEY_UP:
-            
-            if(Para_Cnum < VDPASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
-            PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
-            break; 
-          case KEY_DOWN:
-            
-            if(Para_Cnum) Para_Cnum--;else Para_Cnum=VDPASS_DES_MAX;
-            PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
-            break; 
-          case KEY_LEFT:
-            if(Para_Choice>1) Para_Choice--; 
-            Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
-            break; 
-          case KEY_RIGHT:
-            if(Para_Choice<VDPASS_LEN) Para_Choice++;
-            Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
-            break; 
-        }  
-      } 
-      else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
-      {
-        Para_Choice = 1;
-        Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
-        
-        TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[10 + LANGUAGE]);
-        PS_Flag = 1; 
-      }
+      Para_Choice=0;
+      PS_Flag=0;  
       
       validity_display(Para_Choice);
-    }  
-  }      
+      
+      while(1)
+      {
+        if(input_flag == 1)//判断密码是否正确
+        {
+          input_flag = 0;
+          
+          if( PASS_Temp[0] == Password_num_buff[0] && PASS_Temp[1] == Password_num_buff[1] && PASS_Temp[2] == Password_num_buff[2]
+             && PASS_Temp[3] == Password_num_buff[3] && PASS_Temp[4] == Password_num_buff[4] && PASS_Temp[5] == Password_num_buff[5] )
+          {
+              USER_RIGHT_VALIDITY = 1;
+              validity_date = 180;
+              VALIDITY_USE_DATE = 0;
+//              RTCC_GetTime(TimeBuff);
+              Get_Current_Date(last_set_date, TimeBuff);
+              
+              DuSysBuff[30] = last_set_date[0];
+              DuSysBuff[31] = last_set_date[1];
+              DuSysBuff[32] = last_set_date[2];
+              DuSysBuff[33] = last_set_date[3];
+              DuSysBuff[34] = last_set_date[4];
+              DuSysBuff[35] = last_set_date[5]; 		                
+                      
+              
+              du_sys_data_write();
+              
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
+              TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
+              OSTimeDlyHMSM(0, 0,2,0);
+              break;
+          }
+          else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
+                  && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
+          {
+              USER_RIGHT_VALIDITY = 1;
+              validity_date = 180;
+              VALIDITY_USE_DATE = 0;
+//              RTCC_GetTime(TimeBuff);
+              Get_Current_Date(last_set_date, TimeBuff);
+              
+              DuSysBuff[30] = last_set_date[0];
+              DuSysBuff[31] = last_set_date[1];
+              DuSysBuff[32] = last_set_date[2];
+              DuSysBuff[33] = last_set_date[3];
+              DuSysBuff[34] = last_set_date[4];
+              DuSysBuff[35] = last_set_date[5]; 		             
+                            
+              du_sys_data_write();
+              
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
+              TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
+              OSTimeDlyHMSM(0, 0,2,0);
+              break;
+          }
+          else
+          {
+              USER_RIGHT_VALIDITY = 0;
+                     
+              du_sys_data_write();
+              
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);
+          }     
+        }    
+        
+        m_keydata = OSMboxPend(KeyMbox,60000,&err);
+        
+        if(err == OS_ERR_TIMEOUT)
+        {
+          break;
+        } 
+        else if((!PS_Flag) && ((m_keydata[0] == KEY_ESC) || (m_keydata[0] == KEY_F2)))
+        {
+          break;
+        } 
+        else 
+        {
+          if(PS_Flag)
+          {
+            switch(m_keydata[0])
+            {
+              case KEY_ESC:
+                
+                PS_Flag = 0;
+
+                for(i=0;i<VDPASS_LEN;i++)
+                {
+                  PASS_Temp[i] = PASS_Buff[i];
+                }  
+                
+                Para_Choice=0;
+                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
+                
+                break; 
+              case KEY_SET:
+              case KEY_F3:  
+                PS_Flag = 0;
+                
+                Para_Choice=0;
+                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);
+                input_flag = 1;
+    //            for(i=0;i<VDPASS_LEN;i++)
+    //            {
+    //              PASS_Buff[i] = PASS_Temp[i];
+    //            }  
+                
+
+                break; 
+              case KEY_UP:
+                
+                if(Para_Cnum < VDPASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
+                PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+                break; 
+              case KEY_DOWN:
+                
+                if(Para_Cnum) Para_Cnum--;else Para_Cnum=VDPASS_DES_MAX;
+                PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+                break; 
+              case KEY_LEFT:
+                if(Para_Choice>1) Para_Choice--; 
+                Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+                break; 
+              case KEY_RIGHT:
+                if(Para_Choice<VDPASS_LEN) Para_Choice++;
+                Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+                break; 
+            }  
+          } 
+          else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
+          {
+              Para_Choice = 1;
+              Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+              
+              TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[10 + LANGUAGE]);
+              PS_Flag = 1; 
+          }
+          
+          validity_display(Para_Choice);
+        }  
+      }      
 
 }

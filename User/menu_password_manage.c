@@ -20,11 +20,12 @@ static u8 Para_Choice=0,PS_Flag=0;
 static char const Password_Code[11] = {"-0123456789"};
                                     
 const char Password_Title[2][20]={"输入密码","Enter Password"}; 
-const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse"}; 
+const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...","   擦除完成!   "," Erase finish! "}; 
 
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
 u8 Temp1[] = "******";
+const u8 *Version = {"V1.0"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 /*******************************************************************************
@@ -92,16 +93,11 @@ void menu_password_cfg(void)
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Password_Title[LANGUAGE]);  
   TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
   TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);
-
-  PASS_Buff = Temp;
   
-//  for(i=0;i<6;i++)
-//  {  
-//    if((PASS_Buff[i]<0X30)&&(PASS_Buff[i]>0X39))//(PASS_Buff[i]>0X30)&&(PASS_Buff[i]<0X39)
-//    {
-//      PASS_Buff[i] = password_num[i];
-//    }  
-//  }
+  TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)Version);
+
+  
+  PASS_Buff = Temp;
   
   for(i=0;i<6;i++)
   {
@@ -130,11 +126,9 @@ void menu_password_cfg(void)
     else if(EARSE_CHIP == 1)
     {
       if(m_keydata[0]==KEY_F1)
-      {
-        
-//        u8 earse_buff[10] = {0xff};
+      {       
         EARSE_CHIP = 0;
-        TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "正在擦除数据...");
+        TXM_StringDisplay(0,40,220,24,1,YELLOW ,RED, (void*)input_item[8 + LANGUAGE]);//正在擦除数据...
         
         for(u8 i = 0;i<100;i++)
         {
@@ -145,13 +139,8 @@ void menu_password_cfg(void)
         
         
 //        SPI_W25X_ChipErase();
-//        for(u8 i = 0;i<10;i++)
-//        {
-//          earse_buff[i] = 0xff;
-//        }
-//        Flash_W25X_Write((u8 *)earse_buff,V_FLAG_ADDR,9);
-//        OSTimeDlyHMSM(0, 0,1,0);
-        TXM_StringDisplay(0,40,250,24,1,YELLOW ,RED, "   擦除完成!   ");
+
+        TXM_StringDisplay(0,40,220,24,1,YELLOW ,RED, (void*)input_item[10 + LANGUAGE]);//擦除完成!
         OSTimeDlyHMSM(0, 0,2,0);
         break;
       }

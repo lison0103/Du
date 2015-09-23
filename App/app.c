@@ -198,7 +198,7 @@ void AppTask_Main(void *p_arg)
 //@ ÓÐÐ§ÆÚÅÐ¶Ï  
   if(USER_RIGHT_VALIDITY == 1)
   {
-    u8 TimeBuff[6];
+//    u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
     
     last_set_date[0] = DuSysBuff[30];

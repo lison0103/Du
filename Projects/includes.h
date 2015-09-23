@@ -199,7 +199,7 @@ extern u16 *DuSysBuff;
 
 extern u8 TimeBuff[6];
 
-//// @add by lisonchen  
+// @add by lisonchen  
 void menu_password_cfg(void);
 
 extern u8 USER_RIGHT_LEVEL;
@@ -211,22 +211,12 @@ void Get_Current_Date(u8 date[], u8 *tb);
 extern u8 validity_date;
 extern u8 last_set_date[6],current_set_date[6];
 
-#if 0
-//第一次写入标志
-#define V_FLAG_ADDR ((2*1024 + 512)*1024)
-//已获得有效期使用标志
-#define V_VLDT_ADDR (((2*1024 + 512)*1024) + 1)
-//还剩余有效期天数
-#define V_AUDE_ADDR (((2*1024 + 512)*1024) + 2)
-//上次激活或更改记录的日期
-#define V_LSDE_ADDR (((2*1024 + 512)*1024) + 3)
-
-#endif
-
- u32 Calculate(u8 begin[],u8 end[]);
+u32 Calculate(u8 begin[],u8 end[]);
 
 void SPI_W25X_ChipErase(void);
 
+extern u8 month[12];
+u8 Leap_Year(u32 year);
 
 //读取硬件版本
 void hardware_init(void);
@@ -236,7 +226,7 @@ u8 GetHardwareVerison(void);
 #define HARDWARE_V1	1		 
 #define HARDWARE_V2	2
 
-//// @end
+//@end
 
 #endif //__INCLUDES_H__
 

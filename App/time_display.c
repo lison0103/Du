@@ -6,6 +6,7 @@ static u8 Para_Choice=0,PS_Flag=0,Para_Data[6];
 //@
 u8 temp_date[6];
 u8 record_buff[10];
+u8 SET_FLAG = 0;
 //@end
 /*******************************************************************************
 *******************************************************************************/
@@ -141,7 +142,7 @@ void Get_Current_Date(u8 date[], u8 *tb)
 	date[5] = (tb[2]%10);  
                
 }
-//@endif
+//@end
 /*******************************************************************************
 *******************************************************************************/
 void menu_time_set(void)
@@ -193,7 +194,11 @@ void menu_time_set(void)
           case KEY_SET:
           case KEY_F3:  
             PS_Flag = 0;
-                        
+            
+            //@
+            SET_FLAG = 1;
+            //@end
+            
             RTCC_SetTime(Para_Data);
             
             for(i=0;i<6;i++)
@@ -203,39 +208,57 @@ void menu_time_set(void)
             modbus_write(MB_COM_PORT, 25, 3);
 
             break; 
+          //@ 修改支持时间日期设置上下翻滚，月份设置大小月和闰年   month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
           case KEY_UP:
             switch(Para_Choice)
             {
-              case 1:
+              case 1://年
                 if(Para_Data[Para_Choice-1]<99) Para_Data[Para_Choice-1]++;
                 break;
-              case 2:
+              case 2://月
                 if(Para_Data[Para_Choice-1]<12) Para_Data[Para_Choice-1]++;
+                else Para_Data[Para_Choice-1] = 1;
+                if(Para_Data[2] > month[Para_Data[1]-1]) Para_Data[2] = month[Para_Data[1]-1];
                 break;
-              case 3:
-                if(Para_Data[Para_Choice-1]<31) Para_Data[Para_Choice-1]++;
+              case 3://日
+                if(Para_Data[Para_Choice-1] < ((Para_Data[1] == 2) ? (month[Para_Data[1]-1] + Leap_Year(2000+Para_Data[0])) : (month[Para_Data[1]-1])) )                  
+                     Para_Data[Para_Choice-1]++;
+                else Para_Data[Para_Choice-1] = 1;
                 break;
-              case 4:
-                if(Para_Data[Para_Choice-1]<24) Para_Data[Para_Choice-1]++;
+              case 4://时
+                if(Para_Data[Para_Choice-1]<23) Para_Data[Para_Choice-1]++;
+                else Para_Data[Para_Choice-1] = 0;
                 break;
-              default:
+              default://分、秒
                 if(Para_Data[Para_Choice-1]<59) Para_Data[Para_Choice-1]++;
+                else Para_Data[Para_Choice-1] = 0;
             }  
             break; 
           case KEY_DOWN:
             switch(Para_Choice)
             {
-              case 1:
+              case 1://年
                 if(Para_Data[Para_Choice-1]>15) Para_Data[Para_Choice-1]--;
                 break;
-              case 2:
-              case 3:
+              case 2://月
                 if(Para_Data[Para_Choice-1]>1) Para_Data[Para_Choice-1]--;
+                else Para_Data[Para_Choice-1] = 12;
+                if(Para_Data[2] > month[Para_Data[1]-1]) Para_Data[2] = month[Para_Data[1]-1];
                 break;
-              default:
+              case 3://日
+                if(Para_Data[Para_Choice-1]>1) Para_Data[Para_Choice-1]--;
+                else Para_Data[Para_Choice-1] = (Para_Data[1] == 2) ? (month[Para_Data[1]-1] + Leap_Year(2000+Para_Data[0])) :  (month[Para_Data[1]-1]);
+                break;
+              case 4://时
+                if(Para_Data[Para_Choice-1]>1) Para_Data[Para_Choice-1]--;
+                else Para_Data[Para_Choice-1] = 23;
+                break;
+              default://分、秒
                 if(Para_Data[Para_Choice-1]) Para_Data[Para_Choice-1]--;
+                else Para_Data[Para_Choice-1] = 59;
             }  
-            break; 
+            break;
+          //@end
           case KEY_LEFT:
             if(Para_Choice>1) Para_Choice--; 
             break; 
@@ -253,27 +276,31 @@ void menu_time_set(void)
           
           
           //@获取当前设置时间,记录为上次设置日期
-#if 1
-          if(USER_RIGHT_VALIDITY == 1)
+          #if 1
+          if(1 == SET_FLAG)
           {
-              Get_Current_Date(current_set_date, Para_Data);     
-              
-              for(u8 j = 0; j < 6; j++)
+              SET_FLAG = 0;
+              if(USER_RIGHT_VALIDITY == 1)
               {
-                last_set_date[j] = current_set_date[j];
-              
+                  Get_Current_Date(current_set_date, Para_Data);     
+                  
+                  for(u8 j = 0; j < 6; j++)
+                  {
+                    last_set_date[j] = current_set_date[j];
+                  
+                  }
+                  
+                  DuSysBuff[30] = last_set_date[0];
+                  DuSysBuff[31] = last_set_date[1];
+                  DuSysBuff[32] = last_set_date[2];
+                  DuSysBuff[33] = last_set_date[3];
+                  DuSysBuff[34] = last_set_date[4];
+                  DuSysBuff[35] = last_set_date[5]; 
+                  
+                  du_sys_data_write();
               }
-              
-              DuSysBuff[30] = last_set_date[0];
-              DuSysBuff[31] = last_set_date[1];
-              DuSysBuff[32] = last_set_date[2];
-              DuSysBuff[33] = last_set_date[3];
-              DuSysBuff[34] = last_set_date[4];
-              DuSysBuff[35] = last_set_date[5]; 
-              
-              du_sys_data_write();
           }
-#endif
+          #endif
           //@end
         }  
       } 
@@ -289,7 +316,7 @@ void menu_time_set(void)
         PS_Flag = 1; 
         
         //@获取当前设置时间，记录与上次设置时间的时间差值
-#if 1
+        #if 1
         if(USER_RIGHT_VALIDITY == 1)
         {
             Get_Current_Date(temp_date, Para_Data);
@@ -297,7 +324,7 @@ void menu_time_set(void)
             
             du_sys_data_write();
         }
-#endif
+        #endif
         //@end
         
       }
