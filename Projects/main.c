@@ -77,7 +77,9 @@ void main(void)
 //  u16 i,j;
 //  u32 k;
  
+  //@
   SCB->VTOR = FLASH_BASE | 0x10000;
+  //@end
   
   Delay_us(1000);
   

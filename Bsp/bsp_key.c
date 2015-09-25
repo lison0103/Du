@@ -7,7 +7,8 @@
 void key_init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct;  
-  
+ 
+  //@
   if(HARDWARE_V2 == GetHardwareVerison())
   {
       //иою╜
@@ -32,6 +33,7 @@ void key_init(void)
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC , &GPIO_InitStruct);
   }
+  //@end
 }
 
 u8 read_lcm_busy(void)
@@ -65,6 +67,7 @@ void Delay_us(uint32_t n)
 ***************************************************************************************************/
 u16 key_scan(void)
 {
+  //@
   if(HARDWARE_V2 == GetHardwareVerison())
   {
   		  
@@ -111,6 +114,7 @@ u16 key_scan(void)
 
       return((u16)key_temp);
   }
+  //@end
 }
 
 /***************************************************************************************************
