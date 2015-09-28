@@ -11,9 +11,9 @@
 #define KEY_SW5  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_4)
 #define KEY_SW6  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_9)
 #define KEY_SW7  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_5)
-#define KEY_SW8  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_6)
+#define KEY_SW8  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_7)
 #define KEY_SW9  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_8)
-#define KEY_SW10  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_7)
+#define KEY_SW10  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_6)
 //@end
 
 #ifdef OLDHW
