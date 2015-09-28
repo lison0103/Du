@@ -264,33 +264,39 @@ void display_rt_speed(void)
   //控制模式
   if((ModBuff[1145]==0) || (ModBuff[1145]==3) || (ECT_A_VERSION == 1))
   {
-    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "电机频率"); 
+      //@    
+//    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "电机频率"); 
+    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, "电机频率"); 
     TXM_DigitDisplay(0,120,148,24,1,BLACK ,LGRAY, rt_para[0],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,148,24,1,BLACK ,LGRAY, rt_para[1],4,0,ALIGN_RIGHT);    
   } 
   //仅主轴
   else
   {
-    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "主轴比值"); 
+//    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "主轴比值"); 
+    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, "主轴比值"); 
     TXM_DigitDisplay(0,120,148,24,1,BLACK ,LGRAY, rt_para[6],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,148,24,1,BLACK ,LGRAY, rt_para[7],4,0,ALIGN_RIGHT);    
   }  
        
-  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, "扶手比值");      
+//  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, "扶手比值");   
+  TXM_StringDisplay(0,12,180,24,1,BLACK ,DGRAY, "扶手比值");
   TXM_DigitDisplay(0,120,180,24,1,BLACK ,LGRAY, rt_para[2],4,0,ALIGN_RIGHT);
   TXM_DigitDisplay(0,180,180,24,1,BLACK ,LGRAY, rt_para[3],4,0,ALIGN_RIGHT);
   
   if((ModBuff[1145]==3))
   {
-    TXM_StringDisplay(0,12,212,24,0,BLACK ,0, "主轴比值"); 
+//    TXM_StringDisplay(0,12,212,24,0,BLACK ,0, "主轴比值"); 
+    TXM_StringDisplay(0,12,212,24,1,BLACK ,DGRAY, "主轴比值"); 
     TXM_DigitDisplay(0,120,212,24,1,BLACK ,LGRAY, rt_para[6],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,212,24,1,BLACK ,LGRAY, rt_para[7],4,0,ALIGN_RIGHT);    
   }  
   
-  TXM_StringDisplay(0,12,244,24,0,BLACK ,0, "制动距离");      
+//  TXM_StringDisplay(0,12,244,24,0,BLACK ,0, "制动距离");     
+  TXM_StringDisplay(0,12,244,24,1,BLACK ,DGRAY, "制动距离"); 
   TXM_DigitDisplay(0,120,244,24,1,BLACK ,LGRAY, rt_para[4],4,0,ALIGN_RIGHT);
   TXM_DigitDisplay(0,180,244,24,1,BLACK ,LGRAY, rt_para[5],4,0,ALIGN_RIGHT);
-  
+  //@end
 }
 
 /*******************************************************************************
@@ -411,7 +417,7 @@ void main_display(void)
     if(1)//(ModBuff[460]&0x06)
     {  
       display_rt_speed(); 
-    } 
+    }          
   }
 }
 
