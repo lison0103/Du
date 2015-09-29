@@ -209,6 +209,9 @@ void Task_Menu(void *p_arg)
     OSTimeDlyHMSM(0, 0,0,500);  
     
     RTCC_GetTime(TimeBuff);
+    //@
+    time_display(307, 308, TimeBuff);
+    //@end
   } 
 }
 

@@ -5,7 +5,6 @@ static u8 Para_Choice=0,PS_Flag=0,Para_Data[6];
 
 //@
 u8 temp_date[6];
-u8 record_buff[10];
 u8 SET_FLAG = 0;
 //@end
 /*******************************************************************************
@@ -320,7 +319,7 @@ void menu_time_set(void)
         if(USER_RIGHT_VALIDITY == 1)
         {
             Get_Current_Date(temp_date, Para_Data);
-            VALIDITY_USE_DATE += Calculate(last_set_date,temp_date);
+            VALIDITY_USE_DATE += Calculate(current_set_date,temp_date);
             
             du_sys_data_write();
         }

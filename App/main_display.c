@@ -310,7 +310,10 @@ void main_display(void)
 // RTCC_GetTime( &ModBuff[50]) ;
 //  if()
 //  time_display(307, 308, &ModBuff[50]);
-  time_display(307, 308, TimeBuff);
+  
+  //@ÒÆµ½menu.c
+//  time_display(307, 308, TimeBuff);
+  //@end
   
   //Display_RTCC(0,290,0,0,&ModBuff[50]);
 
