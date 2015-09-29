@@ -61,6 +61,9 @@
 
 #define TASK_READ_ECT_PRIO        36
 
+//@
+#define TASK_VCOMP_PRIO        37
+//@end
 
 //#define  APP_CFG_TASK_START_PRIO               3
 //#define  APP_CFG_TASK_PB_PRIO                  4
@@ -96,6 +99,10 @@
 #define TASK_LCM_INIT_STK_SIZE      200
 
 #define TASK_READ_ECT_STK_SIZE      200
+
+//@
+#define TASK_VComPort_STK_SIZE      200
+//@end
 
 //#define  APP_CFG_TASK_START_STK_SIZE         128
 //#define  APP_CFG_TASK_PB_STK_SIZE            128

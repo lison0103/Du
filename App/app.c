@@ -48,6 +48,10 @@ extern u8 MainDisFlag;
 u8 DuSys_Data[100];
 u16 *DuSysBuff = (u16*)DuSys_Data;
 
+//@
+OS_STK task_VComPort_stk[TASK_VComPort_STK_SIZE];
+extern void Connect_To_COM(void);// *p_arg);
+//@end
 
 /***************************************************************************************************
 ***************************************************************************************************/
@@ -276,7 +280,16 @@ void AppTask_Main(void *p_arg)
         
         //½øÈë²Ëµ¥
         menu_process();
-      }  
+      }
+      else if(m_keydata[0] == KEY_F1)
+      { 
+        MainDisFlag = 0;
+        
+        //
+//        OSTaskCreate(Connect_To_COM,(void *)0,		    
+//                     &task_VComPort_stk[TASK_VComPort_STK_SIZE-1], TASK_VCOMP_PRIO);
+        Connect_To_COM();
+      } 
       else
       {
         start_main_display = 1;
