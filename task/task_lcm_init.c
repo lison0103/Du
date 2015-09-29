@@ -45,7 +45,10 @@ void Task_LCM_Init(void *p_arg)
   
   ZTM_FullScreenImageDisp(2);
   
-  OSTimeDlyHMSM(0,0,1,0);
+  //@
+//  OSTimeDlyHMSM(0,0,1,0);
+  OSTimeDlyHMSM(0,0,0,100);
+  //@end
   
   ZTM_FullScreenImageDisp(1);
   
