@@ -51,7 +51,7 @@ static u8 input_flag = 0;
 u8 validity_date = 0;
 u8 last_set_date[6],current_set_date[6];
 
-u8 m_buff_temp[10];
+u8 m_buff_temp[3];
 
 
 /*******************************************************************************
@@ -328,10 +328,12 @@ void validity_cfg(void)
                 break; 
               case KEY_LEFT:
                 if(Para_Choice>1) Para_Choice--; 
+                else Para_Choice = VDPASS_LEN; 
                 Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
                 break; 
               case KEY_RIGHT:
                 if(Para_Choice<VDPASS_LEN) Para_Choice++;
+                else Para_Choice = 1;
                 Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
                 break; 
             }  

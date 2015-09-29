@@ -20,7 +20,8 @@ static u8 Para_Choice=0,PS_Flag=0;
 static char const Password_Code[11] = {"-0123456789"};
                                     
 const char Password_Title[2][20]={"输入密码","Enter Password"}; 
-const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...","   擦除完成!   "," Erase finish! "}; 
+const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...",
+"   擦除完成!   "," Erase finish! "," 剩余使用天数: ","Validity Date:"}; 
 
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
@@ -28,6 +29,7 @@ u8 Temp1[] = "******";
 const u8 *Version = {"V1.0"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
+extern u8 m_buff_temp[3];
 /*******************************************************************************
 *******************************************************************************/
 void menu_password_display(u8 set_bit)
@@ -91,10 +93,18 @@ void menu_password_cfg(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Password_Title[LANGUAGE]);  
-  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
-  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);
+  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
+//  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);//修改
   
-  TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)Version);
+  TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)Version);//版本
+  TXM_StringDisplay(0,50,260,16,0,BLACK ,BLACK, (void*)input_item[12 + LANGUAGE]);//已使用天数
+  
+
+  validity_date = 180 - VALIDITY_USE_DATE;
+  m_buff_temp[0] = validity_date/100 + 0x30;
+  m_buff_temp[1] = validity_date%100/10 + 0x30;
+  m_buff_temp[2] = validity_date%10 + 0x30;
+  TXM_StringDisplay(0,170,260,16,0,BLACK ,BLACK, (void*)m_buff_temp);//天
 
   
   PASS_Buff = Temp;
@@ -162,7 +172,7 @@ void menu_password_cfg(void)
             }  
             
             Para_Choice=0;
-            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
             
             break; 
           case KEY_SET:
@@ -170,7 +180,7 @@ void menu_password_cfg(void)
             PS_Flag = 0;
             Set_Flag = 1;
             Para_Choice=0;
-            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
             
 
             break; 
@@ -186,10 +196,12 @@ void menu_password_cfg(void)
             break; 
           case KEY_LEFT:
             if(Para_Choice>1) Para_Choice--; 
+            else Para_Choice = PASS_LEN; 
             Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
             break; 
           case KEY_RIGHT:
             if(Para_Choice<PASS_LEN) Para_Choice++;
+            else Para_Choice = 1; 
             Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
             break; 
         }  
@@ -199,7 +211,7 @@ void menu_password_cfg(void)
         Para_Choice = 1;
         Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
         
-        TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);
+        TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);//确认
         PS_Flag = 1; 
         
         PASS_Buff = Temp;
@@ -235,7 +247,7 @@ void menu_password_cfg(void)
             EARSE_CHIP = 1;
             ZTM_RectangleFill (0,280,239,319,BLACK);
             OSTimeDlyHMSM(0, 0,0,10);
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);
+            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);//擦除
         }
         else
         {
