@@ -69,8 +69,14 @@
 /* IMR_MSK */
 /* mask defining which events has to be handled */
 /* by the device application software */
+#if 0
 #define IMR_MSK (CNTR_CTRM  | CNTR_WKUPM | CNTR_SUSPM | CNTR_ERRM  | CNTR_SOFM \
                  | CNTR_ESOFM | CNTR_RESETM )
+#else
+#define IMR_MSK (CNTR_CTRM  | CNTR_WKUPM | CNTR_ERRM  | CNTR_SOFM | CNTR_RESETM )
+//CNTR_SUSPM | CNTR_ESOFM 
+//和UCOS冲突，原因暂未知
+#endif
 
 /*#define CTR_CALLBACK*/
 /*#define DOVR_CALLBACK*/
