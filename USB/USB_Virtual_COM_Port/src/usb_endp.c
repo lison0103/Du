@@ -41,10 +41,12 @@
 #define VCOMPORT_IN_FRAME_INTERVAL             5
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern __IO uint32_t packet_sent;
-extern __IO uint32_t packet_receive;
+//extern __IO uint32_t packet_sent;
+//extern __IO uint32_t packet_receive;
 extern __IO uint8_t Receive_Buffer[64];
 uint32_t Receive_length;
+uint32_t packet_sent=1;
+uint32_t packet_receive=1;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
