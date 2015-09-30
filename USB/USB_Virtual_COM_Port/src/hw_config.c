@@ -376,4 +376,11 @@ uint32_t CDC_Receive_DATA(void)
   return 1 ;
 }
 
+void Disconnect_USB_Virtual_COM_Port(void)
+{
+    
+  PowerOff();
+
+}
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -54,6 +54,7 @@ void Get_SerialNum(void);
 void LCD_Control(void);
 uint32_t CDC_Send_DATA (uint8_t *ptrBuffer, uint8_t Send_length);
 uint32_t CDC_Receive_DATA(void);
+void Disconnect_USB_Virtual_COM_Port(void);
 /* External variables --------------------------------------------------------*/
 
 #endif  /*__HW_CONFIG_H*/

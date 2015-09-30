@@ -17,6 +17,7 @@ const u8 *Menu_ParaItem_Descrip[][2] =
   {" 10 故障分类     "," 10 FAULT CLASS    "},
 }; 
 
+//@
 const u8 *Menu_Item_Descrip[][2] =
 {                                          
   {" 01 主板梯号设置  "," 01 ESC SN CFG    "},
@@ -28,9 +29,14 @@ const u8 *Menu_Item_Descrip[][2] =
   {" 07 时间日期设置  "," 07 TIME & DATE   "},
   {" 08 密码管理      "," 08 USER RIGHT    "},
   {" 09 语言/LANGUAGE "," 09 LANGUAGE/语言 "},
+  {" 10 连接电脑      "," 10 Connect to PC "},
 }; 
-
+//@end
 u16 MenuItem=0,MenuItem_Max=0,Menu_Level=0,disFlag=0;
+
+//@
+#define MenuItemMax   10 
+//@end
 
 /*******************************************************************************
 *******************************************************************************/
@@ -67,7 +73,7 @@ void menu_para_item_display(void)
     disFlag = 1;
   }  
 }
-
+//@
 void menu_item_display(void)
 {
   u16 i;
@@ -75,16 +81,16 @@ void menu_item_display(void)
   if(disFlag)
   {
     i = MenuItem+1;
-    if(i>=9) i=0;
+    if(i>=MenuItemMax) i=0;
     TXM_StringDisplay(0,8,20+(i*30),24,1,YELLOW ,BLUE, (void*)Menu_Item_Descrip[i][LANGUAGE]); 
-    if(MenuItem) i=MenuItem-1; else i=8;
+    if(MenuItem) i=MenuItem-1; else i=MenuItemMax-1;
     TXM_StringDisplay(0,8,20+(i*30),24,1,YELLOW ,BLUE, (void*)Menu_Item_Descrip[i][LANGUAGE]); 
     
     TXM_StringDisplay(0,8,20+(MenuItem*30),24,1,YELLOW ,RED, (void*)Menu_Item_Descrip[MenuItem][LANGUAGE]); 
   }
   else
   {  
-    for(i=0;i<9;i++)
+    for(i=0;i<MenuItemMax;i++)
     {  
       if(MenuItem==i)
       {  
@@ -103,7 +109,7 @@ void menu_item_display(void)
     disFlag = 1;
   }
 }
-
+//@end
 /*******************************************************************************
 *******************************************************************************/
 void menu_process(void)
@@ -112,8 +118,9 @@ void menu_process(void)
   
   MenuItem=0;
   Menu_Level=0;
-  MenuItem_Max=9;
-  
+  //@
+  MenuItem_Max=MenuItemMax;
+  //@end
   disFlag = 0;
   
   ZTM_FullScreenImageDisp(311);
@@ -133,8 +140,9 @@ void menu_process(void)
       {
         Menu_Level=0;
         MenuItem = 3;
-        MenuItem_Max=9;
-        
+        //@
+        MenuItem_Max=MenuItemMax;
+        //@end
         disFlag = 0;
         
         ZTM_FullScreenImageDisp(311);
@@ -212,6 +220,11 @@ void menu_process(void)
             case 8: 
               menu_language_cfg();
               break;
+            //@连接电脑
+            case 9:
+              menu_connect_to_pc_cfg();
+              break;
+            //@end
           }
         }  
         

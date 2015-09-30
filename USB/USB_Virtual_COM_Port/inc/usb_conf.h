@@ -75,7 +75,7 @@
 #else
 #define IMR_MSK (CNTR_CTRM  | CNTR_WKUPM | CNTR_ERRM  | CNTR_SOFM | CNTR_RESETM )
 //CNTR_SUSPM | CNTR_ESOFM 
-//和UCOS冲突，原因暂未知
+//和UCOS冲突，原因暂未知  //可能是和休眠唤醒有关
 #endif
 
 /*#define CTR_CALLBACK*/

@@ -40,6 +40,7 @@
 /* Private variables ---------------------------------------------------------*/
 uint8_t Request = 0;
 
+//网上说USB虚拟串口不受波特率限制？？设置多少波特率都可以
 LINE_CODING linecoding =
   {
     115200, /* baud rate*/

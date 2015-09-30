@@ -1884,6 +1884,9 @@
       <name>$PROJ_DIR$\..\App\time_display.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\App\usb_virtual_com_port.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\App\validity_display.c</name>
     </file>
   </group>
@@ -2041,6 +2044,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\User\menu_comm_config.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\User\menu_connect_to_pc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\User\menu_error_config.c</name>

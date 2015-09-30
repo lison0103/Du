@@ -226,6 +226,13 @@ u8 GetHardwareVerison(void);
 #define HARDWARE_V1	1		 
 #define HARDWARE_V2	2
 
+void Connect_To_COM(void);
+void menu_connect_to_pc_cfg(void);
+void USB_Disconnect(void);
+void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length);
+uint32_t USB_Receive_Data(uint8_t *ptrBuffer);
+void USB_Receive_Data_Send(void);
+
 //@end
 
 #endif //__INCLUDES_H__
