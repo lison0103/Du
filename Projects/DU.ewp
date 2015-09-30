@@ -309,6 +309,8 @@
           <state>$PROJ_DIR$\..\uCOS-II\Ports</state>
           <state>$PROJ_DIR$\..\uCOS-II\Source</state>
           <state>$PROJ_DIR$\..\uCOS-II\Config</state>
+          <state>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\inc</state>
+          <state>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\inc</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -2131,6 +2133,54 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\uCOS-II\Source\ucos_ii.h</name>
+      </file>
+    </group>
+  </group>
+  <group>
+    <name>USB</name>
+    <group>
+      <name>STM32_USB-FS-Device_Driver</name>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_core.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_init.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_int.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_mem.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_regs.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_sil.c</name>
+      </file>
+    </group>
+    <group>
+      <name>USB_Virtual_COM_Port</name>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\hw_config.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\stm32_it.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\usb_desc.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\usb_endp.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\usb_istr.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\usb_prop.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\src\usb_pwr.c</name>
       </file>
     </group>
   </group>
