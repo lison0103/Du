@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1497150501
+Checksum=984987962
 [JLinkDriver]
 CStepIntDis=_ 0
 [Exceptions]
@@ -109,7 +109,7 @@ SumSortOrder=0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\App\app.c}.242.5" 0 0 1 "" 0 "" 0
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\User\menu_language.c}.87.13" 0 0 1 "" 0 "" 0
 Count=1
 [Log file]
 LoggingEnabled=_ 0

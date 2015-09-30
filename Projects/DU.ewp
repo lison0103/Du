@@ -166,7 +166,6 @@
           <name>CCDefines</name>
           <state>USE_STDPERIPH_DRIVER</state>
           <state>STM32F10X_HD</state>
-          <state>USE_STM3210E_EVAL</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -310,9 +309,6 @@
           <state>$PROJ_DIR$\..\uCOS-II\Ports</state>
           <state>$PROJ_DIR$\..\uCOS-II\Source</state>
           <state>$PROJ_DIR$\..\uCOS-II\Config</state>
-          <state>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\inc</state>
-          <state>$PROJ_DIR$\..\USB\Virtual_COM_Port\inc</state>
-          <state>$PROJ_DIR$\..\USB\STM3210E_EVAL</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -681,7 +677,7 @@
         </option>
         <option>
           <name>IlinkMapFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkLogFile</name>
@@ -1886,9 +1882,6 @@
       <name>$PROJ_DIR$\..\App\time_display.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\App\usb_virtual_com_port.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\..\App\validity_display.c</name>
     </file>
   </group>
@@ -1970,6 +1963,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_exti.c</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c</name>
@@ -2135,60 +2131,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\uCOS-II\Source\ucos_ii.h</name>
-      </file>
-    </group>
-  </group>
-  <group>
-    <name>USB</name>
-    <group>
-      <name>STM3210E_EVAL</name>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM3210E_EVAL\stm3210e_eval.c</name>
-      </file>
-    </group>
-    <group>
-      <name>STM32_USB-FS-Device_Driver</name>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_core.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_init.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_int.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_mem.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_regs.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\src\usb_sil.c</name>
-      </file>
-    </group>
-    <group>
-      <name>Virtual_COM_Port</name>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\hw_config.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\stm32_it.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\usb_desc.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\usb_endp.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\usb_istr.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\usb_prop.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\USB\Virtual_COM_Port\src\usb_pwr.c</name>
       </file>
     </group>
   </group>
