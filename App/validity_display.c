@@ -166,8 +166,9 @@ void validity_cfg(void)
       Password_num_buff[4] = (Password_num%100)/10 + 0x30;
       Password_num_buff[5] = Password_num%10 + 0x30;      
 
-      m_buff_temp[0] = validity_date/10 + 0x30;
-      m_buff_temp[1] = validity_date%10 + 0x30;
+      m_buff_temp[0] = validity_date/100 + 0x30;
+      m_buff_temp[1] = validity_date%100/10 + 0x30;
+      m_buff_temp[2] = validity_date%10 + 0x30;
   
       ZTM_FullScreenImageDisp(310);
       ZTM_RectangleFill (0,0,239,25,BLUE);

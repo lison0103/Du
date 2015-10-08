@@ -46,7 +46,7 @@ void Connect_To_COM(void)// *p_arg)
   
 } 
 
-//数据发送
+//数据发送（一次发送的数据不能大于63）
 void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length)
 {
     if (bDeviceState == CONFIGURED)
@@ -85,20 +85,23 @@ uint32_t USB_Receive_Data(uint8_t *ptrBuffer)
 
 }
 
-//接收到的数据返回发送回去（测试用）
+//接收到的数据返回发送回去（测试用，发送的数据不能大于63）
 void USB_Receive_Data_Send(void)
 {
+  
   
     if (bDeviceState == CONFIGURED)
     {
       CDC_Receive_DATA();//usb_endp.c   EP3_OUT_Callback
       /*Check to see if we have data yet */
       while(!packet_receive);
-      if (Receive_length  != 0)
+      while(Receive_length  != 0)
       {
           CDC_Send_DATA ((unsigned char*)Receive_Buffer,Receive_length);
           Receive_length = 0;
+          CDC_Receive_DATA();
       }
+      
     }
 
 }

@@ -147,7 +147,7 @@ void menu_password_cfg(void)
         du_sys_data_write();
         OSTimeDlyHMSM(0, 0,1,0);        
         
-        
+        validity_date = 0;
 //        SPI_W25X_ChipErase();
 
         TXM_StringDisplay(0,40,220,24,1,YELLOW ,RED, (void*)input_item[10 + LANGUAGE]);//²Á³ýÍê³É!

@@ -215,6 +215,10 @@ void menu_process(void)
               {
                 menu_password_cfg();
               }
+              else
+              {
+                validity_cfg();
+              }
               //@end
               break;
             case 8: 
