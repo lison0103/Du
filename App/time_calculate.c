@@ -68,4 +68,45 @@ u8 Leap_Year(u32 year)
 {
          return Year_To_Day(begin, end) - Month_To_Day(begin) + Month_To_Day(end);
 }
+
+/*******************************************************************************
+//功能:判断日期的有效性
+//返回:有效 1， 无效 0
+*******************************************************************************/
+u32 Date_Validity(u8 Date[])
+{
+
+         u32 year = 2000 + Date[0]*10 + Date[1];
+         u32 mmonth = Date[2]*10 + Date[3];
+         u32 day = Date[4]*10 + Date[5];
  
+         if(year > 2099 || year < 2015)
+         {
+            return 0;
+         }
+         else if(mmonth > 12 || mmonth < 1)
+         {
+            return 0;
+         }
+         else if(mmonth == 2 && Leap_Year(year))
+         {
+              if(day > 29 || day < 1)
+              {
+                  return 0;
+              }
+              else
+              {
+                  return 1;
+              }
+         }
+         else if(day > month[mmonth] || day < 1)
+         {           
+           return 0;
+         }
+         else
+         {
+            return 1;
+         }
+         
+ 
+}

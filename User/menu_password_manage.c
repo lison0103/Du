@@ -21,11 +21,16 @@ static char const Password_Code[11] = {"-0123456789"};
                                     
 const char Password_Title[2][20]={"输入密码","Enter Password"}; 
 const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...",
-"   擦除完成!   "," Erase finish! "," 剩余使用天数: ","Validity Date:"}; 
+"   擦除完成!   "," Erase finish! ",
+"剩余使用天数: ",
+"Validity Date:",
+"序列号：",
+"SN:     "
+}; 
 
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
-u8 Temp1[] = "******";
+u8 SN[19];
 const u8 *Version = {"V1.0"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
@@ -44,23 +49,23 @@ void menu_password_display(u8 set_bit)
       a[i] = PASS_Temp[i];
     }  
     a[set_bit] = 0;
-    TXM_StringDisplay(0,70,150,32,1,BLACK,LGRAY, (void*)a);  
+    TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)a);  
     
     a[0] = PASS_Temp[set_bit];
     a[1] = 0;
-    TXM_StringDisplay(0,70+(set_bit*16),150,32,1,YELLOW,RED, (void*)a);  
+    TXM_StringDisplay(0,70+(set_bit*16),130,32,1,YELLOW,RED, (void*)a);  
 
     for(;i<PASS_LEN-1;i++)
     {
       a[i-set_bit] = PASS_Temp[i+1];
     }  
     a[i-set_bit] = 0;
-    TXM_StringDisplay(0,86+(set_bit*16),150,32,1,BLACK,LGRAY, (void*)a);  
+    TXM_StringDisplay(0,86+(set_bit*16),130,32,1,BLACK,LGRAY, (void*)a);  
   }
   else
   {  
     PASS_Temp[PASS_LEN] = 0;
-    TXM_StringDisplay(0,70,150,32,1,BLACK,LGRAY, (void*)PASS_Temp);
+    TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)PASS_Temp);
   }  
 }
 
@@ -96,15 +101,24 @@ void menu_password_cfg(void)
   TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
 //  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);//修改
   
-  TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)Version);//版本
-  TXM_StringDisplay(0,50,260,16,0,BLACK ,BLACK, (void*)input_item[12 + LANGUAGE]);//已使用天数
+  TXM_StringDisplay(0,5,45,16,0,BLACK ,BLACK, (void*)Version);//版本
+  TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)input_item[14 + LANGUAGE]);//序列号
+  
+  for(u8 i = 0;i < 19;i++)
+  {
+    SN[i] = DuSysBuff[20+i];
+  }
+  
+  TXM_StringDisplay(0,70,260,16,0,BLACK ,BLACK, (void*)SN);//
   
 
+  TXM_StringDisplay(0,5,240,16,0,BLACK ,BLACK, (void*)input_item[12 + LANGUAGE]);//剩余使用天数
+  
   validity_date = 180 - VALIDITY_USE_DATE;
   m_buff_temp[0] = validity_date/100 + 0x30;
   m_buff_temp[1] = validity_date%100/10 + 0x30;
   m_buff_temp[2] = validity_date%10 + 0x30;
-  TXM_StringDisplay(0,170,260,16,0,BLACK ,BLACK, (void*)m_buff_temp);//天
+  TXM_StringDisplay(0,125,240,16,0,BLACK ,BLACK, (void*)m_buff_temp);//天
 
   
   PASS_Buff = Temp;
@@ -138,7 +152,7 @@ void menu_password_cfg(void)
       if(m_keydata[0]==KEY_F1)
       {       
         EARSE_CHIP = 0;
-        TXM_StringDisplay(0,40,220,24,1,YELLOW ,RED, (void*)input_item[8 + LANGUAGE]);//正在擦除数据...
+        TXM_StringDisplay(0,40,200,24,1,YELLOW ,RED, (void*)input_item[8 + LANGUAGE]);//正在擦除数据...
         
         for(u8 i = 0;i<100;i++)
         {
@@ -150,7 +164,7 @@ void menu_password_cfg(void)
         validity_date = 0;
 //        SPI_W25X_ChipErase();
 
-        TXM_StringDisplay(0,40,220,24,1,YELLOW ,RED, (void*)input_item[10 + LANGUAGE]);//擦除完成!
+        TXM_StringDisplay(0,40,200,24,1,YELLOW ,RED, (void*)input_item[10 + LANGUAGE]);//擦除完成!
         OSTimeDlyHMSM(0, 0,2,0);
         break;
       }

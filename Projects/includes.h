@@ -107,11 +107,13 @@
 
 //@使用有效期需要保存的数据
 
-#define USER_RIGHT_VALIDITY      DuSysBuff[20]
+#define USER_RIGHT_VALIDITY      DuSysBuff[12]
 
-#define VALIDITY_USE_DATE        DuSysBuff[25]
+#define VALIDITY_USE_DATE        DuSysBuff[13]
 
-#define VALIDITY_LAST_DATE       DuSysBuff[30]
+#define VALIDITY_LAST_DATE       DuSysBuff[14]
+
+#define DU_SERIAL_NUMBER         DuSysBuff[20]
 
 //@end
 
@@ -217,6 +219,7 @@ void SPI_W25X_ChipErase(void);
 
 extern u8 month[12];
 u8 Leap_Year(u32 year);
+u32 Date_Validity(u8 Date[]);
 
 //读取硬件版本
 void hardware_init(void);

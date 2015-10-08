@@ -195,22 +195,32 @@ void AppTask_Main(void *p_arg)
   
   esc_bk_init();
   
+  
 //@ ÓÐÐ§ÆÚÅÐ¶Ï  
+  
   if(USER_RIGHT_VALIDITY == 1)
   {
 //    u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
     
-    last_set_date[0] = DuSysBuff[30];
-    last_set_date[1] = DuSysBuff[31];
-    last_set_date[2] = DuSysBuff[32];
-    last_set_date[3] = DuSysBuff[33];
-    last_set_date[4] = DuSysBuff[34];
-    last_set_date[5] = DuSysBuff[35];
+    last_set_date[0] = DuSysBuff[14];
+    last_set_date[1] = DuSysBuff[15];
+    last_set_date[2] = DuSysBuff[16];
+    last_set_date[3] = DuSysBuff[17];
+    last_set_date[4] = DuSysBuff[18];
+    last_set_date[5] = DuSysBuff[19];
     
     Get_Current_Date(current_set_date, TimeBuff);   
-    VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
-    validity_date = 180 - VALIDITY_USE_DATE;
+    if(Date_Validity(last_set_date))
+    {
+      VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
+      validity_date = 180 - VALIDITY_USE_DATE;
+    }
+    else
+    {
+      validity_date = 0;
+    }
+    
     
     if(validity_date <= 0)
     {

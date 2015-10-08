@@ -13,24 +13,26 @@
 
 
 const char validity_disp_item[][25]={
-"     忽略 输入",
+"     忽略 输入",//0
 "   Ignore Input",
-" 剩余使用有效期",
+" 剩余使用有效期",//2
 "Validity  Date",
-"天",
+"天",//4
 "Day",
-"    验 证 码 ：",
+"    验 证 码 ：",//6
 "Verification code:",
-"   动 态 密 码 ：",
+"   动 态 密 码 ：",//8
 "Dynamic password:",
-"     忽略 确定",
+"     忽略 确定",//10
 "    Ignore  OK ",
-"密码正确",
+"密码正确",//12
 "  RIGHT ",
-"密码错误",
+"密码错误",//14
 "  Error ",
-"180 天",
-"180 Day"
+"180 天",//16
+"180 Day",
+"    序列号： ",//18
+"  Serial Num:"
 }; 
 
 static char const Password_Code[11] = {"-0123456789"};
@@ -53,6 +55,50 @@ u8 last_set_date[6],current_set_date[6];
 
 u8 m_buff_temp[3];
 
+/*******************************************************************************
+//获取CPU ID
+*******************************************************************************/
+void GetCpuID(void)
+{
+    u32 Lock_Code;
+    u32 CpuID[3];
+    
+    //获取CPU唯一ID
+    CpuID[0]=*(vu32*)(0x1ffff7e8);
+    CpuID[1]=*(vu32*)(0x1ffff7ec);
+    CpuID[2]=*(vu32*)(0x1ffff7f0);
+    
+    //加密算法,很简单的加密算法
+    Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
+    
+    DuSysBuff[20] = (Lock_Code&0xF0000000)>>28;
+    DuSysBuff[21] = (Lock_Code&0x0F000000)>>24;
+    DuSysBuff[22] = (Lock_Code&0x00F00000)>>20;
+    DuSysBuff[23] = (Lock_Code&0x000F0000)>>16;
+    DuSysBuff[24] = (Lock_Code&0x0000F000)>>12;
+    DuSysBuff[25] = (Lock_Code&0x00000F00)>>8;
+    DuSysBuff[26] = (Lock_Code&0x000000F0)>>4;
+    DuSysBuff[27] = (Lock_Code&0x0000000F);
+    
+    for(u8 i = 0; i < 8;i++)
+    {
+        if(DuSysBuff[20 + i] >= 0 && DuSysBuff[20 + i] <= 9)
+          DuSysBuff[20 + i] += 0x30;
+        else if(DuSysBuff[20 + i] >= 0x0a && DuSysBuff[20 + i] <= 0x0f)
+          DuSysBuff[20 + i] += 0x37;        
+    }
+    
+    
+//      DuSysBuff[20] = '1';
+//      DuSysBuff[21] = '2';
+//      DuSysBuff[22] = '3';
+//      DuSysBuff[23] = '4';
+//      DuSysBuff[24] = '5';
+//      DuSysBuff[25] = '6';
+//      DuSysBuff[26] = '7';
+//      DuSysBuff[27] = '8';
+    
+}
 
 /*******************************************************************************
 //获取验证码
@@ -171,31 +217,41 @@ void validity_cfg(void)
       m_buff_temp[2] = validity_date%10 + 0x30;
   
       ZTM_FullScreenImageDisp(310);
-      ZTM_RectangleFill (0,0,239,25,BLUE);
+      ZTM_RectangleFill (0,0,239,42,DGRAY);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 280,239, 319,BLACK); 
-      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, (void*)validity_disp_item[0 + LANGUAGE]);
+      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, (void*)validity_disp_item[0 + LANGUAGE]);//"     忽略 输入"
       OSTimeDlyHMSM(0, 0,0,10);
       
-      ZTM_RectangleFill (0, 30,239, 54,DGRAY); 
-      TXM_StringDisplay(0,20,30,24,1,BLUE ,DGRAY, (void*)validity_disp_item[2 + LANGUAGE]);
-      ZTM_RectangleFill (0, 60,239, 84,DGRAY); 
-      TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)m_buff_temp);
-      TXM_StringDisplay(0,148,60,24,0,BLUE ,DGRAY, (void*)validity_disp_item[4 + LANGUAGE]);
+      ZTM_RectangleFill (0, 42,239, 66,BLUE); 
+      TXM_StringDisplay(0,20,42,24,1,YELLOW ,BLUE, (void*)validity_disp_item[2 + LANGUAGE]);//" 剩余使用有效期"
+      ZTM_RectangleFill (0, 66,239, 90,DGRAY); 
+      TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)m_buff_temp);
+      TXM_StringDisplay(0,148,66,24,0,BLACK ,DGRAY, (void*)validity_disp_item[4 + LANGUAGE]);//"天"
       OSTimeDlyHMSM(0, 0,0,10);
-      
-      ZTM_RectangleFill (0, 100,239, 124,DGRAY); 
-      TXM_StringDisplay(0,20,100,24,1,BLUE ,DGRAY, (void*)validity_disp_item[6 + LANGUAGE]);
-      ZTM_RectangleFill (0, 130,239, 154,DGRAY); 
 
-      TXM_StringDisplay(0,80,130,24,1,BLUE ,DGRAY, (void*)PASS_Temp);
+      ZTM_RectangleFill (0, 90,239, 114,BLUE); 
+      TXM_StringDisplay(0,20,90,24,1,YELLOW ,BLUE, (void*)validity_disp_item[18 + LANGUAGE]);//"序列号："
+      ZTM_RectangleFill (0, 114,239, 138,DGRAY); 
+      
+      extern u8 SN[19];
+      for(u8 i = 0;i < 19;i++)
+      {
+        SN[i] = DuSysBuff[20+i];
+      }
+      TXM_StringDisplay(0,0,114,24,1,BLACK ,DGRAY, (void*)SN);
       OSTimeDlyHMSM(0, 0,0,10);
       
-      ZTM_RectangleFill (0, 170,239, 194,DGRAY); 
-      TXM_StringDisplay(0,20,170,24,1,BLUE ,DGRAY, (void*)validity_disp_item[8 + LANGUAGE]);
+      ZTM_RectangleFill (0, 138,239, 162,BLUE); 
+      TXM_StringDisplay(0,20,138,24,1,YELLOW ,BLUE, (void*)validity_disp_item[6 + LANGUAGE]);//"    验 证 码 ："
+      ZTM_RectangleFill (0, 162,239, 186,DGRAY); 
+      TXM_StringDisplay(0,80,162,24,1,BLACK ,DGRAY, (void*)PASS_Temp);
+      OSTimeDlyHMSM(0, 0,0,10);
+      
+      ZTM_RectangleFill (0, 186,239, 210,BLUE); 
+      TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[8 + LANGUAGE]);//"   动 态 密 码 ："
       ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
-
       OSTimeDlyHMSM(0, 0,0,10);
 
   
@@ -226,18 +282,18 @@ void validity_cfg(void)
 //              RTCC_GetTime(TimeBuff);
               Get_Current_Date(last_set_date, TimeBuff);
               
-              DuSysBuff[30] = last_set_date[0];
-              DuSysBuff[31] = last_set_date[1];
-              DuSysBuff[32] = last_set_date[2];
-              DuSysBuff[33] = last_set_date[3];
-              DuSysBuff[34] = last_set_date[4];
-              DuSysBuff[35] = last_set_date[5]; 		                
+              DuSysBuff[14] = last_set_date[0];
+              DuSysBuff[15] = last_set_date[1];
+              DuSysBuff[16] = last_set_date[2];
+              DuSysBuff[17] = last_set_date[3];
+              DuSysBuff[18] = last_set_date[4];
+              DuSysBuff[19] = last_set_date[5]; 		                
                       
               
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
-              TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);//"密码正确"
+              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);//"180 天"
               OSTimeDlyHMSM(0, 0,2,0);
               break;
           }
@@ -250,17 +306,17 @@ void validity_cfg(void)
 //              RTCC_GetTime(TimeBuff);
               Get_Current_Date(last_set_date, TimeBuff);
               
-              DuSysBuff[30] = last_set_date[0];
-              DuSysBuff[31] = last_set_date[1];
-              DuSysBuff[32] = last_set_date[2];
-              DuSysBuff[33] = last_set_date[3];
-              DuSysBuff[34] = last_set_date[4];
-              DuSysBuff[35] = last_set_date[5]; 		             
+              DuSysBuff[14] = last_set_date[0];
+              DuSysBuff[15] = last_set_date[1];
+              DuSysBuff[16] = last_set_date[2];
+              DuSysBuff[17] = last_set_date[3];
+              DuSysBuff[18] = last_set_date[4];
+              DuSysBuff[19] = last_set_date[5]; 		             
                             
               du_sys_data_write();
               
               TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);
-              TXM_StringDisplay(0,100,60,24,1,BLUE ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
+              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);
               OSTimeDlyHMSM(0, 0,2,0);
               break;
           }
@@ -270,7 +326,7 @@ void validity_cfg(void)
                      
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);//"密码错误"
           }     
         }    
         

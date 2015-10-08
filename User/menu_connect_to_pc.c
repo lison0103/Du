@@ -1,6 +1,8 @@
 
 #include "includes.h"
-  
+
+extern void GetCpuID(void);
+
 /*******************************************************************************
 *******************************************************************************/
 static u8 Para_Choice=0,PS_Flag=0;
@@ -60,6 +62,8 @@ void menu_connect_to_pc_cfg(void)
   Para_Choice = LANGUAGE;
   PS_Flag=0;  
   
+  USB_Disconnect();
+  OSTimeDlyHMSM(0, 0,0,100);
   Connect_To_COM();
   menu_ConnectPC_display();
   
@@ -72,9 +76,41 @@ void menu_connect_to_pc_cfg(void)
 //      USB_Disconnect();
 //      break;
       buff_num = USB_Receive_Data(display_receive_buff);
-      if(buff_num != 0)
+      if(buff_num)
       {        
         menu_ConnectPC_display();
+        
+        if((buff_num == 17) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[buff_num-4]==0X23) && (display_receive_buff[buff_num-3]==0X2a) && (display_receive_buff[buff_num-2]==0X23) && (display_receive_buff[buff_num-1]==0X2a))  
+        {
+              DuSysBuff[28] = display_receive_buff[10];
+              DuSysBuff[29] = display_receive_buff[11];
+              DuSysBuff[30] = display_receive_buff[12];
+              
+              DuSysBuff[31] = display_receive_buff[1];
+              DuSysBuff[32] = display_receive_buff[2];
+              DuSysBuff[33] = display_receive_buff[3];
+              DuSysBuff[34] = display_receive_buff[4];
+              DuSysBuff[35] = display_receive_buff[5];
+              DuSysBuff[36] = display_receive_buff[6];
+              DuSysBuff[37] = display_receive_buff[7];
+              DuSysBuff[38] = display_receive_buff[8];
+ 
+              //清空buffer
+              for(u8 i = 0;i<64;i++)
+                  display_receive_buff[i] = ' ';
+
+              GetCpuID();
+              
+              du_sys_data_write();
+              
+              TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, "激活成功！");
+              OSTimeDlyHMSM(0, 0,1,500);
+              
+              USB_Disconnect();
+              validity_cfg();
+              break;
+
+        }
         //清空buffer
         for(u8 i = 0;i<64;i++)
             display_receive_buff[i] = ' ';

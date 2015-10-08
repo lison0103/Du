@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=984987962
+Checksum=-835121771
 [JLinkDriver]
 CStepIntDis=_ 0
 [Exceptions]
@@ -106,11 +106,6 @@ GraphEnabled=0
 ShowTimeLog=1
 ShowTimeSum=1
 SumSortOrder=0
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\User\menu_language.c}.87.13" 0 0 1 "" 0 "" 0
-Count=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -118,11 +113,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Aliases]
-A0=_ "F:\TKE\程序\DUT 00\DU00\DU IAR\Projects\main.c" ""
-A1=_ "F:\TKE\程序\DUT 00\DU00\DU IAR\task\task_lcm_init.c" ""
-Count=2
-SuppressDialog=0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -147,3 +137,13 @@ Mode=3
 Graph=0
 Symbiont=0
 Exclusions=
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\App\usb_virtual_com_port.c}.97.7" 0 0 1 "" 0 "" 0
+Count=1
+[Aliases]
+A0=_ "F:\TKE\程序\DUT 00\DU00\DU IAR\Projects\main.c" ""
+A1=_ "F:\TKE\程序\DUT 00\DU00\DU IAR\task\task_lcm_init.c" ""
+Count=2
+SuppressDialog=0
