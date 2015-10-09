@@ -1863,6 +1863,9 @@
       <name>$PROJ_DIR$\..\App\display.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\App\du_hw_test.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\App\esc_record_data.c</name>
     </file>
     <file>

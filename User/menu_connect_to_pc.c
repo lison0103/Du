@@ -2,6 +2,7 @@
 #include "includes.h"
 
 extern void GetCpuID(void);
+extern void du_hardware_test(void);
 
 /*******************************************************************************
 *******************************************************************************/
@@ -107,10 +108,28 @@ void menu_connect_to_pc_cfg(void)
               OSTimeDlyHMSM(0, 0,1,500);
               
               USB_Disconnect();
+//              du_hardware_test();
               validity_cfg();
               break;
 
         }
+        else if((buff_num == 6) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[2]==0X38) && (display_receive_buff[3]==0X36) 
+                && (display_receive_buff[4]==0X23) && (display_receive_buff[0] == 0x2a))  
+        {
+              //清空buffer
+              for(u8 i = 0;i<64;i++)
+                  display_receive_buff[i] = ' ';
+              
+              TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, "进入测试模式！");
+              OSTimeDlyHMSM(0, 0,1,500);
+              
+              USB_Disconnect();
+              
+              du_hardware_test();
+
+              break;
+
+        }        
         //清空buffer
         for(u8 i = 0;i<64;i++)
             display_receive_buff[i] = ' ';
