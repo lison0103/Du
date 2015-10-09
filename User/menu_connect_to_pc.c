@@ -4,9 +4,13 @@
 extern void GetCpuID(void);
 extern void du_hardware_test(void);
 
+//#define VCP_TEST
+
 /*******************************************************************************
 *******************************************************************************/
+#if VCP_TEST
 static u8 Para_Choice=0,PS_Flag=0;
+#endif
 
 const u8 *Menu_ConnectPC_Item[][2] =
 {                                                           
@@ -22,8 +26,10 @@ u32 buff_num;
 *******************************************************************************/
 void menu_ConnectPC_display(void)
 {
-  u16 i;
   
+#if VCP_TEST   
+  u16 i;
+ 
   for(i=0;i<2;i++)
   {  
     if(Para_Choice==i)
@@ -37,6 +43,7 @@ void menu_ConnectPC_display(void)
       
     OSTimeDlyHMSM(0, 0,0,5); 
   }
+#endif
   
     //清除数据显示
     ZTM_RectangleFill (0,140,239,204,BLUE);
@@ -58,10 +65,17 @@ void menu_connect_to_pc_cfg(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)ConnectPC_Title[LANGUAGE]);  
+  
+#if VCP_TEST  
   TXM_StringDisplay(0,190,290,24,0,RED ,0, "选择");
+#else
+  TXM_StringDisplay(0,190,290,24,0,RED ,0, "返回");
+#endif
 
-  Para_Choice = LANGUAGE;
+#if VCP_TEST  
+  Para_Choice = 0;
   PS_Flag=0;  
+#endif
   
   USB_Disconnect();
   OSTimeDlyHMSM(0, 0,0,100);
@@ -134,7 +148,8 @@ void menu_connect_to_pc_cfg(void)
         for(u8 i = 0;i<64;i++)
             display_receive_buff[i] = ' ';
       }
-    } 
+    }
+#if VCP_TEST
     else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
     {
       USB_Disconnect();
@@ -191,6 +206,13 @@ void menu_connect_to_pc_cfg(void)
       
       menu_ConnectPC_display();
     }  
+#else
+    else if((m_keydata[0] == KEY_F3) || (m_keydata[0] == KEY_ESC))
+    {
+      USB_Disconnect();
+      break;
+    }     
+#endif
   }  
 }
 
