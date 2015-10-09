@@ -322,9 +322,9 @@ void validity_cfg(void)
           }
           else
           {
-              USER_RIGHT_VALIDITY = 0;
-                     
-              du_sys_data_write();
+//              USER_RIGHT_VALIDITY = 0;
+//                     
+//              du_sys_data_write();
               
               TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);//"√‹¬Î¥ÌŒÛ"
           }     
