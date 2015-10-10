@@ -252,10 +252,11 @@ void AppTask_Main(void *p_arg)
       start_main_display = 1;
     }  
     //ModBuff[454] = ttt;
-    GPIOB->ODR |= 0x1000;
+//@
+//    GPIOB->ODR |= 0x1000;
     main_display();  
-    GPIOB->ODR &= ~0x1000;
-    
+//    GPIOB->ODR &= ~0x1000;
+//@end    
     OSTimeDlyHMSM(0, 0,0,600);
     
     m_keydata = OSMboxPend(KeyMbox,20,&err);

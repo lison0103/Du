@@ -22,11 +22,12 @@ void du_hardware_test(void)
     OSTimeDlyHMSM(0, 0,1,500); 
 
 //    
-    ZTM_RectangleFill (0,0,239,35,BLUE);
+    ZTM_FullScreenImageDisp(300);
+    ZTM_RectangleFill (0,0,127,35,BLUE);
     OSTimeDlyHMSM(0, 0,0,10);
-    ZTM_RectangleFill (0,35,239,319,LGRAY);
-    OSTimeDlyHMSM(0, 0,0,10);
-    TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "”≤º˛≤‚ ‘");  
+//    ZTM_RectangleFill (0,35,239,319,LGRAY);
+//    OSTimeDlyHMSM(0, 0,0,10);
+    TXM_StringDisplay(0,1,2,32,0,WHITE ,0, "”≤º˛≤‚ ‘");  
 
 //rtc ≤‚ ‘    
 //    TXM_StringDisplay(0,70,35,24,0,BLACK ,0, "rtc ok!"); //rtc
