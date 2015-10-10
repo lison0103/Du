@@ -169,6 +169,10 @@ void menu_process(void)
             case 0:
               menu_para_base();
               break;
+            //@分时段速度 该功能还没添加
+            case 7:
+              break;
+            //@end
             case 8:
               menu_comm_cfg();
               break;

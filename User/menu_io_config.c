@@ -1708,17 +1708,18 @@ const DescripItem DescripOutputItem[]=
 		{"  40002  H  bit7","  40002  H  bit7"},
 	},
 }; 
-
-const u8 IO_CfgItem_Descrip[6][2][16] =
+//@
+const u8 IO_CfgItem_Descrip[7][2][16] =
 {
-  {"主板输入配置","   MB INPUT CFG"},
-  {"主板输出配置","  MB OUTPUT CFG"},
-  {"上端输入配置"," UPPER EB INPUT"},
+  {"主板输入配置","MB INPUT CFG   "},
+  {"主板输出配置","MB OUTPUT CFG  "},
+  {"上端输入配置","UPPER EB INPUT "},
   {"上端输出配置","UPPER EB OUTPUT"},
   {"下端输入配置","LOWER EB INPUT "},
   {"下端输出配置","LOWER EB OUTPUT"},
+  {"分时段速度  ","MULTI SPEED    "},
 };
-
+//@end
 /*******************************************************************************
 *******************************************************************************/
 const ParaIOCgcItem *ParaIoPoint;
