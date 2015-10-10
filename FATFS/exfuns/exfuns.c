@@ -2,19 +2,9 @@
 #include "exfuns.h"
 #include "fattester.h"	
 #include "malloc.h"
-//#include "usart.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK战舰STM32开发板
-//FATFS 扩展代码	   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//修改日期:2012/9/18
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
-//All rights reserved									  
-//////////////////////////////////////////////////////////////////////////////////
+#include "usart.h"
+
+
 
  //文件类型列表
 const u8 *FILE_TYPE_TBL[6][13]=
@@ -27,7 +17,7 @@ const u8 *FILE_TYPE_TBL[6][13]=
 {"BMP","JPG","JPEG","GIF"},//图片文件
 };
 ///////////////////////////////公共文件区,使用malloc的时候////////////////////////////////////////////
-FATFS *fs[2];  		//逻辑磁盘工作区.	 
+FATFS *fs[1];  		//逻辑磁盘工作区.	 
 FIL *file;	  		//文件1
 FIL *ftemp;	  		//文件2.
 UINT br,bw;			//读写变量
@@ -41,12 +31,12 @@ u8 *fatbuf;			//SD卡数据缓存区
 //1,失败
 u8 exfuns_init(void)
 {
-	fs[0]=(FATFS*)mymalloc(SRAMIN,sizeof(FATFS));	//为磁盘0工作区申请内存	
-	fs[1]=(FATFS*)mymalloc(SRAMIN,sizeof(FATFS));	//为磁盘1工作区申请内存
-	file=(FIL*)mymalloc(SRAMIN,sizeof(FIL));		//为file申请内存
-	ftemp=(FIL*)mymalloc(SRAMIN,sizeof(FIL));		//为ftemp申请内存
-	fatbuf=(u8*)mymalloc(SRAMIN,512);				//为fatbuf申请内存
-	if(fs[0]&&fs[1]&&file&&ftemp&&fatbuf)return 0;  //申请有一个失败,即失败.
+	fs[0]=(FATFS*)mymalloc(sizeof(FATFS));	//为磁盘0工作区申请内存	
+//	fs[1]=(FATFS*)mymalloc(sizeof(FATFS));	//为磁盘1工作区申请内存
+//	file=(FIL*)mymalloc(sizeof(FIL));		//为file申请内存
+//	ftemp=(FIL*)mymalloc(sizeof(FIL));		//为ftemp申请内存
+//	fatbuf=(u8*)mymalloc(512);				//为fatbuf申请内存
+	if(fs[0])return 0;  //申请有一个失败,即失败.
 	else return 1;	
 }
 
@@ -110,7 +100,7 @@ u8 exf_getfree(u8 *drv,u32 *total,u32 *free)
 	u8 res;
     u32 fre_clust=0, fre_sect=0, tot_sect=0;
     //得到磁盘信息及空闲簇数量
-    res = f_getfree((const TCHAR*)drv, &fre_clust, &fs1);
+    res =(u32)f_getfree((const TCHAR*)drv, (DWORD*)&fre_clust, &fs1);
     if(res==0)
 	{											   
 	    tot_sect=(fs1->n_fatent-2)*fs1->csize;	//得到总扇区数

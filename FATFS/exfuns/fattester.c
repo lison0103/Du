@@ -1,30 +1,19 @@
 #include "fattester.h"	 
-#include "mmc_sd.h"
 #include "usmart.h"
 #include "usart.h"
 #include "exfuns.h"
 #include "malloc.h"		  
 #include "ff.h"
 #include "string.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK战舰STM32开发板
-//FATFS 测试代码	   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//修改日期:2012/9/18
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
-//All rights reserved									  
-//////////////////////////////////////////////////////////////////////////////////
+
     
 //为磁盘注册工作区	 
-//drv:盘符
+//path:磁盘路径，比如"0:"、"1:"
+//mt:0，不立即注册（稍后注册）；1，立即注册
 //返回值:执行结果
-u8 mf_mount(u8 drv)
+u8 mf_mount(u8* path,u8 mt)
 {		   
-	return f_mount(drv,fs[drv]); 
+	return f_mount(fs[0],(const TCHAR*)path,mt); 
 }
 //打开路径下的文件
 //path:路径+文件名
@@ -100,12 +89,18 @@ u8 mf_write(u8*dat,u16 len)
 	return res;
 }
 
-//打开文件夹
+//打开目录
  //path:路径
 //返回值:执行结果
 u8 mf_opendir(u8* path)
 {
 	return f_opendir(&dir,(const TCHAR*)path);	
+}
+//关闭目录 
+//返回值:执行结果
+u8 mf_closedir(void)
+{
+	return f_closedir(&dir);	
 }
 //打读取文件夹
 //返回值:执行结果
@@ -115,12 +110,12 @@ u8 mf_readdir(void)
 	char *fn;			 
 #if _USE_LFN
  	fileinfo.lfsize = _MAX_LFN * 2 + 1;
-	fileinfo.lfname = mymalloc(SRAMIN,fileinfo.lfsize);
+	fileinfo.lfname = mymalloc(fileinfo.lfsize);
 #endif		  
 	res=f_readdir(&dir,&fileinfo);//读取一个文件的信息
 	if(res!=FR_OK||fileinfo.fname[0]==0)
 	{
-		myfree(SRAMIN,fileinfo.lfname);
+		myfree(fileinfo.lfname);
 		return res;//读完了.
 	}
 #if _USE_LFN
@@ -143,7 +138,7 @@ u8 mf_readdir(void)
 	printf("File time is:%d\r\n",fileinfo.ftime);
 	printf("File Attr is:%d\r\n",fileinfo.fattrib);
 	printf("\r\n");
-	myfree(SRAMIN,fileinfo.lfname);
+	myfree(fileinfo.lfname);
 	return 0;
 }			 
 
@@ -156,7 +151,7 @@ u8 mf_scan_files(u8 * path)
     char *fn;   /* This function is assuming non-Unicode cfg. */
 #if _USE_LFN
  	fileinfo.lfsize = _MAX_LFN * 2 + 1;
-	fileinfo.lfname = mymalloc(SRAMIN,fileinfo.lfsize);
+	fileinfo.lfname = mymalloc(fileinfo.lfsize);
 #endif		  
 
     res = f_opendir(&dir,(const TCHAR*)path); //打开一个目录
@@ -177,7 +172,7 @@ u8 mf_scan_files(u8 * path)
 			printf("%s\r\n",  fn);//打印文件名	  
 		} 
     }	  
-	myfree(SRAMIN,fileinfo.lfname);
+	myfree(fileinfo.lfname);
     return res;	  
 }
 //显示剩余容量
@@ -189,7 +184,7 @@ u32 mf_showfree(u8 *drv)
 	u8 res;
     u32 fre_clust=0, fre_sect=0, tot_sect=0;
     //得到磁盘信息及空闲簇数量
-    res = f_getfree((const TCHAR*)drv, &fre_clust, &fs1);
+    res = f_getfree((const TCHAR*)drv,(DWORD*)&fre_clust, &fs1);
     if(res==0)
 	{											   
 	    tot_sect = (fs1->n_fatent - 2) * fs1->csize;//得到总扇区数
@@ -241,13 +236,13 @@ u8 mf_mkdir(u8*pname)
 	return f_mkdir((const TCHAR *)pname);
 }
 //格式化
-//drv:盘符
+//path:磁盘路径，比如"0:"、"1:"
 //mode:模式
 //au:簇大小
 //返回值:执行结果
-u8 mf_fmkfs(u8 drv,u8 mode,u16 au)
+u8 mf_fmkfs(u8* path,u8 mode,u16 au)
 {
-	return f_mkfs(drv,mode,au);//格式化,drv:盘符;mode:模式;au:簇大小
+	return f_mkfs((const TCHAR*)path,mode,au);//格式化,drv:盘符;mode:模式;au:簇大小
 } 
 //删除文件/目录
 //pname:文件/目录路径+名字
@@ -265,6 +260,31 @@ u8 mf_rename(u8 *oldname,u8* newname)
 {
 	return  f_rename((const TCHAR *)oldname,(const TCHAR *)newname);
 }
+//获取盘符（磁盘名字）
+//path:磁盘路径，比如"0:"、"1:"  
+void mf_getlabel(u8 *path)
+{
+	u8 buf[20];
+	u32 sn=0;
+	u8 res;
+	res=f_getlabel ((const TCHAR *)path,(TCHAR *)buf,(DWORD*)&sn);
+	if(res==FR_OK)
+	{
+		printf("\r\n磁盘%s 的盘符为:%s\r\n",path,buf);
+		printf("磁盘%s 的序列号:%X\r\n\r\n",path,sn); 
+	}else printf("\r\n获取失败，错误码:%X\r\n",res);
+}
+//设置盘符（磁盘名字），最长11个字符！！，支持数字和大写字母组合以及汉字等
+//path:磁盘号+名字，比如"0:ALIENTEK"、"1:OPENEDV"  
+void mf_setlabel(u8 *path)
+{
+	u8 res;
+	res=f_setlabel ((const TCHAR *)path);
+	if(res==FR_OK)
+	{
+		printf("\r\n磁盘盘符设置成功:%s\r\n",path);
+	}else printf("\r\n磁盘盘符设置失败，错误码:%X\r\n",res);
+} 
 
 //从文件里面读取一段字符串
 //size:要读取的长度
