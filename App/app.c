@@ -211,10 +211,10 @@ void AppTask_Main(void *p_arg)
     last_set_date[5] = DuSysBuff[19];
     
     Get_Current_Date(current_set_date, TimeBuff);   
-    if(Date_Validity(last_set_date))
+    if(Date_Validity(last_set_date) && Date_Validity(current_set_date))
     {
-      VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
-      validity_date = 180 - VALIDITY_USE_DATE;
+//      VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
+      validity_date = 180 - (VALIDITY_USE_DATE + Calculate(last_set_date,current_set_date));
     }
     else
     {
