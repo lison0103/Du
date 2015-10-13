@@ -95,20 +95,21 @@ void menu_connect_to_pc_cfg(void)
       {        
         menu_ConnectPC_display();
         
-        if((buff_num == 17) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[buff_num-4]==0X23) && (display_receive_buff[buff_num-3]==0X2a) && (display_receive_buff[buff_num-2]==0X23) && (display_receive_buff[buff_num-1]==0X2a))  
+        if((buff_num == 16) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[buff_num-4]==0X23) && (display_receive_buff[buff_num-3]==0X2a) && (display_receive_buff[buff_num-2]==0X23) && (display_receive_buff[buff_num-1]==0X2a))  
         {
-              DuSysBuff[28] = display_receive_buff[10];
-              DuSysBuff[29] = display_receive_buff[11];
-              DuSysBuff[30] = display_receive_buff[12];
+              DuSysBuff[28] = display_receive_buff[10] - 0x30;
+              DuSysBuff[29] = display_receive_buff[11] - 0x30;
               
-              DuSysBuff[31] = display_receive_buff[1];
-              DuSysBuff[32] = display_receive_buff[2];
-              DuSysBuff[33] = display_receive_buff[3];
-              DuSysBuff[34] = display_receive_buff[4];
-              DuSysBuff[35] = display_receive_buff[5];
-              DuSysBuff[36] = display_receive_buff[6];
-              DuSysBuff[37] = display_receive_buff[7];
-              DuSysBuff[38] = display_receive_buff[8];
+              DuSysBuff[30] = display_receive_buff[3] - 0x30;             
+              DuSysBuff[31] = display_receive_buff[4] - 0x30;
+              DuSysBuff[32] = display_receive_buff[5] - 0x30;
+              DuSysBuff[33] = display_receive_buff[6] - 0x30;
+              DuSysBuff[34] = display_receive_buff[7] - 0x30;
+              DuSysBuff[35] = display_receive_buff[8] - 0x30;
+
+
+              
+              DuSysBuff[36] = 0;
  
               //Çå¿Õbuffer
               for(u8 i = 0;i<64;i++)

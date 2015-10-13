@@ -9,7 +9,7 @@
 #include "includes.h"
 
 #define VDPASS_DES_MAX  10
-#define VDPASS_LEN      6
+#define VDPASS_LEN      8
 
 
 const char validity_disp_item[][25]={
@@ -36,14 +36,14 @@ const char validity_disp_item[][25]={
 }; 
 
 static char const Password_Code[11] = {"-0123456789"};
-static u8 *Temp = "------";
+static u8 *Temp = "--------";
 static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; 
 static u8 Para_Choice=0,PS_Flag=0;
 
 
 //static u32 Cpu_LockID;
 //static u8 TimeBuff[6];
-static u32 Current_Date;
+//static u32 Current_Date;
 
 static u32 Confirm_word;
 static u32 Password_num;
@@ -69,6 +69,7 @@ void GetCpuID(void)
     CpuID[2]=*(vu32*)(0x1ffff7f0);
     
     //加密算法,很简单的加密算法
+#if 0
     Lock_Code=(CpuID[0]>>1)+(CpuID[1]>>2)+(CpuID[2]>>3);
     
     DuSysBuff[20] = (Lock_Code&0xF0000000)>>28;
@@ -87,6 +88,19 @@ void GetCpuID(void)
         else if(DuSysBuff[20 + i] >= 0x0a && DuSysBuff[20 + i] <= 0x0f)
           DuSysBuff[20 + i] += 0x37;        
     }
+#else
+    Lock_Code=(CpuID[0]>>8)+(CpuID[1]>>8)+(CpuID[2]>>8);
+    
+    DuSysBuff[20] = Lock_Code/10000000;
+    DuSysBuff[21] = (Lock_Code%10000000)/1000000;
+    DuSysBuff[22] = (Lock_Code%1000000)/100000;
+    DuSysBuff[23] = (Lock_Code%100000)/10000;
+    DuSysBuff[24] = (Lock_Code%10000)/1000;
+    DuSysBuff[25] = (Lock_Code%1000)/100;
+    DuSysBuff[26] = (Lock_Code%100)/10;
+    DuSysBuff[27] = (Lock_Code%10)/1;
+    
+#endif
     
     
 //      DuSysBuff[20] = '1';
@@ -105,6 +119,7 @@ void GetCpuID(void)
 *******************************************************************************/
 u32 GetLockCode(void)
 {
+#if 0
     u32 Lock_Code;
     u32 CpuID[3];
     
@@ -122,6 +137,25 @@ u32 GetLockCode(void)
     Lock_Code = Lock_Code/1000 + Current_Date;
     
     return Lock_Code;
+#else
+
+    u32 Register_num;
+    u32 cpuid,num,date;
+    
+    cpuid = DuSysBuff[20]*10000000 + DuSysBuff[21]*1000000 + DuSysBuff[22]*100000 + DuSysBuff[23]*10000 + DuSysBuff[24]*1000 + DuSysBuff[25]*100 + DuSysBuff[26]*10 + DuSysBuff[27];
+    num = DuSysBuff[28]*10 + DuSysBuff[29];
+    date = DuSysBuff[30]*100000 + DuSysBuff[31]*10000 + DuSysBuff[32]*1000 + DuSysBuff[33]*100 + DuSysBuff[34]*10 + DuSysBuff[35];
+    
+    Register_num = cpuid + num + date + DuSysBuff[36]*1111111;
+    
+//    if(Register_num > 99999999 && Register_num < 999999999)
+//      Register_num = Register_num%10;
+//    else if(Register_num > 999999999 && Register_num < 9999999999)
+//      Register_num = Register_num/100;
+    
+    return Register_num;
+    
+#endif
 }
 
 /*******************************************************************************
@@ -153,23 +187,23 @@ void validity_display(u8 set_bit)
           a[i] = PASS_Temp[i];
         }  
         a[set_bit] = 0;
-        TXM_StringDisplay(0,80,210,32,1,BLACK,DGRAY, (void*)a);  
+        TXM_StringDisplay(0,60,210,32,1,BLACK,DGRAY, (void*)a);  
         
         a[0] = PASS_Temp[set_bit];
         a[1] = 0;
-        TXM_StringDisplay(0,80+(set_bit*16),210,32,1,YELLOW,RED, (void*)a);  
+        TXM_StringDisplay(0,60+(set_bit*16),210,32,1,YELLOW,RED, (void*)a);  
 
         for(;i<VDPASS_LEN-1;i++)
         {
           a[i-set_bit] = PASS_Temp[i+1];
         }  
         a[i-set_bit] = 0;
-        TXM_StringDisplay(0,96+(set_bit*16),210,32,1,BLACK,DGRAY, (void*)a);  
+        TXM_StringDisplay(0,76+(set_bit*16),210,32,1,BLACK,DGRAY, (void*)a);  
       }
       else
       {  
         PASS_Temp[VDPASS_LEN] = 0;
-        TXM_StringDisplay(0,80,210,32,1,BLACK,DGRAY, (void*)PASS_Temp);
+        TXM_StringDisplay(0,60,210,32,1,BLACK,DGRAY, (void*)PASS_Temp);
       }
 }
 
@@ -196,21 +230,39 @@ void validity_cfg(void)
       
       Confirm_word = GetLockCode();
       
-      PASS_Temp[0] = Confirm_word/100000 + 0x30;
-      PASS_Temp[1] = (Confirm_word%100000)/10000 + 0x30;
-      PASS_Temp[2] = (Confirm_word%10000)/1000 + 0x30;
-      PASS_Temp[3] = (Confirm_word%1000)/100 + 0x30;
-      PASS_Temp[4] = (Confirm_word%100)/10 + 0x30;
-      PASS_Temp[5] = Confirm_word%10 + 0x30;
+//      PASS_Temp[0] = Confirm_word/100000 + 0x30;
+//      PASS_Temp[1] = (Confirm_word%100000)/10000 + 0x30;
+//      PASS_Temp[2] = (Confirm_word%10000)/1000 + 0x30;
+//      PASS_Temp[3] = (Confirm_word%1000)/100 + 0x30;
+//      PASS_Temp[4] = (Confirm_word%100)/10 + 0x30;
+//      PASS_Temp[5] = Confirm_word%10 + 0x30;
+      
+      PASS_Temp[0] = Confirm_word/10000000 + 0x30;
+      PASS_Temp[1] = (Confirm_word%10000000)/1000000 + 0x30;
+      PASS_Temp[2] = (Confirm_word%1000000)/100000 + 0x30;
+      PASS_Temp[3] = (Confirm_word%100000)/10000 + 0x30;
+      PASS_Temp[4] = (Confirm_word%10000)/1000 + 0x30;
+      PASS_Temp[5] = (Confirm_word%1000)/100 + 0x30;
+      PASS_Temp[6] = (Confirm_word%100)/10 + 0x30;
+      PASS_Temp[7] = (Confirm_word%10)/1 + 0x30;
       
       Password_num = GetDynamicPassNum();
       
-      Password_num_buff[0] = Password_num/100000 + 0x30;
-      Password_num_buff[1] = (Password_num%100000)/10000 + 0x30;
-      Password_num_buff[2] = (Password_num%10000)/1000 + 0x30;
-      Password_num_buff[3] = (Password_num%1000)/100 + 0x30;
-      Password_num_buff[4] = (Password_num%100)/10 + 0x30;
-      Password_num_buff[5] = Password_num%10 + 0x30;      
+//      Password_num_buff[0] = Password_num/100000 + 0x30;
+//      Password_num_buff[1] = (Password_num%100000)/10000 + 0x30;
+//      Password_num_buff[2] = (Password_num%10000)/1000 + 0x30;
+//      Password_num_buff[3] = (Password_num%1000)/100 + 0x30;
+//      Password_num_buff[4] = (Password_num%100)/10 + 0x30;
+//      Password_num_buff[5] = Password_num%10 + 0x30;      
+      
+      Password_num_buff[0] = Password_num/10000000 + 0x30;
+      Password_num_buff[1] = (Password_num%10000000)/1000000 + 0x30;
+      Password_num_buff[2] = (Password_num%1000000)/100000 + 0x30;
+      Password_num_buff[3] = (Password_num%100000)/10000 + 0x30;
+      Password_num_buff[4] = (Password_num%10000)/1000 + 0x30;
+      Password_num_buff[5] = (Password_num%1000)/100 + 0x30;
+      Password_num_buff[6] = (Password_num%100)/10 + 0x30;
+      Password_num_buff[7] = (Password_num%10)/1 + 0x30;
 
       m_buff_temp[0] = validity_date/100 + 0x30;
       m_buff_temp[1] = validity_date%100/10 + 0x30;
@@ -235,19 +287,19 @@ void validity_cfg(void)
       TXM_StringDisplay(0,20,90,24,1,YELLOW ,BLUE, (void*)validity_disp_item[18 + LANGUAGE]);//"序列号："
       ZTM_RectangleFill (0, 114,239, 138,DGRAY); 
       
-      extern u8 SN[19];
-      for(u8 i = 0;i < 19;i++)
+      extern u8 SN[16];
+      for(u8 i = 0;i < 16;i++)
       {
-        SN[i] = DuSysBuff[20+i];
+        SN[i] = DuSysBuff[20+i] + 0x30;
       }
-      TXM_StringDisplay(0,0,114,24,1,BLACK ,DGRAY, (void*)SN);
+      TXM_StringDisplay(0,20,114,24,1,BLACK ,DGRAY, (void*)SN);
       OSTimeDlyHMSM(0, 0,0,10);
       
-      ZTM_RectangleFill (0, 138,239, 162,BLUE); 
-      TXM_StringDisplay(0,20,138,24,1,YELLOW ,BLUE, (void*)validity_disp_item[6 + LANGUAGE]);//"    验 证 码 ："
-      ZTM_RectangleFill (0, 162,239, 186,DGRAY); 
-      TXM_StringDisplay(0,80,162,24,1,BLACK ,DGRAY, (void*)PASS_Temp);
-      OSTimeDlyHMSM(0, 0,0,10);
+//      ZTM_RectangleFill (0, 138,239, 162,BLUE); 
+//      TXM_StringDisplay(0,20,138,24,1,YELLOW ,BLUE, (void*)validity_disp_item[6 + LANGUAGE]);//"    验 证 码 ："
+//      ZTM_RectangleFill (0, 162,239, 186,DGRAY); 
+//      TXM_StringDisplay(0,80,162,24,1,BLACK ,DGRAY, (void*)PASS_Temp);
+//      OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 186,239, 210,BLUE); 
       TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[8 + LANGUAGE]);//"   动 态 密 码 ："
@@ -257,7 +309,7 @@ void validity_cfg(void)
   
       PASS_Buff = Temp;
   
-      for(i=0;i<6;i++)
+      for(i=0;i<8;i++)
       {
         PASS_Temp[i] = PASS_Buff[i];
       }  
@@ -274,7 +326,7 @@ void validity_cfg(void)
           input_flag = 0;
           
           if( PASS_Temp[0] == Password_num_buff[0] && PASS_Temp[1] == Password_num_buff[1] && PASS_Temp[2] == Password_num_buff[2]
-             && PASS_Temp[3] == Password_num_buff[3] && PASS_Temp[4] == Password_num_buff[4] && PASS_Temp[5] == Password_num_buff[5] )
+             && PASS_Temp[3] == Password_num_buff[3] && PASS_Temp[4] == Password_num_buff[4] && PASS_Temp[5] == Password_num_buff[5] && PASS_Temp[6] == Password_num_buff[6] && PASS_Temp[7] == Password_num_buff[7])
           {
               USER_RIGHT_VALIDITY = 1;
               validity_date = 180;
@@ -287,7 +339,9 @@ void validity_cfg(void)
               DuSysBuff[16] = last_set_date[2];
               DuSysBuff[17] = last_set_date[3];
               DuSysBuff[18] = last_set_date[4];
-              DuSysBuff[19] = last_set_date[5]; 		                
+              DuSysBuff[19] = last_set_date[5]; 
+              
+              DuSysBuff[36]++;
                       
               
               du_sys_data_write();
@@ -298,7 +352,7 @@ void validity_cfg(void)
               break;
           }
           else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
-                  && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
+                  && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) && PASS_Temp[6] == (0 + 0x30) && PASS_Temp[7] == (0 + 0x30))
           {
               USER_RIGHT_VALIDITY = 1;
               validity_date = 180;
@@ -311,7 +365,21 @@ void validity_cfg(void)
               DuSysBuff[16] = last_set_date[2];
               DuSysBuff[17] = last_set_date[3];
               DuSysBuff[18] = last_set_date[4];
-              DuSysBuff[19] = last_set_date[5]; 		             
+              DuSysBuff[19] = last_set_date[5]; 
+              
+              
+              DuSysBuff[36]++;
+              
+//              DuSysBuff[31] = '2';
+//              DuSysBuff[32] = '0';
+//              DuSysBuff[33] = '1';
+//              DuSysBuff[34] = '5';
+//              DuSysBuff[35] = '0';
+//              DuSysBuff[36] = '3';
+//              DuSysBuff[37] = ;
+//              DuSysBuff[38] = ;              
+              
+//              DuSysBuff[38]++;
                             
               du_sys_data_write();
               

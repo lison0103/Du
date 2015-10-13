@@ -30,7 +30,7 @@ const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除"
 
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
-u8 SN[19];
+u8 SN[16];
 const u8 *Version = {"V1.0"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
@@ -104,9 +104,9 @@ void menu_password_cfg(void)
   TXM_StringDisplay(0,5,45,16,0,BLACK ,BLACK, (void*)Version);//版本
   TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)input_item[14 + LANGUAGE]);//序列号
   
-  for(u8 i = 0;i < 19;i++)
+  for(u8 i = 0;i < 16;i++)
   {
-    SN[i] = DuSysBuff[20+i];
+    SN[i] = DuSysBuff[20+i] + 0x30;
   }
   
   TXM_StringDisplay(0,70,260,16,0,BLACK ,BLACK, (void*)SN);//
