@@ -105,6 +105,10 @@ u32 GetDynamicPassNum(void)
 
   Pass_Num = ((Lock_Num*2)/3) + 3;
   
+  if(Pass_Num > 99999999)
+  {
+    Pass_Num = Pass_Num%100000000;
+  }
   return Pass_Num;
   
 }
