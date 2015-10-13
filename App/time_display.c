@@ -289,13 +289,11 @@ void menu_time_set(void)
                   
                   }
                   
-                  DuSysBuff[14] = last_set_date[0];
-                  DuSysBuff[15] = last_set_date[1];
-                  DuSysBuff[16] = last_set_date[2];
-                  DuSysBuff[17] = last_set_date[3];
-                  DuSysBuff[18] = last_set_date[4];
-                  DuSysBuff[19] = last_set_date[5];  
-                  
+                  for(u8 k = 0; k < 6; k++)
+                  {
+                    VALIDITY_LAST_DATE(k) = last_set_date[k];
+                  }
+                                    
                   du_sys_data_write();
               }
           }

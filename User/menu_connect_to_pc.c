@@ -97,19 +97,28 @@ void menu_connect_to_pc_cfg(void)
         
         if((buff_num == 16) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[buff_num-4]==0X23) && (display_receive_buff[buff_num-3]==0X2a) && (display_receive_buff[buff_num-2]==0X23) && (display_receive_buff[buff_num-1]==0X2a))  
         {
-              DuSysBuff[28] = display_receive_buff[10] - 0x30;
-              DuSysBuff[29] = display_receive_buff[11] - 0x30;
+          
+              //激活时清除flash里的几个数据
+              for(u8 i = 0;i<100;i++)
+              {
+                DuSysBuff[i] = 0;
+              }
+              du_sys_data_write();
+              OSTimeDlyHMSM(0, 0,1,0);        
               
-              DuSysBuff[30] = display_receive_buff[3] - 0x30;             
-              DuSysBuff[31] = display_receive_buff[4] - 0x30;
-              DuSysBuff[32] = display_receive_buff[5] - 0x30;
-              DuSysBuff[33] = display_receive_buff[6] - 0x30;
-              DuSysBuff[34] = display_receive_buff[7] - 0x30;
-              DuSysBuff[35] = display_receive_buff[8] - 0x30;
-
-
+              validity_date = 0;
+              USER_RIGHT_LEVEL = 0;
+          
+              //存储激活码日期
+              DU_SERIAL_NUMBER(8) = display_receive_buff[10] - 0x30;
+              DU_SERIAL_NUMBER(9) = display_receive_buff[11] - 0x30;
+                            
+              for(u8 i = 0;i < 6;i++)
+              {
+                  DU_SERIAL_NUMBER(10 + i) = display_receive_buff[3 + i] - 0x30;             
+              }
               
-              DuSysBuff[36] = 0;
+              DU_REGISTERED_NUMBER = 0;
  
               //清空buffer
               for(u8 i = 0;i<64;i++)

@@ -203,12 +203,10 @@ void AppTask_Main(void *p_arg)
 //    u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
     
-    last_set_date[0] = DuSysBuff[14];
-    last_set_date[1] = DuSysBuff[15];
-    last_set_date[2] = DuSysBuff[16];
-    last_set_date[3] = DuSysBuff[17];
-    last_set_date[4] = DuSysBuff[18];
-    last_set_date[5] = DuSysBuff[19];
+    for(u8 i = 0; i < 6; i++)
+    {
+      last_set_date[i] = VALIDITY_LAST_DATE(i);
+    }
     
     Get_Current_Date(current_set_date, TimeBuff);   
     if(Date_Validity(last_set_date) && Date_Validity(current_set_date))

@@ -105,15 +105,22 @@
 
 #define RECORD_ESC_NUMBER     DuSysBuff[10]
 
-//@使用有效期需要保存的数据
+//@使用有效期、序列号需要保存的数据
 
+//使用有效期标志
 #define USER_RIGHT_VALIDITY      DuSysBuff[12]
 
+//注册后已使用天数
 #define VALIDITY_USE_DATE        DuSysBuff[13]
 
-#define VALIDITY_LAST_DATE       DuSysBuff[14]
+//注册后上次记录设置日期  6位日期
+#define VALIDITY_LAST_DATE(i)       DuSysBuff[14 + i]
 
-#define DU_SERIAL_NUMBER         DuSysBuff[20]
+//序列号 8位CPUID+2位number+6位日期
+#define DU_SERIAL_NUMBER(i)         DuSysBuff[20 + i]
+
+//已注册次数
+#define DU_REGISTERED_NUMBER     DuSysBuff[36]
 
 //@end
 
@@ -228,6 +235,8 @@ u8 GetHardwareVerison(void);
 #define HARDWARE_VERSION  GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6)
 #define HARDWARE_V1	1		 
 #define HARDWARE_V2	2
+
+#define DU_FOR_TEST 0
 
 void Connect_To_COM(void);
 void menu_connect_to_pc_cfg(void);

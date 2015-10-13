@@ -106,7 +106,7 @@ void menu_password_cfg(void)
   
   for(u8 i = 0;i < 16;i++)
   {
-    SN[i] = DuSysBuff[20+i] + 0x30;
+    SN[i] = DU_SERIAL_NUMBER(i) + 0x30;
   }
   
   TXM_StringDisplay(0,70,260,16,0,BLACK ,BLACK, (void*)SN);//
@@ -146,6 +146,7 @@ void menu_password_cfg(void)
       EARSE_CHIP = 0;
       break;
     }
+#if DU_FOR_TEST
     //擦除有效期管理的几个数据
     else if(EARSE_CHIP == 1)
     {
@@ -167,9 +168,9 @@ void menu_password_cfg(void)
         TXM_StringDisplay(0,40,200,24,1,YELLOW ,RED, (void*)input_item[10 + LANGUAGE]);//擦除完成!
         OSTimeDlyHMSM(0, 0,2,0);
         break;
-      }
-      
+      }     
     }
+#endif     
     else 
     {
       if(PS_Flag)
@@ -254,6 +255,7 @@ void menu_password_cfg(void)
           USER_RIGHT_LEVEL = 1;
           break;
         }
+#if DU_FOR_TEST
         //打开擦除数据隐藏功能
         else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
                 && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
@@ -263,6 +265,7 @@ void menu_password_cfg(void)
             OSTimeDlyHMSM(0, 0,0,10);
             TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);//擦除
         }
+#endif
         else
         {
           USER_RIGHT_LEVEL = 0;
