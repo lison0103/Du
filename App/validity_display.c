@@ -21,8 +21,8 @@ const char validity_disp_item[][25]={
 "Day",
 "    已注册次数 ：",//6
 "Registered number:",
-"   动 态 密 码 ：",//8
-"Dynamic password:",
+"   注  册  码 ：",//8
+"Registration code:",
 "     忽略 确定",//10
 "    Ignore  OK ",
 "密码正确",//12
