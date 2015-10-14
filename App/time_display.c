@@ -286,13 +286,11 @@ void menu_time_set(void)
                   for(u8 j = 0; j < 6; j++)
                   {
                     last_set_date[j] = current_set_date[j];
-                  
+                    
+                    VALIDITY_LAST_DATE(j) = current_set_date[j];
                   }
                   
-                  for(u8 k = 0; k < 6; k++)
-                  {
-                    VALIDITY_LAST_DATE(k) = last_set_date[k];
-                  }
+
                                     
                   du_sys_data_write();
               }
@@ -313,7 +311,7 @@ void menu_time_set(void)
         PS_Flag = 1; 
         
         //@获取当前设置时间，记录与上次设置时间的时间差值
-        #if 1
+        #if 0
         if(USER_RIGHT_VALIDITY == 1)
         {
             Get_Current_Date(temp_date, Para_Data);

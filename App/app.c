@@ -48,6 +48,11 @@ extern u8 MainDisFlag;
 u8 DuSys_Data[100];
 u16 *DuSysBuff = (u16*)DuSys_Data;
 
+//@
+extern u8 Rtc_Init_Error;
+extern void Rtc_Error_display(void);
+extern void Unknow_Error_display(void);
+//@end
 
 /***************************************************************************************************
 ***************************************************************************************************/
@@ -140,6 +145,11 @@ void AppTask_Main(void *p_arg)
 {
   u8 start_main_display=0;
   u8 *m_keydata,err=0;
+  
+  //@
+  u32 temp_data = 0;
+  //@end
+  
 //  u16 i;
 //  u32 j;
   
@@ -196,36 +206,91 @@ void AppTask_Main(void *p_arg)
   esc_bk_init();
   
   
-//@ 有效期判断  
+//@  时钟异常判断
+
+   while(Rtc_Init_Error == 2)
+   {
+      OSTimeDlyHMSM(0, 0,0,100);
+   }
+   
+   if(Rtc_Init_Error == 1)
+   {
+     DU_RTC_ERROR_NUMBER++; 
+     
+     Rtc_Error_display();  
+     
+     if(DU_RTC_ERROR_NUMBER > ALLOWED_ERROR_NUM)
+     {
+       
+       USER_RIGHT_VALIDITY = 0;
+                        
+     }
+     
+     du_sys_data_write();
+   }
+   else if(Rtc_Init_Error == 0)
+   {
+     if(DU_RTC_ERROR_NUMBER > 0)
+     {
+        DU_RTC_ERROR_NUMBER = 0;
+        du_sys_data_write();
+     }
+     
+   }
+
+  
+//有效期判断     
   
   if(USER_RIGHT_VALIDITY == 1)
   {
 //    u8 TimeBuff[6];
     RTCC_GetTime(TimeBuff);
     
-    for(u8 i = 0; i < 6; i++)
+    
+    Get_Current_Date(current_set_date, TimeBuff); 
+
+    if(Rtc_Init_Error == 0)
     {
-      last_set_date[i] = VALIDITY_LAST_DATE(i);
+        for(u8 i = 0; i < 6; i++)
+        {
+          last_set_date[i] = VALIDITY_LAST_DATE(i);
+        }
+                  
+        if(Date_Validity(last_set_date) && Date_Validity(current_set_date))
+        {
+          temp_data = Calculate(last_set_date,current_set_date);  
+          
+          if(temp_data > 0)
+          {
+            VALIDITY_USE_DATE += temp_data;
+          }      
+          
+//          validity_date = 180 - (VALIDITY_USE_DATE + Calculate(last_set_date,current_set_date));
+        }
+        else
+        {
+            Unknow_Error_display();
+//          validity_date = 0;
+        }    
+    
     }
     
-    Get_Current_Date(current_set_date, TimeBuff);   
-    if(Date_Validity(last_set_date) && Date_Validity(current_set_date))
-    {
-//      VALIDITY_USE_DATE += Calculate(last_set_date,current_set_date);
-      validity_date = 180 - (VALIDITY_USE_DATE + Calculate(last_set_date,current_set_date));
-    }
-    else
-    {
-      validity_date = 0;
-    }
+    validity_date = 180 - VALIDITY_USE_DATE;
     
+    for(u8 j = 0; j < 6; j++)
+    {
+      last_set_date[j] = current_set_date[j];
+      
+      VALIDITY_LAST_DATE(j) = current_set_date[j];    
+    }   
     
     if(validity_date <= 0)
     {
         USER_RIGHT_VALIDITY = 0;
         
-        du_sys_data_write();
-    }       
+    }    
+    
+    du_sys_data_write();
     
     //有效期小于1个月，每次开机提醒
     if(validity_date <= 30)

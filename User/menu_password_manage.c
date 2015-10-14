@@ -114,7 +114,7 @@ void menu_password_cfg(void)
 
   TXM_StringDisplay(0,5,240,16,0,BLACK ,BLACK, (void*)input_item[12 + LANGUAGE]);//剩余使用天数
   
-  validity_date = 180 - VALIDITY_USE_DATE;
+//  validity_date = 180 - VALIDITY_USE_DATE;
   m_buff_temp[0] = validity_date/100 + 0x30;
   m_buff_temp[1] = validity_date%100/10 + 0x30;
   m_buff_temp[2] = validity_date%10 + 0x30;

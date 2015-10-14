@@ -66,7 +66,22 @@ u8 Leap_Year(u32 year)
 *******************************************************************************/
  u32 Calculate(u8 begin[],u8 end[])
 {
-         return Year_To_Day(begin, end) - Month_To_Day(begin) + Month_To_Day(end);
+         u32 number_begin = begin[0]*100000 + begin[1]*10000 + begin[2]*1000 + begin[3]*100 + begin[4]*10 + begin[5];
+         u32 number_end = end[0]*100000 + end[1]*10000 + end[2]*1000 + end[3]*100 + end[4]*10 + end[5];
+         
+         if(number_begin > number_end)
+         {
+            return -1;
+         }
+         else if(number_begin = number_end)
+         {
+            return 0;
+         }
+         else
+         {
+           return Year_To_Day(begin, end) - Month_To_Day(begin) + Month_To_Day(end);
+         }  
+         
 }
 
 /*******************************************************************************
@@ -109,4 +124,50 @@ u32 Date_Validity(u8 Date[])
          }
          
  
+}
+
+/*******************************************************************************
+//功能:提示时钟错误
+*******************************************************************************/
+void Rtc_Error_display(void)
+{
+
+    ZTM_RectangleFill (0,0,239,319,LGRAY);
+    OSTimeDlyHMSM(0, 0,0,10);
+    
+    
+    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, " 时钟异常！！"); 
+     
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500);
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500);
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500); 
+    
+    OSTimeDlyHMSM(0, 0,2,0);
+
+}
+
+/*******************************************************************************
+//功能:提示未知异常
+*******************************************************************************/
+void Unknow_Error_display(void)
+{
+
+    ZTM_RectangleFill (0,0,239,319,LGRAY);
+    OSTimeDlyHMSM(0, 0,0,10);
+    
+    
+    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, " 未知异常！！"); 
+     
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500);
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500);
+     ZTM_SetBuzzer(30);
+     OSTimeDlyHMSM(0, 0,0,500); 
+    
+    OSTimeDlyHMSM(0, 0,2,0);
+
 }

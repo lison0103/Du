@@ -122,6 +122,11 @@
 //已注册次数
 #define DU_REGISTERED_NUMBER     DuSysBuff[36]
 
+//时钟异常次数
+#define DU_RTC_ERROR_NUMBER     DuSysBuff[37]
+//时钟异常允许次数
+#define ALLOWED_ERROR_NUM       20
+
 //@end
 
 typedef struct errordescripitem
