@@ -57,6 +57,7 @@ void menu_ConnectPC_display(void)
 void menu_connect_to_pc_cfg(void)
 {
   u8  *m_keydata,err=0;
+  u8  SetTime_Data[6];
   
   ZTM_RectangleFill (0,0,239,39,BLUE);
   OSTimeDlyHMSM(0, 0,0,10);
@@ -119,6 +120,21 @@ void menu_connect_to_pc_cfg(void)
               }
               
               DU_REGISTERED_NUMBER = 0;
+              
+              //设置日期
+               for(u8 i = 3;i < 9; i ++)
+              {
+                  display_receive_buff[i] -= 0x30;
+              }
+              
+              SetTime_Data[0] =  display_receive_buff[3]*10 + display_receive_buff[4];
+              SetTime_Data[1] =  display_receive_buff[5]*10 + display_receive_buff[6];
+              SetTime_Data[2] =  display_receive_buff[7]*10 + display_receive_buff[8];
+              SetTime_Data[3] =  TimeBuff[3];
+              SetTime_Data[4] =  TimeBuff[4];
+              SetTime_Data[5] =  TimeBuff[5];
+              
+              RTCC_SetTime(SetTime_Data);              
  
               //清空buffer
               for(u8 i = 0;i<64;i++)
@@ -138,7 +154,7 @@ void menu_connect_to_pc_cfg(void)
 
         }
         else if((buff_num == 6) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[2]==0X38) && (display_receive_buff[3]==0X36) 
-                && (display_receive_buff[4]==0X23) && (display_receive_buff[0] == 0x2a))  
+                && (display_receive_buff[4]==0X23) && (display_receive_buff[5] == 0x2a))  
         {
               //清空buffer
               for(u8 i = 0;i<64;i++)
@@ -153,10 +169,47 @@ void menu_connect_to_pc_cfg(void)
 
               break;
 
-        }        
-        //清空buffer
-        for(u8 i = 0;i<64;i++)
-            display_receive_buff[i] = ' ';
+        }  
+        else if((buff_num == 21) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[10]==0x2a) && (display_receive_buff[13]==0x2a) 
+                && (display_receive_buff[16]==0x2a) && (display_receive_buff[buff_num - 2]==0X23) && (display_receive_buff[buff_num - 1] == 0x2a))  
+        {
+          
+              TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, " 校准时间！");
+              
+              for(u8 i = 0;i < 21; i ++)
+              {
+                  display_receive_buff[i] -= 0x30;
+              }
+              
+              SetTime_Data[0] =  display_receive_buff[4]*10 + display_receive_buff[5];
+              SetTime_Data[1] =  display_receive_buff[6]*10 + display_receive_buff[7];
+              SetTime_Data[2] =  display_receive_buff[8]*10 + display_receive_buff[9];
+              SetTime_Data[3] =  display_receive_buff[11]*10 + display_receive_buff[12];
+              SetTime_Data[4] =  display_receive_buff[14]*10 + display_receive_buff[15];
+              SetTime_Data[5] =  display_receive_buff[17]*10 + display_receive_buff[18];
+              
+              RTCC_SetTime(SetTime_Data);              
+          
+              //清空buffer
+              for(u8 i = 0;i<64;i++)
+                  display_receive_buff[i] = ' ';
+                           
+              
+              OSTimeDlyHMSM(0, 0,1,500);
+              
+              USB_Disconnect();
+              
+              menu_time_set();
+                            
+              break;
+
+        }
+        else
+        {              
+            //清空buffer
+            for(u8 i = 0;i<64;i++)
+                display_receive_buff[i] = ' ';
+        }
       }
     }
 #if VCP_TEST

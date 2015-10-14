@@ -244,7 +244,7 @@ void AppTask_Main(void *p_arg)
   if(USER_RIGHT_VALIDITY == 1)
   {
 //    u8 TimeBuff[6];
-    RTCC_GetTime(TimeBuff);
+//    RTCC_GetTime(TimeBuff);
     
     
     Get_Current_Date(current_set_date, TimeBuff); 
