@@ -49,7 +49,7 @@ u8 DuSys_Data[100];
 u16 *DuSysBuff = (u16*)DuSys_Data;
 
 //@
-extern u8 Rtc_Init_Error;
+extern s8 Rtc_Init_Error;
 extern void Rtc_Error_display(void);
 extern void Unknow_Error_display(void);
 //@end
@@ -147,7 +147,7 @@ void AppTask_Main(void *p_arg)
   u8 *m_keydata,err=0;
   
   //@
-  u32 temp_data = 0;
+  s32 temp_data = 0;
   //@end
   
 //  u16 i;
@@ -208,7 +208,7 @@ void AppTask_Main(void *p_arg)
   
 //@   ±÷”“Ï≥£≈–∂œ
 
-   while(Rtc_Init_Error == 2)
+   while(Rtc_Init_Error == -1)
    {
       OSTimeDlyHMSM(0, 0,0,100);
    }

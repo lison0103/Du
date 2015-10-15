@@ -73,7 +73,7 @@ u8 Leap_Year(u32 year)
          {
             return -1;
          }
-         else if(number_begin = number_end)
+         else if(number_begin == number_end)
          {
             return 0;
          }
