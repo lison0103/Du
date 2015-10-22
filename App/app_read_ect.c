@@ -37,6 +37,26 @@ void Task_READ_ECT(void *p_arg)
     }  
   }  
   
+  //@读取ECT MB日期时间，与DU时钟对比(年月日时分)，以DU时钟为准
+  while(modbus_read(MB_COM_PORT, 25, 3))
+  {
+    OSTimeDlyHMSM(0, 0,0,100);
+  }
+  
+  for(u8 i=0;i<5;i++)
+  {
+    if(ModBuff[50+i] != TimeBuff[i])
+    {
+        for(u8 j=0;j<6;j++)
+        {  
+            ModBuff[50+j] = TimeBuff[j];
+        }
+        modbus_write(MB_COM_PORT, 25, 3); 
+        break;     
+    }   
+  } 
+  //@end
+  
   while(1)
   {
     //查看数据有无更新

@@ -14,13 +14,13 @@
 /*******************************************************************************
 *******************************************************************************/
 
-static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; 
+static u8 *PASS_Buff,PASS_Temp[20],PASS_NUMBER[20],Para_Cnum=0; 
 static u8 Para_Choice=0,PS_Flag=0;
 
 static char const Password_Code[11] = {"-0123456789"};
                                     
-const char Password_Title[2][20]={"输入密码","Enter Password"}; 
-const char input_item[][20]={"输入","Input","确定","  OK ","修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...",
+const char Password_Title[2][20]={"密码管理","USER RIGHT"}; 
+const char input_item[][20]={" 输入","Input"," 确定","  OK "," 修改","Alter","擦除","Earse","正在擦除数据...","Erasing data...",
 "   擦除完成!   "," Erase finish! ",
 "剩余使用天数: ",
 "Validity Date:",
@@ -35,6 +35,7 @@ const u8 *Version = {"V1.0"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 extern u8 m_buff_temp[3];
+u8 ChangePassword_Flag = 0;
 /*******************************************************************************
 *******************************************************************************/
 void menu_password_display(u8 set_bit)
@@ -99,7 +100,7 @@ void menu_password_cfg(void)
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Password_Title[LANGUAGE]);  
   TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
-//  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);//修改
+  TXM_StringDisplay(0,120,290,24,1,RED ,BLACK, (void*)input_item[4 + LANGUAGE]);//修改
   
   TXM_StringDisplay(0,5,45,16,0,BLACK ,BLACK, (void*)Version);//版本
   TXM_StringDisplay(0,5,260,16,0,BLACK ,BLACK, (void*)input_item[14 + LANGUAGE]);//序列号
@@ -119,7 +120,23 @@ void menu_password_cfg(void)
   m_buff_temp[1] = validity_date%100/10 + 0x30;
   m_buff_temp[2] = validity_date%10 + 0x30;
   TXM_StringDisplay(0,125,240,16,0,BLACK ,BLACK, (void*)m_buff_temp);//天
-
+  
+  if(DU_USER_RIGHT_PASSWORD(6) == 1)
+  {
+      for(u8 i=0;i<6;i++)
+      {
+        PASS_NUMBER[i] = DU_USER_RIGHT_PASSWORD(i);
+      }
+  }
+  else
+  {
+      for(u8 i=0;i<6;i++)
+      {
+        DU_USER_RIGHT_PASSWORD(i) = i + 0x30;        
+      }
+      DU_USER_RIGHT_PASSWORD(6) = 1;
+      du_sys_data_write();
+  }
   
   PASS_Buff = Temp;
   
@@ -144,6 +161,7 @@ void menu_password_cfg(void)
     else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
     {
       EARSE_CHIP = 0;
+      ChangePassword_Flag = 0;
       break;
     }
 #if DU_FOR_TEST
@@ -170,7 +188,7 @@ void menu_password_cfg(void)
         break;
       }     
     }
-#endif     
+#endif    
     else 
     {
       if(PS_Flag)
@@ -197,8 +215,11 @@ void menu_password_cfg(void)
             Para_Choice=0;
             TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0 + LANGUAGE]);//输入
             
-
             break; 
+            
+          case KEY_F2:
+//            ChangePassword_Flag++;
+            break;
           case KEY_UP:
             
             if(Para_Cnum < PASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
@@ -221,12 +242,18 @@ void menu_password_cfg(void)
             break; 
         }  
       } 
+      else if(m_keydata[0]==KEY_F2)
+      {
+          TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "请输入旧密码：");
+          ChangePassword_Flag = 1;
+      }
       else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
       {
         Para_Choice = 1;
         Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
         
         TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[2 + LANGUAGE]);//确认
+        TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "             ");
         PS_Flag = 1; 
         
         PASS_Buff = Temp;
@@ -243,11 +270,19 @@ void menu_password_cfg(void)
       if(Set_Flag)
       {
         Set_Flag = 0;
-        if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (3 + 0x30) 
-           && PASS_Temp[3] == (4 + 0x30) && PASS_Temp[4] == (5 + 0x30) && PASS_Temp[5] == (6 + 0x30) )
+        if( PASS_Temp[0] == DU_USER_RIGHT_PASSWORD(0) && PASS_Temp[1] == DU_USER_RIGHT_PASSWORD(1) && PASS_Temp[2] == DU_USER_RIGHT_PASSWORD(2) 
+           && PASS_Temp[3] == DU_USER_RIGHT_PASSWORD(3) && PASS_Temp[4] == DU_USER_RIGHT_PASSWORD(4) && PASS_Temp[5] == DU_USER_RIGHT_PASSWORD(5) )
         {
-          USER_RIGHT_LEVEL = 2;
-          break;
+          if(ChangePassword_Flag)
+          {
+              ChangePassword_Flag = 2;
+              TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "请输入新密码：");
+          }
+          else
+          {
+              USER_RIGHT_LEVEL = 2;
+              break;
+          }
         }
         else if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (1 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
                 && PASS_Temp[3] == (1 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (1 + 0x30) )
@@ -266,6 +301,40 @@ void menu_password_cfg(void)
             TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6 + LANGUAGE]);//擦除
         }
 #endif
+        else if(ChangePassword_Flag == 2)
+        {
+          ChangePassword_Flag++;
+          for(u8 i=0;i<6;i++)
+          {
+            PASS_NUMBER[i] = PASS_Temp[i];
+          }
+            TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "请再次输入新密码：");
+        }
+        else if(ChangePassword_Flag == 3)
+        {
+          //保存新密码
+          
+          if( PASS_Temp[0] == PASS_NUMBER[0] && PASS_Temp[1] == PASS_NUMBER[1] && PASS_Temp[2] == PASS_NUMBER[2] 
+             && PASS_Temp[3] == PASS_NUMBER[3] && PASS_Temp[4] == PASS_NUMBER[4] && PASS_Temp[5] == PASS_NUMBER[5] )
+          {
+              for(u8 i=0;i<6;i++)
+              {
+                  PASS_NUMBER[i] = PASS_Temp[i];
+                  DU_USER_RIGHT_PASSWORD(i) = PASS_Temp[i];
+              }
+              du_sys_data_write();
+              ChangePassword_Flag = 0;
+              TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
+              TXM_StringDisplay(0,50,180,24,1,YELLOW ,RED,  "密码修改成功");
+          }
+          else
+          {
+              ChangePassword_Flag = 0;
+              TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
+              TXM_StringDisplay(0,50,180,24,1,YELLOW ,RED,  "密码修改失败");
+          }
+          
+        }
         else
         {
           USER_RIGHT_LEVEL = 0;

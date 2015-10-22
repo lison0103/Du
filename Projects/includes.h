@@ -108,24 +108,27 @@
 //@使用有效期、序列号需要保存的数据
 
 //使用有效期标志
-#define USER_RIGHT_VALIDITY      DuSysBuff[12]
+#define USER_RIGHT_VALIDITY             DuSysBuff[12]
 
 //注册后已使用天数
-#define VALIDITY_USE_DATE        DuSysBuff[13]
+#define VALIDITY_USE_DATE               DuSysBuff[13]
 
 //注册后上次记录设置日期  6位日期
-#define VALIDITY_LAST_DATE(i)       DuSysBuff[14 + i]
+#define VALIDITY_LAST_DATE(i)           DuSysBuff[14 + i]
 
 //序列号 8位CPUID+2位number+6位日期
-#define DU_SERIAL_NUMBER(i)         DuSysBuff[20 + i]
+#define DU_SERIAL_NUMBER(i)             DuSysBuff[20 + i]
 
 //已注册次数
-#define DU_REGISTERED_NUMBER     DuSysBuff[36]
+#define DU_REGISTERED_NUMBER            DuSysBuff[36]
 
 //时钟异常次数
-#define DU_RTC_ERROR_NUMBER     DuSysBuff[37]
+#define DU_RTC_ERROR_NUMBER             DuSysBuff[37]
 //时钟异常允许次数
 #define ALLOWED_ERROR_NUM       20
+
+//最高权限密码 6位密码 1位标志位
+#define DU_USER_RIGHT_PASSWORD(i)       DuSysBuff[38 + i]
 
 //@end
 
