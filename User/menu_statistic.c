@@ -69,9 +69,10 @@ void menu_statistic(void)
     TXM_FillTextWidget (320+i, (void*)STAT_DescripBuff[i][LANGUAGE]);
     OSTimeDlyHMSM(0, 0,0,50); 
   }
-  ZTM_RectangleFill (0, 280,239, 319,DGRAY); 
-  TXM_StringDisplay(0,192,290,24,0,RED ,WHITE, "É¾³ý"); 
-  
+  //@  
+  ZTM_RectangleFill (0, 280,239, 319,BLACK); 
+  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "É¾³ý"); 
+  //@end
   delete_state_display();
   
   while(1)

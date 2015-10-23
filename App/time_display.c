@@ -153,11 +153,13 @@ void menu_time_set(void)
   ZTM_RectangleFill (0,40,239,279,LGRAY);
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,280,239,319,BLACK);
+  //@
+  OSTimeDlyHMSM(0, 0,0,10);
+  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "时间日期设置");  
   
-//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscSN_Title[LANGUAGE]);  
-  TXM_StringDisplay(0,65,290,24,1,LGRAY ,BLACK, "下传");
-  TXM_StringDisplay(0,190,290,24,1,LGRAY ,BLACK, "设置");
-
+  TXM_StringDisplay(0,65,290,24,1,RED ,BLACK, "下传");
+  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+  //@end
   Para_Choice=0;
   PS_Flag=0;  
   
@@ -271,8 +273,9 @@ void menu_time_set(void)
           TXM_StringDisplay(0,8,230,24,1,LGRAY ,LGRAY, "                   ");
           
           Para_Choice=0;
-          TXM_StringDisplay(0,190,290,24,1,LGRAY ,BLACK, "设置");
-          
+          //@
+          TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+          //@end
           
           //@获取当前设置时间,记录为上次设置日期
           #if 1
@@ -306,8 +309,9 @@ void menu_time_set(void)
         {  
           Para_Data[i] = TimeBuff[i];
         }
-        
-        TXM_StringDisplay(0,190,290,24,1,WHITE ,BLACK, "确定");
+        //@
+        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "确定");
+        //@end
         PS_Flag = 1; 
         
         //@获取当前设置时间，记录与上次设置时间的时间差值

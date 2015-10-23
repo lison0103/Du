@@ -130,6 +130,14 @@
 //最高权限密码 6位密码 1位标志位
 #define DU_USER_RIGHT_PASSWORD(i)       DuSysBuff[38 + i]
 
+//记录输入密码的日期时间,2位 日和小时
+#define DU_INPUT_PASS_DATE(i)           DuSysBuff[45 + i]
+//密码输入有效使用时间设置宏，单位小时
+#define PASS_VALITITY_TIME      4
+//密码权限标志
+#define DU_USER_RIGHT_LEVEL             DuSysBuff[47]
+
+
 //@end
 
 typedef struct errordescripitem

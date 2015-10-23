@@ -1840,7 +1840,9 @@ void menu_para_io(u8 item)
 
   
   ZTM_RectangleFill (0,280,239,319,BLACK);
-  TXM_StringDisplay(0,190,290,24,1,DGRAY ,LGRAY, "ÐÞ¸Ä");
+  //@
+  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "ÐÞ¸Ä");
+  //@end
 //  TXM_FillTextWidget (360, (void*)IO_CfgItem_Descrip[item][LANGUAGE]);
   
   switch(item) 

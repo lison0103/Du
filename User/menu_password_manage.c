@@ -281,6 +281,10 @@ void menu_password_cfg(void)
           else
           {
               USER_RIGHT_LEVEL = 2;
+              DU_USER_RIGHT_LEVEL = 2;
+              DU_INPUT_PASS_DATE(0) = TimeBuff[2];
+              DU_INPUT_PASS_DATE(1) = TimeBuff[3];
+              du_sys_data_write();
               break;
           }
         }
@@ -288,6 +292,10 @@ void menu_password_cfg(void)
                 && PASS_Temp[3] == (1 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (1 + 0x30) )
         {
           USER_RIGHT_LEVEL = 1;
+          DU_USER_RIGHT_LEVEL = 1;
+          DU_INPUT_PASS_DATE(0) = TimeBuff[2];
+          DU_INPUT_PASS_DATE(1) = TimeBuff[3];
+          du_sys_data_write();
           break;
         }
 #if DU_FOR_TEST
@@ -303,7 +311,7 @@ void menu_password_cfg(void)
 #endif
         else if(ChangePassword_Flag == 2)
         {
-          ChangePassword_Flag++;
+          ChangePassword_Flag = 3;
           for(u8 i=0;i<6;i++)
           {
             PASS_NUMBER[i] = PASS_Temp[i];
@@ -325,19 +333,26 @@ void menu_password_cfg(void)
               du_sys_data_write();
               ChangePassword_Flag = 0;
               TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
-              TXM_StringDisplay(0,50,180,24,1,YELLOW ,RED,  "ÃÜÂëÐÞ¸Ä³É¹¦");
+              TXM_StringDisplay(0,50,180,24,1,BLACK ,BLUE,  "ÃÜÂëÐÞ¸Ä³É¹¦");
           }
           else
           {
               ChangePassword_Flag = 0;
               TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
-              TXM_StringDisplay(0,50,180,24,1,YELLOW ,RED,  "ÃÜÂëÐÞ¸ÄÊ§°Ü");
+              TXM_StringDisplay(0,50,180,24,1,BLACK ,BLUE,  "ÃÜÂëÐÞ¸ÄÊ§°Ü");
           }
           
         }
         else
         {
           USER_RIGHT_LEVEL = 0;
+          if(DU_USER_RIGHT_LEVEL > 0)
+          {            
+              DU_USER_RIGHT_LEVEL = 0;
+              DU_INPUT_PASS_DATE(0) = 0;
+              DU_INPUT_PASS_DATE(1) = 0;
+              du_sys_data_write();
+          }
         }
         Set_Flag = 0;
       }

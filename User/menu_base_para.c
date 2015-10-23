@@ -989,11 +989,10 @@ void menu_para_base(void)
   base_para_get();
   
   base_para_display();   
-
-  ZTM_RectangleFill (0, 280,239, 319,DGRAY); 
-  
-  TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "设置");
-
+  //@
+  ZTM_RectangleFill (0, 280,239, 319,BLACK);   
+  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");
+  //@end
   TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
   
   while(1)
@@ -1038,10 +1037,10 @@ void menu_para_base(void)
         
         if(PS_Flag==0)
         {  
-          
-            TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "    "); 
-            TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "设置"); 
-            
+            //@
+            TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, "    "); 
+            TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置"); 
+            //@end
             TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
         }        
       } 
@@ -1061,15 +1060,30 @@ void menu_para_base(void)
             base_para_get();
             break;
           case KEY_F3:
-            //@用户权限需要大于0才能设置
-            if(USER_RIGHT_LEVEL >= (BaseParameter[Para_Number].user_right + 1))
+            //@密码输入有效使用时间判断
+            if(DU_USER_RIGHT_LEVEL > 0 && DU_INPUT_PASS_DATE(0) == TimeBuff[2] && (TimeBuff[3] - DU_INPUT_PASS_DATE(1)) < PASS_VALITITY_TIME)
+            {   
+           
+                    USER_RIGHT_LEVEL = DU_USER_RIGHT_LEVEL;
+                    //用户权限需要大于0才能设置
+                    if(USER_RIGHT_LEVEL >= (BaseParameter[Para_Number].user_right + 1))
+                    {
+                      PS_Flag = 1;
+                      TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, "确定"); 
+                      TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "返回"); 
+                      TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
+                    }
+                
+            }
+            else
             {
-              PS_Flag = 1;
-              
-              TXM_StringDisplay(0,122,290,24,1,WHITE ,DGRAY, "确定"); 
-              TXM_StringDisplay(0,192,290,24,1,WHITE ,DGRAY, "返回"); 
-
-              TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
+                if(DU_USER_RIGHT_LEVEL > 0)
+                {
+                    DU_USER_RIGHT_LEVEL = 0;
+                    DU_INPUT_PASS_DATE(0) = 0;
+                    DU_INPUT_PASS_DATE(1) = 0;
+                    du_sys_data_write();
+                }
             }
             //@end
             break;

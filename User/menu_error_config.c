@@ -61,7 +61,10 @@ void menu_error_cfg(void)
   ZTM_RectangleFill (0,40,239,279,WHITE);
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,280,239,319,BLACK);
-  
+  //@
+  OSTimeDlyHMSM(0, 0,0,10);
+  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "π ’œ∑÷¿‡");
+  //@end
   
   TXM_StringDisplay(0,60,290,24,0,RED ,0, "«–ªª      –ﬁ∏ƒ");
   
