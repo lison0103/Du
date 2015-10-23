@@ -34,6 +34,8 @@
 #include "hw_config.h"
 #include "usb_pwr.h"
 
+#include "includes.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -86,10 +88,29 @@ void Set_System(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIO_DISCONNECT, ENABLE);
 
   /* Configure USB pull-up pin */
-  GPIO_InitStructure.GPIO_Pin = USB_DISCONNECT_PIN;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-  GPIO_Init(USB_DISCONNECT, &GPIO_InitStructure);
+//  GPIO_InitStructure.GPIO_Pin = USB_DISCONNECT_PIN;
+//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+//  GPIO_Init(USB_DISCONNECT, &GPIO_InitStructure);
+  
+  if(HARDWARE_V2 == GetHardwareVerison())
+  {
+      GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;				 
+      GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
+      GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		
+      GPIO_Init(GPIOC, &GPIO_InitStructure);	
+      
+      GPIO_SetBits(GPIOC,GPIO_Pin_12);    
+  }
+  else if(HARDWARE_V1 == GetHardwareVerison())
+  {
+      GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;				 
+      GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 
+      GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		
+      GPIO_Init(GPIOC, &GPIO_InitStructure);	
+      
+      GPIO_SetBits(GPIOC,GPIO_Pin_8);   
+  }
 #endif /* STM32L1XX_MD && STM32L1XX_XD */
    
 #if defined(USB_USE_EXTERNAL_PULLUP)
@@ -274,11 +295,27 @@ void USB_Cable_Config (FunctionalState NewState)
 #else /* USE_STM3210B_EVAL or USE_STM3210E_EVAL */
   if (NewState != DISABLE)
   {
-    GPIO_ResetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+//    GPIO_ResetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+    if(HARDWARE_V2 == GetHardwareVerison())
+    {
+      GPIO_ResetBits(GPIOC,GPIO_Pin_12);
+    }
+    else if(HARDWARE_V1 == GetHardwareVerison())
+    {
+      GPIO_ResetBits(GPIOC,GPIO_Pin_8);
+    }
   }
   else
   {
-    GPIO_SetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+//    GPIO_SetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
+    if(HARDWARE_V2 == GetHardwareVerison())
+    {
+      GPIO_SetBits(GPIOC,GPIO_Pin_12);
+    }
+    else if(HARDWARE_V1 == GetHardwareVerison())
+    {
+      GPIO_SetBits(GPIOC,GPIO_Pin_8);
+    }
   }
 #endif /* STM32L1XX_MD */
 }
