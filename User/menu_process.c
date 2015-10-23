@@ -29,7 +29,7 @@ const u8 *Menu_Item_Descrip[][2] =
   {" 07 时间日期设置  "," 07 TIME & DATE   "},
   {" 08 密码管理      "," 08 USER RIGHT    "},
   {" 09 语言/LANGUAGE "," 09 LANGUAGE/语言 "},
-  {" 10 连接电脑      "," 10 Connect to PC "},
+  {" 10 连接电脑      "," 10 CONNECT TO PC "},
 }; 
 //@end
 u16 MenuItem=0,MenuItem_Max=0,Menu_Level=0,disFlag=0;

@@ -333,13 +333,13 @@ void menu_password_cfg(void)
               du_sys_data_write();
               ChangePassword_Flag = 0;
               TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
-              TXM_StringDisplay(0,50,180,24,1,BLACK ,BLUE,  "密码修改成功");
+              TXM_StringDisplay(0,70,180,16,0,BLACK ,BLUE,  "密码修改成功");
           }
           else
           {
               ChangePassword_Flag = 0;
               TXM_StringDisplay(0,70,100,16,1,BLACK ,LGRAY, "                    ");
-              TXM_StringDisplay(0,50,180,24,1,BLACK ,BLUE,  "密码修改失败");
+              TXM_StringDisplay(0,70,180,16,0,BLACK ,BLUE,  "密码修改失败");
           }
           
         }

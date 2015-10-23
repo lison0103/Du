@@ -95,7 +95,7 @@ void menu_connect_to_pc_cfg(void)
       if(buff_num)
       {        
         menu_ConnectPC_display();
-        
+        //激活DU  *20151023#01#*#*
         if((buff_num == 16) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[buff_num-4]==0X23) && (display_receive_buff[buff_num-3]==0X2a) && (display_receive_buff[buff_num-2]==0X23) && (display_receive_buff[buff_num-1]==0X2a))  
         {
           
@@ -153,6 +153,7 @@ void menu_connect_to_pc_cfg(void)
               break;
 
         }
+        //进入测试模式  *#86#*
         else if((buff_num == 6) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[2]==0X38) && (display_receive_buff[3]==0X36) 
                 && (display_receive_buff[4]==0X23) && (display_receive_buff[5] == 0x2a))  
         {
@@ -170,6 +171,7 @@ void menu_connect_to_pc_cfg(void)
               break;
 
         }  
+        //校准日期时间  *#20151014*15*27*00#*
         else if((buff_num == 21) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[10]==0x2a) && (display_receive_buff[13]==0x2a) 
                 && (display_receive_buff[16]==0x2a) && (display_receive_buff[buff_num - 2]==0X23) && (display_receive_buff[buff_num - 1] == 0x2a))  
         {
@@ -203,6 +205,22 @@ void menu_connect_to_pc_cfg(void)
                             
               break;
 
+        }
+        //密码重置 *#CZMM#*
+        else if((buff_num == 8) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[2]==0X43) && (display_receive_buff[3]==0X5A) 
+                && (display_receive_buff[4]==0X4D) && (display_receive_buff[5] == 0x4D) && (display_receive_buff[6]==0X23) && (display_receive_buff[7] == 0x2a))  
+        {
+            TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, " 密码重置！");
+            
+            DU_USER_RIGHT_PASSWORD(6) = 0;
+            
+            du_sys_data_write();
+            
+            OSTimeDlyHMSM(0, 0,1,500);
+            
+            USB_Disconnect();
+            
+            break;
         }
         else
         {              
