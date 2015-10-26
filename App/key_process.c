@@ -120,6 +120,9 @@ void AppTask_KEY(void *p_arg)
     {
       KeyDataMsg = key_data;
       OSMboxPost(KeyMbox,(void *)&KeyDataMsg);
+      //@
+      ZTM_SetBuzzer(10);                          //按键按下，蜂鸣器响一声
+      //@end
     }  
     
     OSTimeDlyHMSM(0, 0,0,5);  
