@@ -3,6 +3,18 @@
 
 #define BASEMAX     43
 
+//@添加中英文翻译
+const char *Menu_Base_Para_Descrip[][2] =
+{                                          
+  {"设置","Set "},
+  {"确定"," OK"},
+  {"返回","Back"},
+  {" 选择参数           "," Selection parameter"},
+  {" 参数设置           "," parameter settings "},
+};
+
+//@end
+
 /*******************************************************************************
 *******************************************************************************/
 typedef struct paraitem     
@@ -991,10 +1003,11 @@ void menu_para_base(void)
   base_para_display();   
   //@
   ZTM_RectangleFill (0, 280,239, 319,BLACK);   
-  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");
+//  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");
+//  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
+  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[0][LANGUAGE]);
+  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, (void*)Menu_Base_Para_Descrip[3][LANGUAGE]);   
   //@end
-  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
-  
   while(1)
   {
     m_keydata = OSMboxPend(KeyMbox,10000,&err);
@@ -1039,9 +1052,11 @@ void menu_para_base(void)
         {  
             //@
             TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, "    "); 
-            TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置"); 
+//            TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");             
+//            TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
+            TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[0][LANGUAGE]);
+            TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, (void*)Menu_Base_Para_Descrip[3][LANGUAGE]);  
             //@end
-            TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
         }        
       } 
       else
@@ -1069,9 +1084,14 @@ void menu_para_base(void)
                     if(USER_RIGHT_LEVEL >= (BaseParameter[Para_Number].user_right + 1))
                     {
                       PS_Flag = 1;
-                      TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, "确定"); 
-                      TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "返回"); 
-                      TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
+                      //@
+//                      TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, "确定"); 
+//                      TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "返回"); 
+//                      TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 参数设置           "); 
+                      TXM_StringDisplay(0,122,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[1][LANGUAGE]); 
+                      TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[2][LANGUAGE]); 
+                      TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, (void*)Menu_Base_Para_Descrip[4][LANGUAGE]);   
+                      //@end
                     }
                 
             }

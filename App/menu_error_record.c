@@ -6,6 +6,16 @@
 static u8 *m_keydata,err=0;
 //static u8 error_dis_flag=0;
 static u16 Fault_Number=0,Fault_Counter=0,Fault_First_Address=0;
+
+//@添加中英文翻译
+const char *Menu_Error_Record_Descrip[][2] =
+{                                          
+  {"删除"," Del"},
+  {"查看","View"},
+};
+
+//@end
+
 /******************************************************************************* 
 *******************************************************************************/
 void error_record_display(void)
@@ -76,14 +86,16 @@ void error_record(void)
   Fault_First_Address = pt_ModBuff[265];
   
   OSTimeDlyHMSM(0, 0,0,100); 
-  
+  //@
   ZTM_RectangleFill (0, 280,239, 319,BLACK); 
-  TXM_StringDisplay(0,60,290,24,0,RED ,0, "删除"); 
+//  TXM_StringDisplay(0,60,290,24,0,RED ,0, "删除"); 
+  TXM_StringDisplay(0,60,290,24,0,RED ,0, (void*)Menu_Error_Record_Descrip[0][LANGUAGE]); 
 
   ZTM_RectangleFill (0,MER_LINE-8,239, MER_LINE+40,DGRAY); 
-  TXM_StringDisplay(0,8,MER_LINE,32,0,NAVY ,WHITE, "查看"); 
+//  TXM_StringDisplay(0,8,MER_LINE,32,0,NAVY ,WHITE, "查看"); 
+  TXM_StringDisplay(0,8,MER_LINE,32,0,NAVY ,WHITE, (void*)Menu_Error_Record_Descrip[1][LANGUAGE]); 
   TXM_StringDisplay(0,150,MER_LINE,32,0,NAVY ,WHITE, "/"); 
-  
+  //@end
   error_record_display();   
   
   while(1)

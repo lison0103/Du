@@ -8,7 +8,65 @@ static u16 ESC_Bk_Addr; //Para_Data=0,
 static u8 PS_Flag=0;
 
 const char EscRecover_Title[2][20]={"参数恢复>主板","PARA RECOVER > MB"}; 
-const char EscBackup_Title[2][20]={"扶梯参数备份", "ESC PARA BACK"}; 
+const char EscBackup_Title[2][20]={"扶梯参数备份", "ESC PARA BACKUP"}; 
+
+//@添加中英文翻译
+const char *Menu_Esc_Backup_Descrip[][2] =
+{                                          
+  {"当前备份编号：",
+   "Backup ID:    "},
+  {"当前主板无备份",
+   "Current board 0 backup"},
+  {"当前备份数量：",
+   "Current backup num:"},
+  {"星 三 角",
+   "  D/S   "},
+  {"单 变 频",
+   "VVVF only"},
+  {"复合控制",
+   "VVVF+D/S"},
+  {"双 主 机",
+   "D motor "},
+  {"单 主 机",
+   "S motor "},
+  {"上下扩展",
+   "UP+LOWER"},
+  {"下端扩展",
+   " LOWER  "},
+  {"上端扩展",
+   " UPPER "},
+  {"单 主 板",
+   "Mainboard only"},
+  {"有 间 歇",
+   " pause "},
+  {"快 慢 速",
+   "Fast Slow"},
+  {"无 节 能",
+   "No saving"},
+  {"X1&2飞轮探头测速 ",
+   "Mode1 2 sensor "},
+  {"主轴测速  2 探头 ",
+   "Mode2 2 sensor "},
+  {"主轴测速  3 探头 ",
+   "Mode3 3 sensor "},
+  {"X1&2飞轮 X6&8主轴",
+   "Mode4 4 sensor "},
+  {" 选择","Select"},
+  {"主板扶梯编号：",
+   "Mainboard Esc ID:"},
+  {"选择参数组：",
+   "Para set:   "},
+  {"无可选备份参数组",
+   "No backup para  "},
+  {"确定       ",
+   " OK        "},
+  {"     备份",
+   "   Backup"},
+  {"确认 返回",
+   " OK  Backup"},
+};
+
+//@end
 
 u16 MCRC16( uint8_t *pucFrame, uint16_t usLen )
 {
@@ -168,7 +226,8 @@ void backup_display(void)
   
   if(ESC_Bk_Addr)
   {
-    TXM_StringDisplay(0,8,115,24,1,BLUE ,LGRAY, "当前备份编号："); 
+//    TXM_StringDisplay(0,8,115,24,1,BLUE ,LGRAY, "当前备份编号："); 
+    TXM_StringDisplay(0,8,115,24,1,BLUE ,LGRAY, (void*)Menu_Esc_Backup_Descrip[0][LANGUAGE]);
 
     if(PS_Flag)
     {
@@ -185,10 +244,12 @@ void backup_display(void)
   }
   else
   {
-    TXM_StringDisplay(0,8,115,24,1,RED ,WHITE, "当前主板无备份");
+//    TXM_StringDisplay(0,8,115,24,1,RED ,WHITE, "当前主板无备份");
+    TXM_StringDisplay(0,8,120,16,1,RED ,WHITE, (void*)Menu_Esc_Backup_Descrip[1][LANGUAGE]);
   }
 
-  TXM_StringDisplay(0,8,150,24,1,BLUE ,LGRAY, "当前备份数量："); 
+//  TXM_StringDisplay(0,8,150,24,1,BLUE ,LGRAY, "当前备份数量："); 
+  TXM_StringDisplay(0,8,155,16,1,BLUE ,LGRAY, (void*)Menu_Esc_Backup_Descrip[2][LANGUAGE]); 
   TXM_DigitDisplay(0,180,150,24,1,BLACK ,LGRAY, DuSysBuff[10],4,0,ALIGN_RIGHT);
 }
 
@@ -225,57 +286,73 @@ void restore_display(u16 num,u8 *buff)
     //控制方式
     if(pbuff[3]==0)
     {
-      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "星 三 角");
+//      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "星 三 角");
+      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[3][LANGUAGE]);
     } 
     else if(pbuff[3]==1)
     {
-      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "单 变 频");
+//      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "单 变 频");
+      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[4][LANGUAGE]);
     }  
     else if(pbuff[3]==2)
     {
-      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "复合控制");
+//      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, "复合控制");
+      TXM_StringDisplay(0,8,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[5][LANGUAGE]);
     }  
     
     //主机 
     if(pbuff[5]==0)
     {
-      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "双 主 机");
+//      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "双 主 机");
+      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[6][LANGUAGE]);
     } 
     else if(pbuff[1]==1)
     {
-      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "单 主 机");
+//      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "单 主 机");
+      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[7][LANGUAGE]);
     }
     
     //主机 
     switch(pbuff[4])
     {
-    case 0:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "上下扩展");break;
-    case 1:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "下端扩展");break;
-    case 2:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "上端扩展");break;
-    case 3:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "单 主 板");break;  
+//    case 0:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "上下扩展");break;
+//    case 1:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "下端扩展");break;
+//    case 2:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "上端扩展");break;
+//    case 3:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, "单 主 板");break;  
+    case 0:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[8][LANGUAGE]);break;
+    case 1:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[9][LANGUAGE]);break;
+    case 2:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[10][LANGUAGE]);break;
+    case 3:TXM_StringDisplay(0,8,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[11][LANGUAGE]);break;  
     } 
 
     //节能
     if(pbuff[15]==0)
     {
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "有 间 歇");
+//      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "有 间 歇");
+      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[12][LANGUAGE]);
     } 
     else if(pbuff[14]==0)
     {
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "快 慢 速");
+//      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "快 慢 速");
+      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[13][LANGUAGE]);
     }
     else  
     {
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "无 节 能");
+//      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "无 节 能");
+      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[14][LANGUAGE]);
     }
     
     //测速方式 
     switch(pbuff[45])
     {
-    case 0:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "X1&2飞轮探头测速 ");break;
-    case 1:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "主轴测速  2 探头 ");break;
-    case 2:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "主轴测速  3 探头 ");break;
-    case 3:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "X1&2飞轮 X6&8主轴");break;  
+//    case 0:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "X1&2飞轮探头测速 ");break;
+//    case 1:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "主轴测速  2 探头 ");break;
+//    case 2:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "主轴测速  3 探头 ");break;
+//    case 3:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, "X1&2飞轮 X6&8主轴");break;  
+    case 0:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[15][LANGUAGE]);break;
+    case 1:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[16][LANGUAGE]);break;
+    case 2:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[17][LANGUAGE]);break;
+    case 3:TXM_StringDisplay(0,8,250,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[18][LANGUAGE]);break;      
     }
   } 
   else
@@ -297,11 +374,15 @@ void menu_para_restore(void)
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,280,239,319,BLACK);
 
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscRecover_Title[LANGUAGE]); 
+//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscRecover_Title[LANGUAGE]); 
+  TXM_StringDisplay(0,8,7,24,0,WHITE ,0, (void*)EscRecover_Title[LANGUAGE]); 
   
-  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "选择");
+//  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "选择");
+//  
+//  TXM_StringDisplay(0,8,45,24,0,NAVY ,0, "主板扶梯编号："); 
+  TXM_StringDisplay(0,168,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[19][LANGUAGE]);
   
-  TXM_StringDisplay(0,8,45,24,0,NAVY ,0, "主板扶梯编号："); 
+  TXM_StringDisplay(0,8,45,24,0,NAVY ,0, (void*)Menu_Esc_Backup_Descrip[20][LANGUAGE]);
   esc_sn_display(8,70,&ModBuff[1018],0);
   
   ZTM_BColorPutLine (108, 8, 108, 232);
@@ -311,11 +392,13 @@ void menu_para_restore(void)
 
   if(RECORD_ESC_NUMBER)
   {
-    TXM_StringDisplay(0,8,115,24,0,NAVY ,0, "选择参数组："); 
+//    TXM_StringDisplay(0,8,115,24,0,NAVY ,0, "选择参数组："); 
+    TXM_StringDisplay(0,8,115,24,0,NAVY ,0, (void*)Menu_Esc_Backup_Descrip[21][LANGUAGE]);
   } 
   else
   {
-    TXM_StringDisplay(0,8,115,24,0,RED ,0, "无可选备份参数组"); 
+//    TXM_StringDisplay(0,8,115,24,0,RED ,0, "无可选备份参数组"); 
+    TXM_StringDisplay(0,8,115,24,0,RED ,0, (void*)Menu_Esc_Backup_Descrip[22][LANGUAGE]); 
   }  
   
   if(RECORD_ESC_NUMBER)
@@ -388,7 +471,8 @@ void menu_para_restore(void)
       else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
       {         
         PS_Flag = 1; 
-        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "确定       ");
+//        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "确定       ");
+        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[23][LANGUAGE]);
       } 
     }
     
@@ -408,9 +492,11 @@ void menu_para_backup(void)
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,280,239,319,BLACK);
   
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscBackup_Title[LANGUAGE]); 
+//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscBackup_Title[LANGUAGE]); 
+  TXM_StringDisplay(0,8,7,24,0,WHITE ,0, (void*)EscBackup_Title[LANGUAGE]);
   
-  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "备份");
+//  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "备份");
+  TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[24][LANGUAGE]);
  
   //esc_sn_display(u16 x,u16 y,char *buff,u8 set_bit);
   
@@ -418,7 +504,8 @@ void menu_para_backup(void)
   
   if(RECORD_ESC_NUMBER<ESC_Bk_Addr) ESC_Bk_Addr = 0;
   
-  TXM_StringDisplay(0,8,50,24,0,NAVY ,0, "主板扶梯编号："); 
+//  TXM_StringDisplay(0,8,50,24,0,NAVY ,0, "主板扶梯编号："); 
+  TXM_StringDisplay(0,8,50,24,0,NAVY ,0, (void*)Menu_Esc_Backup_Descrip[20][LANGUAGE]);
   esc_sn_display(8,75,&ModBuff[1018],0);
   
   PS_Flag=0;  
@@ -446,11 +533,13 @@ void menu_para_backup(void)
           case KEY_F3:
           case KEY_ESC:
             PS_Flag = 0;                                  
-            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "     备份");
+//            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "     备份");
+            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[24][LANGUAGE]);
             break; 
           case KEY_F2:
             PS_Flag = 0;                                  
-            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "     备份");
+//            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "     备份");
+            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[24][LANGUAGE]);
             if(!ESC_Bk_Addr)
             {
               DuSysBuff[10]++;
@@ -469,7 +558,8 @@ void menu_para_backup(void)
       else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
       {         
         PS_Flag = 1; 
-        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "确认 返回");
+//        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, "确认 返回");
+        TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[25][LANGUAGE]);
       } 
     }
     

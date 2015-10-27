@@ -14,6 +14,15 @@ static char const esc_df_sn[20] = {"E0000-000-000   "};
 static char const EscSN_Code[40] = {"- 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
                                     
 const char EscSN_Title[2][20]={"扶梯编号设置","ESC SN CONFIG"}; 
+
+//@添加中英文翻译
+const char *SN_Under_Menu_Descrip[][2] =
+{                                          
+  {"修改","Alter"},
+  {"确定","  OK "},
+};
+
+//@end
 /*******************************************************************************
 *******************************************************************************/
 void esc_sn_displaya(u8 set_bit)
@@ -77,7 +86,10 @@ void menu_sn_cfg(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscSN_Title[LANGUAGE]);  
-  TXM_StringDisplay(0,190,290,24,0,RED ,0, "修改");
+  //@
+//  TXM_StringDisplay(0,190,290,24,0,RED ,0, "修改");
+  TXM_StringDisplay(0,180,290,24,0,RED ,0, (void*)SN_Under_Menu_Descrip[0][LANGUAGE]);
+  //@end
 
   SN_Buff = &ModBuff[1018];
   
@@ -127,7 +139,10 @@ void menu_sn_cfg(void)
             }  
             
             Para_Choice=0;
-            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+            //@
+//            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)SN_Under_Menu_Descrip[0][LANGUAGE]);
+            //@end
             
             break; 
           case KEY_SET:
@@ -135,7 +150,10 @@ void menu_sn_cfg(void)
             PS_Flag = 0;
             
             Para_Choice=0;
-            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+            //@
+//            TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)SN_Under_Menu_Descrip[0][LANGUAGE]);
+            //@end
             
             for(i=0;i<SN_LEN;i++)
             {
@@ -169,7 +187,10 @@ void menu_sn_cfg(void)
         Para_Choice = 1;
         Para_Cnum = get_sn_Cnum(SN_Buff[Para_Choice-1]);
         
-        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "确定");
+        //@
+//        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "确定");
+        TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)SN_Under_Menu_Descrip[1][LANGUAGE]);
+        //@end
         PS_Flag = 1; 
       }
       

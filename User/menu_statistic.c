@@ -35,6 +35,14 @@ const char STAT_DescripBuff[][2][21]={
 	{{"¹ÊÕÏ´ÎÊý            "}, {"Fault number        "}},	 	 	 
 };
 
+//@Ìí¼ÓÖÐÓ¢ÎÄ·­Òë
+const char *Menu_Statisitc_Descrip[2] =
+{                                          
+  "É¾³ý","Del "
+};
+
+//@end
+
 /*******************************************************************************
 *******************************************************************************/
 void display_stat_data(void)
@@ -71,7 +79,8 @@ void menu_statistic(void)
   }
   //@  
   ZTM_RectangleFill (0, 280,239, 319,BLACK); 
-  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "É¾³ý"); 
+//  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "É¾³ý"); 
+  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Statisitc_Descrip[LANGUAGE]); 
   //@end
   delete_state_display();
   

@@ -20,6 +20,17 @@ const u8 FaultRstType_Descrip[][2][21] =
   {"断电保持&人工复位","Power off locked"},
 };
 
+//@添加中英文翻译
+const char *Menu_Error_Config_Descrip[][2] =
+{                                          
+  {"故障分类","FAULT CLASS"},
+  {"切换      修改","Switch    Alter"},
+  {"故障类型","Fault type"},
+  {"复位类型","Reset Type"},
+};
+
+//@end
+
 u8 MdReadRst_En=0;
 /*******************************************************************************
 *******************************************************************************/
@@ -42,10 +53,10 @@ void error_cfg_display(void)
   TXM_StringDisplay(0,0,45,24,1,BLACK,LGRAY, (void*)a); 
   
   b_color[Para_Choice] = RED;
-  
-  TXM_StringDisplay(0,8,150,24,1,f_color[0],b_color[0], (void*)FaultType_Descrip[ErrType_Data][0]);
-  TXM_StringDisplay(0,8,210,24,1,f_color[1],b_color[1], (void*)FaultRstType_Descrip[RstPara_Data][0]);
-    
+  //@
+  TXM_StringDisplay(0,8,150,24,1,f_color[0],b_color[0], (void*)FaultType_Descrip[ErrType_Data][LANGUAGE]);
+  TXM_StringDisplay(0,8,210,24,1,f_color[1],b_color[1], (void*)FaultRstType_Descrip[RstPara_Data][LANGUAGE]);
+  //@end  
 }
 
 /*******************************************************************************
@@ -63,15 +74,21 @@ void menu_error_cfg(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   //@
   OSTimeDlyHMSM(0, 0,0,10);
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "故障分类");
+//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "故障分类");
+//  
+//  TXM_StringDisplay(0,60,290,24,0,RED ,0, "切换      修改");
+//  
+//  TXM_StringDisplay(0,12,120,24,0,BLACK , 0, "故障类型");
+//  
+//  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, "复位类型");
+  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Menu_Error_Config_Descrip[0][LANGUAGE]);
+  
+  TXM_StringDisplay(0,60,290,24,0,RED ,0, (void*)Menu_Error_Config_Descrip[1][LANGUAGE]);
+  
+  TXM_StringDisplay(0,12,120,24,0,BLACK , 0, (void*)Menu_Error_Config_Descrip[2][LANGUAGE]);
+  
+  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, (void*)Menu_Error_Config_Descrip[3][LANGUAGE]);  
   //@end
-  
-  TXM_StringDisplay(0,60,290,24,0,RED ,0, "切换      修改");
-  
-  TXM_StringDisplay(0,12,120,24,0,BLACK , 0, "故障类型");
-  
-  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, "复位类型");
-  
   while(MdReadRst_En<2)
   {
     OSTimeDlyHMSM(0, 0,0,10);

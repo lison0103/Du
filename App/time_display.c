@@ -7,6 +7,17 @@ static u8 Para_Choice=0,PS_Flag=0,Para_Data[6];
 u8 temp_date[6];
 u8 SET_FLAG = 0;
 //@end
+
+//@添加中英文翻译
+const char *Menu_Time_Display_Descrip[][2] =
+{                                          
+  {"时间日期设置","TIME & DATE"},
+  {"下传","Download"},
+  {"设置","Set"},
+  {"确定"," OK"},
+};
+
+//@end
 /*******************************************************************************
 *******************************************************************************/
 void time_display_oneline(u16 dw,u16 x,u16 y, u8 *tb, u8 set_bit)
@@ -155,10 +166,14 @@ void menu_time_set(void)
   ZTM_RectangleFill (0,280,239,319,BLACK);
   //@
   OSTimeDlyHMSM(0, 0,0,10);
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "时间日期设置");  
+//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, "时间日期设置");  
+//  
+//  TXM_StringDisplay(0,65,290,24,1,RED ,BLACK, "下传");
+//  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Menu_Time_Display_Descrip[0][LANGUAGE]);  
   
-  TXM_StringDisplay(0,65,290,24,1,RED ,BLACK, "下传");
-  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+  TXM_StringDisplay(0,65,290,24,1,RED ,BLACK, (void*)Menu_Time_Display_Descrip[1][LANGUAGE]);
+  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)Menu_Time_Display_Descrip[2][LANGUAGE]);  
   //@end
   Para_Choice=0;
   PS_Flag=0;  
@@ -274,7 +289,8 @@ void menu_time_set(void)
           
           Para_Choice=0;
           //@
-          TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+//          TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "设置");
+          TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)Menu_Time_Display_Descrip[2][LANGUAGE]);
           //@end
           
           //@获取当前设置时间,记录为上次设置日期
@@ -310,7 +326,8 @@ void menu_time_set(void)
           Para_Data[i] = TimeBuff[i];
         }
         //@
-        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "确定");
+//        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "确定");
+        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, (void*)Menu_Time_Display_Descrip[3][LANGUAGE]);
         //@end
         PS_Flag = 1; 
         

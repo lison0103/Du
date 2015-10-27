@@ -1,6 +1,8 @@
 
 #include "includes.h"
 
+#include "iap.h"
+
 extern void GetCpuID(void);
 extern void du_hardware_test(void);
 
@@ -10,15 +12,19 @@ extern void du_hardware_test(void);
 *******************************************************************************/
 #if VCP_TEST
 static u8 Para_Choice=0,PS_Flag=0;
-#endif
 
 const u8 *Menu_ConnectPC_Item[][2] =
 {                                                           
   {" 01 发送数据    "," 01 CHINESE/中文  "},
   {" 02 接收再发送  "," 02 ENGLISH/英文  "},
 };
-
+#endif
 const char ConnectPC_Title[2][20]={"连接电脑","Connect"}; 
+
+const char *Menu_Connect_To_PC_Descrip[][2] =
+{                                          
+  {"返回","Back"},
+};
 
 u8 display_receive_buff[64];
 u32 buff_num;
@@ -70,7 +76,7 @@ void menu_connect_to_pc_cfg(void)
 #if VCP_TEST  
   TXM_StringDisplay(0,190,290,24,0,RED ,0, "选择");
 #else
-  TXM_StringDisplay(0,190,290,24,0,RED ,0, "返回");
+  TXM_StringDisplay(0,190,290,24,0,RED ,0, (void*)Menu_Connect_To_PC_Descrip[0][LANGUAGE]);
 #endif
 
 #if VCP_TEST  
@@ -222,6 +228,29 @@ void menu_connect_to_pc_cfg(void)
             
             break;
         }
+        //进入升级模式，跳到loader *#GJSJ#*
+        else if((buff_num == 8) && (display_receive_buff[0] == 0x2a) && (display_receive_buff[1]==0X23) && (display_receive_buff[2]==0X47) && (display_receive_buff[3]==0X4A) 
+                && (display_receive_buff[4]==0X53) && (display_receive_buff[5] == 0x4A) && (display_receive_buff[6]==0X23) && (display_receive_buff[7] == 0x2a))  
+        {
+            TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, " 进入升级模式！");
+                        
+            OSTimeDlyHMSM(0, 0,1,500);
+            
+            USB_Disconnect();
+            
+            if(((*(vu32*)(FLASH_LOADER_ADDR+4))&0xFF000000)==0x08000000)//判断是否为0X08XXXXXX.
+            {	 
+              iap_load_app(FLASH_LOADER_ADDR);
+            }
+            else 
+            {
+//              printf("非FLASH应用程序,无法执行!\r\n");
+//              TXM_StringDisplay(0,20,250,24,1,RED ,BLUE, (void*)Status_Item_Descrip[7][LANGUAGE]);//状态：无APP程序                   
+            }	 
+//            iap_load_app(FLASH_LOADER_ADDR);
+            
+            break;
+        }        
         else
         {              
             //清空buffer

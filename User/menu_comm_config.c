@@ -47,6 +47,16 @@ const char EscStateDisItem[][2][21]=
 static u16 *CommPara_Buff,Para_Data=0;
 static u16 Para_Number=0,Para_Counter=0,PS_Flag=0;
 
+//@添加中英文翻译
+const char *Menu_Comm_Config_Descrip[][2] =
+{                                          
+  {"通信配置","CMS MODBUS"},
+  {"删除"," Del"},
+
+};
+
+//@end
+
 /*******************************************************************************
 *******************************************************************************/
 void comm_cfg_display_coed_str(u16 wid_num,u16 citem)
@@ -152,11 +162,14 @@ void menu_comm_cfg(void)
   OSTimeDlyHMSM(0, 0,0,10);
   
   comm_cfg_display();
-  
-  TXM_StringDisplay(0,8,5,24,0,RED ,0, "通信配置"); 
+  //@
+//  TXM_StringDisplay(0,8,5,24,0,RED ,0, "通信配置"); 
+  TXM_StringDisplay(0,8,5,24,0,RED ,0, (void*)Menu_Comm_Config_Descrip[0][LANGUAGE]); 
   OSTimeDlyHMSM(0, 0,0,50); 
   ZTM_RectangleFill (0, 285,239, 319,BLACK); 
-  TXM_StringDisplay(0,60,290,24,0,RED ,0, "删除"); 
+//  TXM_StringDisplay(0,60,290,24,0,RED ,0, "删除"); 
+  TXM_StringDisplay(0,60,290,24,0,RED ,0, (void*)Menu_Comm_Config_Descrip[1][LANGUAGE]); 
+  //@end
   
   while(1)
   {

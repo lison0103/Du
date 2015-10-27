@@ -1,6 +1,17 @@
 
 #include "includes.h"
 
+//@添加中英文翻译
+const char *Menu_IO_Config_Descrip[][2] =
+{                                          
+  {"端子号: ","Pin  No.:"},
+  {"功能号: ","Func No.:"},
+  {"配置功能说明: ","Configuration Features:"},
+  {"修改","Alter"},
+};
+
+//@end
+
 /*******************************************************************************
 *******************************************************************************/
 typedef struct paraiocgcitem               
@@ -1832,16 +1843,20 @@ void menu_para_io(u8 item)
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,0,239,39,NAVY);
   OSTimeDlyHMSM(0, 0,0,10);
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)IO_CfgItem_Descrip[item][LANGUAGE]); 
-
-  TXM_StringDisplay(0,8,50,32,0,NAVY ,0, "端子号: "); 
-  TXM_StringDisplay(0,8,90,32,0,NAVY ,0, "功能号: "); 
-  TXM_StringDisplay(0,8,135,24,0,NAVY ,0, "配置功能说明: "); 
-
+  //@
+//  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)IO_CfgItem_Descrip[item][LANGUAGE]); 
+//  TXM_StringDisplay(0,8,50,32,0,NAVY ,0, "端子号: "); 
+//  TXM_StringDisplay(0,8,90,32,0,NAVY ,0, "功能号: "); 
+//  TXM_StringDisplay(0,8,135,24,0,NAVY ,0, "配置功能说明: "); 
+  TXM_StringDisplay(0,8,7,24,0,WHITE ,0, (void*)IO_CfgItem_Descrip[item][LANGUAGE]); 
+  TXM_StringDisplay(0,8,50,24,0,NAVY ,0, (void*)Menu_IO_Config_Descrip[0][LANGUAGE]); 
+  TXM_StringDisplay(0,8,90,24,0,NAVY ,0, (void*)Menu_IO_Config_Descrip[1][LANGUAGE]); 
+  TXM_StringDisplay(0,8,135,16,0,NAVY ,0, (void*)Menu_IO_Config_Descrip[2][LANGUAGE]); 
   
   ZTM_RectangleFill (0,280,239,319,BLACK);
-  //@
-  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+  
+//  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "修改");
+  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)Menu_IO_Config_Descrip[3][LANGUAGE]);
   //@end
 //  TXM_FillTextWidget (360, (void*)IO_CfgItem_Descrip[item][LANGUAGE]);
   
