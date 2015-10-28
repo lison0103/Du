@@ -41,10 +41,10 @@ const char EscStateDescripBuff[][2][21]={
 
 const char *Rt_Speed_Descrip[][2] =
 {                                          
-  {"电机频率","Motor frequency"},
-  {"主轴比值","Spindle ratio"},
-  {"扶手比值","Armrest ratio"},
-  {"制动距离","Braking distance"},
+  {"电机频率","Motor freq    "},
+  {"主轴比值","Spindle ratio "},
+  {"扶手比值","Armrest ratio "},
+  {"制动距离","Braking length"},
 
 };
 
@@ -287,7 +287,10 @@ void display_rt_speed(void)
       //@    
 //    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "电机频率"); 
 //    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, "电机频率"); 
-    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[0][LANGUAGE]);
+    if(LANGUAGE)
+      TXM_StringDisplay(0,7,148,16,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[0][LANGUAGE]);
+    else
+      TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[0][LANGUAGE]);
     TXM_DigitDisplay(0,120,148,24,1,BLACK ,LGRAY, rt_para[0],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,148,24,1,BLACK ,LGRAY, rt_para[1],4,0,ALIGN_RIGHT);    
   } 
@@ -296,14 +299,20 @@ void display_rt_speed(void)
   {
 //    TXM_StringDisplay(0,12,148,24,0,BLACK ,0, "主轴比值"); 
 //    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, "主轴比值"); 
-    TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
+    if(LANGUAGE)
+      TXM_StringDisplay(0,7,148,16,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
+    else
+      TXM_StringDisplay(0,12,148,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
     TXM_DigitDisplay(0,120,148,24,1,BLACK ,LGRAY, rt_para[6],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,148,24,1,BLACK ,LGRAY, rt_para[7],4,0,ALIGN_RIGHT);    
   }  
        
 //  TXM_StringDisplay(0,12,180,24,0,BLACK ,0, "扶手比值");   
 //  TXM_StringDisplay(0,12,180,24,1,BLACK ,DGRAY, "扶手比值");
-  TXM_StringDisplay(0,12,180,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[2][LANGUAGE]);
+  if(LANGUAGE)
+    TXM_StringDisplay(0,7,180,16,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[2][LANGUAGE]);
+  else
+    TXM_StringDisplay(0,12,180,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[2][LANGUAGE]);
   TXM_DigitDisplay(0,120,180,24,1,BLACK ,LGRAY, rt_para[2],4,0,ALIGN_RIGHT);
   TXM_DigitDisplay(0,180,180,24,1,BLACK ,LGRAY, rt_para[3],4,0,ALIGN_RIGHT);
   
@@ -311,14 +320,20 @@ void display_rt_speed(void)
   {
 //    TXM_StringDisplay(0,12,212,24,0,BLACK ,0, "主轴比值"); 
 //    TXM_StringDisplay(0,12,212,24,1,BLACK ,DGRAY, "主轴比值"); 
-    TXM_StringDisplay(0,12,212,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
+    if(LANGUAGE)
+      TXM_StringDisplay(0,7,212,16,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
+    else
+      TXM_StringDisplay(0,12,212,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[1][LANGUAGE]); 
     TXM_DigitDisplay(0,120,212,24,1,BLACK ,LGRAY, rt_para[6],4,0,ALIGN_RIGHT);
     TXM_DigitDisplay(0,180,212,24,1,BLACK ,LGRAY, rt_para[7],4,0,ALIGN_RIGHT);    
   }  
   
 //  TXM_StringDisplay(0,12,244,24,0,BLACK ,0, "制动距离");     
 //  TXM_StringDisplay(0,12,244,24,1,BLACK ,DGRAY, "制动距离"); 
-  TXM_StringDisplay(0,12,244,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[3][LANGUAGE]); 
+  if(LANGUAGE)
+    TXM_StringDisplay(0,7,244,16,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[3][LANGUAGE]); 
+  else
+    TXM_StringDisplay(0,12,244,24,1,BLACK ,DGRAY, (void*)Rt_Speed_Descrip[3][LANGUAGE]); 
   TXM_DigitDisplay(0,120,244,24,1,BLACK ,LGRAY, rt_para[4],4,0,ALIGN_RIGHT);
   TXM_DigitDisplay(0,180,244,24,1,BLACK ,LGRAY, rt_para[5],4,0,ALIGN_RIGHT);
   //@end

@@ -245,11 +245,17 @@ void backup_display(void)
   else
   {
 //    TXM_StringDisplay(0,8,115,24,1,RED ,WHITE, "当前主板无备份");
-    TXM_StringDisplay(0,8,120,16,1,RED ,WHITE, (void*)Menu_Esc_Backup_Descrip[1][LANGUAGE]);
+    if(LANGUAGE)
+      TXM_StringDisplay(0,8,120,16,1,RED ,WHITE, (void*)Menu_Esc_Backup_Descrip[1][LANGUAGE]);
+    else
+      TXM_StringDisplay(0,8,115,24,1,RED ,WHITE, (void*)Menu_Esc_Backup_Descrip[1][LANGUAGE]);
   }
 
 //  TXM_StringDisplay(0,8,150,24,1,BLUE ,LGRAY, "当前备份数量："); 
-  TXM_StringDisplay(0,8,155,16,1,BLUE ,LGRAY, (void*)Menu_Esc_Backup_Descrip[2][LANGUAGE]); 
+  if(LANGUAGE)
+    TXM_StringDisplay(0,8,155,16,1,BLUE ,LGRAY, (void*)Menu_Esc_Backup_Descrip[2][LANGUAGE]); 
+  else
+    TXM_StringDisplay(0,8,150,24,1,BLUE ,LGRAY, (void*)Menu_Esc_Backup_Descrip[2][LANGUAGE]); 
   TXM_DigitDisplay(0,180,150,24,1,BLACK ,LGRAY, DuSysBuff[10],4,0,ALIGN_RIGHT);
 }
 
