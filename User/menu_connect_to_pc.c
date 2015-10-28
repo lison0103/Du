@@ -6,7 +6,7 @@
 extern void GetCpuID(void);
 extern void du_hardware_test(void);
 
-//#define VCP_TEST
+//#define VCP_TEST        1
 
 /*******************************************************************************
 *******************************************************************************/
@@ -115,7 +115,8 @@ void menu_connect_to_pc_cfg(void)
               
               validity_date = 0;
               USER_RIGHT_LEVEL = 0;
-          
+              
+#if !defined(ACTIVE_NEW)          
               //存储激活码日期
               DU_SERIAL_NUMBER(8) = display_receive_buff[10] - 0x30;
               DU_SERIAL_NUMBER(9) = display_receive_buff[11] - 0x30;
@@ -149,7 +150,7 @@ void menu_connect_to_pc_cfg(void)
               GetCpuID();
               
               du_sys_data_write();
-              
+#endif              
               TXM_StringDisplay(0,20,240,16,1,YELLOW ,BLUE, "激活成功！");
               OSTimeDlyHMSM(0, 0,1,500);
               

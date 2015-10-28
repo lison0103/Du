@@ -11,28 +11,29 @@
 #define VDPASS_DES_MAX  10
 #define VDPASS_LEN      8
 
-
-const char validity_disp_item[][25]={
-"     忽略 输入",//0
-"   Ignore Input",
-" 剩余使用有效期",//2
-"Validity  Date",
-"天",//4
-"Day",
-"    已注册次数 ：",//6
-"Registered number:",
-"   注  册  码 ：",//8
-"Registration code:",
-"     忽略 确定",//10
-"    Ignore  OK ",
-"密码正确",//12
-"  RIGHT ",
-"密码错误",//14
-"  Error ",
-"180 天",//16
-"180 Day",
-"    序列号： ",//18
-"  Serial Num:"
+const char *validity_disp_item[][2]={
+  {"     忽略 输入",//0
+  "   Ignore Input"},
+  {" 剩余使用有效期",//1
+  "Validity  Date"},
+{"天",//2
+"Day"},
+{"    已注册次数 ：",//3
+"Registered number:"},
+{"   注  册  码 ：",//4
+"Registration code:"},
+{"     忽略 确定",//5
+"    Ignore  OK "},
+{"密码正确",//6
+"  RIGHT "},
+{"密码错误",//7
+"  Error "},
+{"180 天",//8
+"180 Day"},
+{"    序列号： ",//9
+"  Serial Num:"},
+{"    验证码： ",//10
+"Verification code:"},
 }; 
 
 static char const Password_Code[11] = {"-0123456789"};
@@ -54,13 +55,40 @@ u8 m_buff_temp[3];
 *******************************************************************************/
 void GetCpuID(void)
 {
+  
+#if !defined(ACTIVE_NEW)  
     u32 Lock_Code;
+#endif    
     u32 CpuID[3];
     
     //获取CPU唯一ID
     CpuID[0]=*(vu32*)(0x1ffff7e8);
     CpuID[1]=*(vu32*)(0x1ffff7ec);
     CpuID[2]=*(vu32*)(0x1ffff7f0);
+    
+#if defined(ACTIVE_NEW)
+    
+    //CPUID换算成16位数
+//    Lock_Code=(CpuID[0]>>8)+(CpuID[1]>>8)+(CpuID[2]>>8);
+    
+    DU_SERIAL_NUMBER(0) =  (CpuID[0]>>16)/10000;
+    DU_SERIAL_NUMBER(1) = ((CpuID[0]>>16)%10000)/1000;
+    DU_SERIAL_NUMBER(2) = ((CpuID[0]>>16)%1000)/100;
+    DU_SERIAL_NUMBER(3) = ((CpuID[0]>>16)%100)/10;
+    DU_SERIAL_NUMBER(4) = ((CpuID[0]>>16)%10)/1;
+    DU_SERIAL_NUMBER(5) =  (CpuID[1]>>16)/10000;
+    DU_SERIAL_NUMBER(6) = ((CpuID[1]>>16)%10000)/1000;
+    DU_SERIAL_NUMBER(7) = ((CpuID[1]>>16)%1000)/100;
+    DU_SERIAL_NUMBER(8) = ((CpuID[1]>>16)%100)/10;
+    DU_SERIAL_NUMBER(9) = ((CpuID[1]>>16)%10)/1;
+    DU_SERIAL_NUMBER(10) =  (CpuID[2]>>13)/100000;
+    DU_SERIAL_NUMBER(11) = ((CpuID[2]>>13)%100000)/10000;
+    DU_SERIAL_NUMBER(12) = ((CpuID[2]>>13)%10000)/1000;
+    DU_SERIAL_NUMBER(13) = ((CpuID[2]>>13)%1000)/100;
+    DU_SERIAL_NUMBER(14) = ((CpuID[2]>>13)%100)/10;
+    DU_SERIAL_NUMBER(15) = ((CpuID[2]>>13)%10)/1;
+
+#else
     
     //CPUID换算成8位数
     Lock_Code=(CpuID[0]>>8)+(CpuID[1]>>8)+(CpuID[2]>>8);
@@ -72,7 +100,9 @@ void GetCpuID(void)
     DU_SERIAL_NUMBER(4) = (Lock_Code%10000)/1000;
     DU_SERIAL_NUMBER(5) = (Lock_Code%1000)/100;
     DU_SERIAL_NUMBER(6) = (Lock_Code%100)/10;
-    DU_SERIAL_NUMBER(7) = (Lock_Code%10)/1;        
+    DU_SERIAL_NUMBER(7) = (Lock_Code%10)/1;   
+    
+#endif
 }
 
 /*******************************************************************************
@@ -169,7 +199,10 @@ static u8 get_password_num(u8 dat)
 void validity_cfg(void)
 {
   u8  i,*m_keydata,err=0;
-                 
+ 
+#if defined(ACTIVE_NEW)
+      GetCpuID();
+#endif                 
       //已注册次数
       PASS_Temp[0] = DU_REGISTERED_NUMBER/10 + 0x30;
       PASS_Temp[1] = DU_REGISTERED_NUMBER%10 + 0x30;;
@@ -197,18 +230,22 @@ void validity_cfg(void)
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 280,239, 319,BLACK); 
-      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, (void*)validity_disp_item[0 + LANGUAGE]);//"     忽略 输入"
+      TXM_StringDisplay(0,60,290,24,0,RED ,WHITE, (void*)validity_disp_item[0][LANGUAGE]);//"     忽略 输入"
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 42,239, 66,BLUE); 
-      TXM_StringDisplay(0,20,42,24,1,YELLOW ,BLUE, (void*)validity_disp_item[2 + LANGUAGE]);//" 剩余使用有效期"
+      TXM_StringDisplay(0,20,42,24,1,YELLOW ,BLUE, (void*)validity_disp_item[1][LANGUAGE]);//" 剩余使用有效期"
       ZTM_RectangleFill (0, 66,239, 90,DGRAY); 
       TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)m_buff_temp);
-      TXM_StringDisplay(0,148,66,24,0,BLACK ,DGRAY, (void*)validity_disp_item[4 + LANGUAGE]);//"天"
+      TXM_StringDisplay(0,148,66,24,0,BLACK ,DGRAY, (void*)validity_disp_item[2][LANGUAGE]);//"天"
       OSTimeDlyHMSM(0, 0,0,10);
 
       ZTM_RectangleFill (0, 90,239, 114,BLUE); 
-      TXM_StringDisplay(0,20,90,24,1,YELLOW ,BLUE, (void*)validity_disp_item[18 + LANGUAGE]);//"序列号："
+#if defined(ACTIVE_NEW)
+      TXM_StringDisplay(0,20,90,24,1,YELLOW ,BLUE, (void*)validity_disp_item[10][LANGUAGE]);//"验证码:"
+#else
+      TXM_StringDisplay(0,20,90,24,1,YELLOW ,BLUE, (void*)validity_disp_item[9][LANGUAGE]);//"序列号："
+#endif
       ZTM_RectangleFill (0, 114,239, 138,DGRAY); 
       
       extern u8 SN[16];
@@ -220,13 +257,13 @@ void validity_cfg(void)
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 138,239, 162,BLUE); 
-      TXM_StringDisplay(0,20,138,24,1,YELLOW ,BLUE, (void*)validity_disp_item[6 + LANGUAGE]);//"    已注册次数 ："
+      TXM_StringDisplay(0,20,138,24,1,YELLOW ,BLUE, (void*)validity_disp_item[3][LANGUAGE]);//"    已注册次数 ："
       ZTM_RectangleFill (0, 162,239, 186,DGRAY); 
       TXM_StringDisplay(0,110,162,24,1,BLACK ,DGRAY, (void*)PASS_Temp);
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 186,239, 210,BLUE); 
-      TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[8 + LANGUAGE]);//"   动 态 密 码 ："
+      TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[4][LANGUAGE]);//"   动 态 密 码 ："
       ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
       OSTimeDlyHMSM(0, 0,0,10);
 
@@ -268,8 +305,8 @@ void validity_cfg(void)
               
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);//"密码正确"
-              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);//"180 天"
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[6][LANGUAGE]);//"密码正确"
+              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[8][LANGUAGE]);//"180 天"
               OSTimeDlyHMSM(0, 0,2,0);
               break;
           }
@@ -292,8 +329,8 @@ void validity_cfg(void)
                             
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[12 + LANGUAGE]);//"密码正确"
-              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[16 + LANGUAGE]);//"180 天"
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[6][LANGUAGE]);//"密码正确"
+              TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[8][LANGUAGE]);//"180 天"
               OSTimeDlyHMSM(0, 0,2,0);
               break;
           }
@@ -301,7 +338,7 @@ void validity_cfg(void)
           else
           {
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[14 + LANGUAGE]);//"密码错误"
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[7][LANGUAGE]);//"密码错误"
           }     
         }    
         
@@ -331,7 +368,7 @@ void validity_cfg(void)
                 }  
                 
                 Para_Choice=0;
-                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);//忽略 输入
+                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0][LANGUAGE]);//忽略 输入
                 
                 break; 
               case KEY_SET:
@@ -339,7 +376,7 @@ void validity_cfg(void)
                 PS_Flag = 0;
                 
                 Para_Choice=0;
-                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0 + LANGUAGE]);//忽略 输入
+                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[0][LANGUAGE]);//忽略 输入
                 input_flag = 1;               
 
                 break; 
@@ -370,7 +407,7 @@ void validity_cfg(void)
               Para_Choice = 1;
               Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
               
-              TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[10 + LANGUAGE]);//忽略 确定
+              TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[5][LANGUAGE]);//忽略 确定
               PS_Flag = 1; 
           }
           

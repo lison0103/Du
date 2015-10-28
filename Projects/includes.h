@@ -107,6 +107,8 @@
 
 //@使用有效期、序列号需要保存的数据
 
+#define ACTIVE_NEW
+
 //使用有效期标志
 #define USER_RIGHT_VALIDITY             DuSysBuff[12]
 
