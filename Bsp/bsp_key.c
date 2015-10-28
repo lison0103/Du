@@ -114,6 +114,10 @@ u16 key_scan(void)
 
       return((u16)key_temp);
   }
+  else
+  {
+      return 0;
+  }
   //@end
 }
 

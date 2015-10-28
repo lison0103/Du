@@ -299,8 +299,8 @@ void menu_password_cfg(void)
               break;
           }
         }
-        else if( PASS_Temp[0] == (1 + 0x30) && PASS_Temp[1] == (1 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
-                && PASS_Temp[3] == (1 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (1 + 0x30) )
+        else if( PASS_Temp[0] == (3 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
+                && PASS_Temp[3] == (3 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (2 + 0x30) )
         {
           USER_RIGHT_LEVEL = 1;
           DU_USER_RIGHT_LEVEL = 1;

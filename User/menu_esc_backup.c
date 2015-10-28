@@ -20,37 +20,37 @@ const char *Menu_Esc_Backup_Descrip[][2] =
   {"当前备份数量：",
    "Current backup num:"},
   {"星 三 角",
-   "  D/S   "},
+   "  D/S    "},
   {"单 变 频",
-   "VVVF only"},
+   "  VVVF   "},
   {"复合控制",
-   "VVVF+D/S"},
+   "VVVF+D/S "},
   {"双 主 机",
-   "D motor "},
+   " D motor "},
   {"单 主 机",
-   "S motor "},
+   "S motor  "},
   {"上下扩展",
-   "UP+LOWER"},
+   " UP+LOWER"},
   {"下端扩展",
-   " LOWER  "},
+   "  LOWER  "},
   {"上端扩展",
-   " UPPER "},
+   "  UPPER  "},
   {"单 主 板",
-   "Mainboard only"},
+   "Mainboard"},
   {"有 间 歇",
-   " pause "},
+   "  pause  "},
   {"快 慢 速",
    "Fast Slow"},
   {"无 节 能",
    "No saving"},
-  {"X1&2飞轮探头测速 ",
-   "Mode1 2 sensor "},
-  {"主轴测速  2 探头 ",
-   "Mode2 2 sensor "},
-  {"主轴测速  3 探头 ",
-   "Mode3 3 sensor "},
-  {"X1&2飞轮 X6&8主轴",
-   "Mode4 4 sensor "},
+  {"X1&2飞轮探头测速  ",
+   "Mode1 2 sensor    "},
+  {"主轴测速  2 探头  ",
+   "Mode2 2 sensor    "},
+  {"主轴测速  3 探头  ",
+   "Mode3 3 sensor    "},
+  {"X1&2飞轮 X6&8主轴 ",
+   "Mode4 4 sensor    "},
   {" 选择","Select"},
   {"主板扶梯编号：",
    "Mainboard Esc ID:"},
@@ -304,12 +304,12 @@ void restore_display(u16 num,u8 *buff)
     if(pbuff[5]==0)
     {
 //      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "双 主 机");
-      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[6][LANGUAGE]);
+      TXM_StringDisplay(0,130,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[6][LANGUAGE]);
     } 
     else if(pbuff[1]==1)
     {
 //      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, "单 主 机");
-      TXM_StringDisplay(0,115,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[7][LANGUAGE]);
+      TXM_StringDisplay(0,130,190,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[7][LANGUAGE]);
     }
     
     //主机 
@@ -329,17 +329,17 @@ void restore_display(u16 num,u8 *buff)
     if(pbuff[15]==0)
     {
 //      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "有 间 歇");
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[12][LANGUAGE]);
+      TXM_StringDisplay(0,130,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[12][LANGUAGE]);
     } 
     else if(pbuff[14]==0)
     {
 //      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "快 慢 速");
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[13][LANGUAGE]);
+      TXM_StringDisplay(0,130,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[13][LANGUAGE]);
     }
     else  
     {
 //      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, "无 节 能");
-      TXM_StringDisplay(0,115,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[14][LANGUAGE]);
+      TXM_StringDisplay(0,130,220,24,1,YELLOW ,DGRAY, (void*)Menu_Esc_Backup_Descrip[14][LANGUAGE]);
     }
     
     //测速方式 
