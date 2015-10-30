@@ -36,7 +36,11 @@ const char *input_item[][2]={
   {"   密码修改成功      ",
    "modified successfully"},
   {"   密码修改失败      ",
-   "modification fails   "}
+   "modification fails   "},
+  {"     密码正确     ",//13
+   "     Correct     "},
+  {"     密码错误     ",
+   "     Wrong       "}
 }; 
 
 u8 USER_RIGHT_LEVEL = 0;
@@ -108,6 +112,7 @@ void menu_password_cfg(void)
   ZTM_RectangleFill (0,40,239,279,LGRAY);
   OSTimeDlyHMSM(0, 0,0,10);
   ZTM_RectangleFill (0,280,239,319,BLACK);
+  OSTimeDlyHMSM(0, 0,0,10);
   
   TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)Password_Title[LANGUAGE]);  
   TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
@@ -160,6 +165,10 @@ void menu_password_cfg(void)
   PS_Flag=0;  
   
   menu_password_display(Para_Choice);
+
+//////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////while(1)///////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
   
   while(1)
   {
@@ -204,75 +213,79 @@ void menu_password_cfg(void)
     {
       if(PS_Flag)
       {
-        switch(m_keydata[0])
-        {
-          case KEY_ESC:
-            
-            PS_Flag = 0;
+          switch(m_keydata[0])
+          {
+            case KEY_ESC:
+              
+              PS_Flag = 0;
 
-            for(i=0;i<PASS_LEN;i++)
-            {
-              PASS_Temp[i] = PASS_Buff[i];
-            }  
-            
-            Para_Choice=0;
-            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
-            
-            break; 
-          case KEY_SET:
-          case KEY_F3:  
-            PS_Flag = 0;
-            Set_Flag = 1;
-            Para_Choice=0;
-            TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
-            
-            break; 
-            
-          case KEY_F2:
-//            ChangePassword_Flag++;
-            break;
-          case KEY_UP:
-            
-            if(Para_Cnum < PASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
-            PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
-            break; 
-          case KEY_DOWN:
-            
-            if(Para_Cnum) Para_Cnum--;else Para_Cnum=PASS_DES_MAX;
-            PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
-            break; 
-          case KEY_LEFT:
-            if(Para_Choice>1) Para_Choice--; 
-            else Para_Choice = PASS_LEN; 
-            Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
-            break; 
-          case KEY_RIGHT:
-            if(Para_Choice<PASS_LEN) Para_Choice++;
-            else Para_Choice = 1; 
-            Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
-            break; 
-        }  
+              for(i=0;i<PASS_LEN;i++)
+              {
+                PASS_Temp[i] = PASS_Buff[i];
+              }  
+              
+              Para_Choice=0;
+              TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
+              
+              break; 
+            case KEY_SET:
+            case KEY_F3:  
+              if(ChangePassword_Flag != 0)
+              {
+                  PS_Flag = 0;
+                  Set_Flag = 1;
+                  Para_Choice=0;                            
+              }
+              else
+              {
+                  PS_Flag = 0;
+                  Set_Flag = 1;
+                  Para_Choice=0;
+                  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
+              }
+              break; 
+              
+            case KEY_UP:              
+              if(Para_Cnum < PASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
+              PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+              break; 
+            case KEY_DOWN:              
+              if(Para_Cnum) Para_Cnum--;else Para_Cnum=PASS_DES_MAX;
+              PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+              break; 
+            case KEY_LEFT:
+              if(Para_Choice>1) Para_Choice--; 
+              else Para_Choice = PASS_LEN; 
+              Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+              break; 
+            case KEY_RIGHT:
+              if(Para_Choice<PASS_LEN) Para_Choice++;
+              else Para_Choice = 1; 
+              Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+              break; 
+          }  
       } 
-      else if(m_keydata[0]==KEY_F2)
+      else if((m_keydata[0]==KEY_F2) || (m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
       {
-          TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[8][LANGUAGE]);
-          ChangePassword_Flag = 1;
-      }
-      else if((m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
-      {
-        Para_Choice = 1;
-        Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+          if(m_keydata[0]==KEY_F2)
+          {
+              TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[8][LANGUAGE]);
+              ChangePassword_Flag = 1;
+          }
         
-        TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[1][LANGUAGE]);//确认
-        TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "               ");
-        PS_Flag = 1; 
-        
-        PASS_Buff = Temp;
-        
-        for(i=0;i<6;i++)
-        {
-          PASS_Temp[i] = PASS_Buff[i];
-        } 
+          Para_Choice = 1;
+          Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+          
+          TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[1][LANGUAGE]);//确认
+          TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "               ");
+          PS_Flag = 1; 
+          
+          PASS_Buff = Temp;
+          
+          for(i=0;i<6;i++)
+          {
+            PASS_Temp[i] = PASS_Buff[i];
+          } 
       }
      
       menu_password_display(Para_Choice);
@@ -280,92 +293,138 @@ void menu_password_cfg(void)
       //验证密码是否正确
       if(Set_Flag)
       {
-        Set_Flag = 0;
-        if( PASS_Temp[0] == DU_USER_RIGHT_PASSWORD(0) && PASS_Temp[1] == DU_USER_RIGHT_PASSWORD(1) && PASS_Temp[2] == DU_USER_RIGHT_PASSWORD(2) 
-           && PASS_Temp[3] == DU_USER_RIGHT_PASSWORD(3) && PASS_Temp[4] == DU_USER_RIGHT_PASSWORD(4) && PASS_Temp[5] == DU_USER_RIGHT_PASSWORD(5) )
-        {
-          if(ChangePassword_Flag)
-          {
-              ChangePassword_Flag = 2;
-              TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[9][LANGUAGE]);
-          }
-          else
-          {
-              USER_RIGHT_LEVEL = 2;
-              DU_USER_RIGHT_LEVEL = 2;
-              DU_INPUT_PASS_DATE(0) = TimeBuff[2];
-              DU_INPUT_PASS_DATE(1) = TimeBuff[3];
-              du_sys_data_write();
-              break;
-          }
-        }
-        else if( PASS_Temp[0] == (3 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
-                && PASS_Temp[3] == (3 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (2 + 0x30) )
-        {
-          USER_RIGHT_LEVEL = 1;
-          DU_USER_RIGHT_LEVEL = 1;
-          DU_INPUT_PASS_DATE(0) = TimeBuff[2];
-          DU_INPUT_PASS_DATE(1) = TimeBuff[3];
-          du_sys_data_write();
-          break;
-        }
-#if DU_FOR_TEST
-        //打开擦除数据隐藏功能
-        else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
-                && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
-        {
-            EARSE_CHIP = 1;
-            ZTM_RectangleFill (0,280,239,319,BLACK);
-            OSTimeDlyHMSM(0, 0,0,10);
-            TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6][LANGUAGE]);//擦除
-        }
-#endif
-        else if(ChangePassword_Flag == 2)
-        {
-          ChangePassword_Flag = 3;
-          for(u8 i=0;i<6;i++)
-          {
-            PASS_NUMBER[i] = PASS_Temp[i];
-          }
-            TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[10][LANGUAGE]);
-        }
-        else if(ChangePassword_Flag == 3)
-        {
-          //保存新密码
-          
-          if( PASS_Temp[0] == PASS_NUMBER[0] && PASS_Temp[1] == PASS_NUMBER[1] && PASS_Temp[2] == PASS_NUMBER[2] 
-             && PASS_Temp[3] == PASS_NUMBER[3] && PASS_Temp[4] == PASS_NUMBER[4] && PASS_Temp[5] == PASS_NUMBER[5] )
-          {
-              for(u8 i=0;i<6;i++)
-              {
+            Set_Flag = 0;
+            if( PASS_Temp[0] == DU_USER_RIGHT_PASSWORD(0) && PASS_Temp[1] == DU_USER_RIGHT_PASSWORD(1) && PASS_Temp[2] == DU_USER_RIGHT_PASSWORD(2) 
+               && PASS_Temp[3] == DU_USER_RIGHT_PASSWORD(3) && PASS_Temp[4] == DU_USER_RIGHT_PASSWORD(4) && PASS_Temp[5] == DU_USER_RIGHT_PASSWORD(5) )//权限2密码
+            {
+                if(ChangePassword_Flag)//修改密码模式
+                {
+                    ChangePassword_Flag = 2;
+                    
+                    Para_Choice = 1;
+                    Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+                    
+                    TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[1][LANGUAGE]);//确认
+                    PS_Flag = 1; 
+                                    
+                    TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[9][LANGUAGE]);
+                }
+                else
+                {
+                    USER_RIGHT_LEVEL = 2;
+                    DU_USER_RIGHT_LEVEL = 2;
+                    DU_INPUT_PASS_DATE(0) = TimeBuff[2];
+                    DU_INPUT_PASS_DATE(1) = TimeBuff[3];
+                    du_sys_data_write();
+                    TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[13][LANGUAGE]);
+                    break;
+                }
+            }
+            else if( PASS_Temp[0] == (3 + 0x30) && PASS_Temp[1] == (2 + 0x30) && PASS_Temp[2] == (1 + 0x30) 
+                    && PASS_Temp[3] == (3 + 0x30) && PASS_Temp[4] == (1 + 0x30) && PASS_Temp[5] == (2 + 0x30) )//权限1密码
+            {
+                USER_RIGHT_LEVEL = 1;
+                DU_USER_RIGHT_LEVEL = 1;
+                DU_INPUT_PASS_DATE(0) = TimeBuff[2];
+                DU_INPUT_PASS_DATE(1) = TimeBuff[3];
+                du_sys_data_write();
+                break;
+            }
+    #if DU_FOR_TEST
+            //打开擦除数据隐藏功能
+            else if( PASS_Temp[0] == (0 + 0x30) && PASS_Temp[1] == (0 + 0x30) && PASS_Temp[2] == (0 + 0x30) 
+                    && PASS_Temp[3] == (0 + 0x30) && PASS_Temp[4] == (0 + 0x30) && PASS_Temp[5] == (0 + 0x30) )
+            {
+                EARSE_CHIP = 1;
+                ZTM_RectangleFill (0,280,239,319,BLACK);
+                OSTimeDlyHMSM(0, 0,0,10);
+                TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)input_item[6][LANGUAGE]);//擦除
+            }
+    #endif
+            else if(ChangePassword_Flag == 2)//保存第一次输入的新密码
+            {
+                ChangePassword_Flag = 3;
+                for(u8 i=0;i<6;i++)
+                {
                   PASS_NUMBER[i] = PASS_Temp[i];
-                  DU_USER_RIGHT_PASSWORD(i) = PASS_Temp[i];
+                }
+                
+                
+                Para_Choice = 1;
+                Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+                
+                TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[1][LANGUAGE]);//确认
+                PS_Flag = 1; 
+                          
+                TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[10][LANGUAGE]);
+            }
+            else if(ChangePassword_Flag == 3)
+            {
+              //两次输入密码一致，保存新密码
+              
+              if( PASS_Temp[0] == PASS_NUMBER[0] && PASS_Temp[1] == PASS_NUMBER[1] && PASS_Temp[2] == PASS_NUMBER[2] 
+                 && PASS_Temp[3] == PASS_NUMBER[3] && PASS_Temp[4] == PASS_NUMBER[4] && PASS_Temp[5] == PASS_NUMBER[5] )
+              {
+                  for(u8 i=0;i<6;i++)
+                  {
+                      PASS_NUMBER[i] = PASS_Temp[i];
+                      DU_USER_RIGHT_PASSWORD(i) = PASS_Temp[i];
+                  }
+                  du_sys_data_write();
+                  ChangePassword_Flag = 0;
+                  TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                     ");
+                  TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[11][LANGUAGE]);
+                  
+                  OSTimeDlyHMSM(0, 0,1,0);
+                  PS_Flag = 0;
+                  Para_Choice=0;
+                  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入  
+                  
               }
-              du_sys_data_write();
-              ChangePassword_Flag = 0;
-              TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                     ");
-              TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[11][LANGUAGE]);
-          }
-          else
-          {
-              ChangePassword_Flag = 0;
-              TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                      ");
-              TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[12][LANGUAGE]);
-          }
-          
-        }
-        else
-        {
-          USER_RIGHT_LEVEL = 0;
-          if(DU_USER_RIGHT_LEVEL > 0)
-          {            
-              DU_USER_RIGHT_LEVEL = 0;
-              DU_INPUT_PASS_DATE(0) = 0;
-              DU_INPUT_PASS_DATE(1) = 0;
-              du_sys_data_write();
-          }
-        }
-        Set_Flag = 0;
+              else//两次输入密码不一样
+              {
+                  ChangePassword_Flag = 0;
+                  TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                      ");
+                  TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[12][LANGUAGE]);
+                  
+                  OSTimeDlyHMSM(0, 0,1,0);
+                  PS_Flag = 0;
+                  Para_Choice=0;
+                  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入               
+              }
+              
+            }           
+            else//输入密码错误
+            {
+                USER_RIGHT_LEVEL = 0;
+                if(DU_USER_RIGHT_LEVEL > 0)
+                {            
+                    DU_USER_RIGHT_LEVEL = 0;
+                    DU_INPUT_PASS_DATE(0) = 0;
+                    DU_INPUT_PASS_DATE(1) = 0;
+                    du_sys_data_write();
+                }
+                TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[14][LANGUAGE]);
+                OSTimeDlyHMSM(0, 0,1,0);
+                
+                if(ChangePassword_Flag != 0)
+                {
+                    Para_Choice = 1;
+                    Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
+                    PS_Flag = 1; 
+                }
+                
+            }
+            
+            TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "               ");
+            PASS_Buff = Temp;
+            
+            for(i=0;i<6;i++)
+            {
+              PASS_Temp[i] = PASS_Buff[i];
+            }           
+            
+            menu_password_display(Para_Choice); 
       }
       
     }  

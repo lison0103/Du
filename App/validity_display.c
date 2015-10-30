@@ -263,8 +263,9 @@ void validity_cfg(void)
       OSTimeDlyHMSM(0, 0,0,10);
       
       ZTM_RectangleFill (0, 186,239, 210,BLUE); 
-      TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[4][LANGUAGE]);//"   ¶¯ Ì¬ ÃÜ Âë £º"
+      TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[4][LANGUAGE]);//"   ×¢²á Âë £º"
       ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
+      ZTM_RectangleFill (0, 243,239, 279,DGRAY); 
       OSTimeDlyHMSM(0, 0,0,10);
 
   
@@ -338,7 +339,14 @@ void validity_cfg(void)
           else
           {
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[7][LANGUAGE]);//"ÃÜÂë´íÎó"
+            TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[7][LANGUAGE]);//"ÃÜÂë´íÎó"
+            
+            PASS_Buff = Temp;
+            
+            for(i=0;i<8;i++)
+            {
+              PASS_Temp[i] = PASS_Buff[i];
+            } 
           }     
         }    
         
@@ -408,6 +416,7 @@ void validity_cfg(void)
               Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
               
               TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[5][LANGUAGE]);//ºöÂÔ È·¶¨
+              TXM_StringDisplay(0,70,250,24,1,YELLOW ,DGRAY, "         ");
               PS_Flag = 1; 
           }
           
