@@ -11,7 +11,7 @@
 #define VDPASS_DES_MAX  10
 #define VDPASS_LEN      8
 
-const char *validity_disp_item[][2]={
+const u8 *validity_disp_item[][2]={
   {"     忽略 输入",//0
   "   Ignore Input"},
   {" 剩余使用有效期",//1
@@ -25,9 +25,9 @@ const char *validity_disp_item[][2]={
 {"     忽略 确定",//5
 "    Ignore  OK "},
 {"密码正确",//6
-"  RIGHT "},
+" RIGHT "},
 {"密码错误",//7
-"  Error "},
+" Error "},
 {"180 天",//8
 "180 Day"},
 {"    序列号： ",//9
@@ -157,23 +157,23 @@ void validity_display(u8 set_bit)
           a[i] = PASS_Temp[i];
         }  
         a[set_bit] = 0;
-        TXM_StringDisplay(0,60,210,32,1,BLACK,DGRAY, (void*)a);  
+        TXM_StringDisplay(0,60,230,32,1,BLACK,DGRAY, (void*)a);  
         
         a[0] = PASS_Temp[set_bit];
         a[1] = 0;
-        TXM_StringDisplay(0,60+(set_bit*16),210,32,1,YELLOW,RED, (void*)a);  
+        TXM_StringDisplay(0,60+(set_bit*16),230,32,1,YELLOW,RED, (void*)a);  
 
         for(;i<VDPASS_LEN-1;i++)
         {
           a[i-set_bit] = PASS_Temp[i+1];
         }  
         a[i-set_bit] = 0;
-        TXM_StringDisplay(0,76+(set_bit*16),210,32,1,BLACK,DGRAY, (void*)a);  
+        TXM_StringDisplay(0,76+(set_bit*16),230,32,1,BLACK,DGRAY, (void*)a);  
       }
       else
       {  
         PASS_Temp[VDPASS_LEN] = 0;
-        TXM_StringDisplay(0,60,210,32,1,BLACK,DGRAY, (void*)PASS_Temp);
+        TXM_StringDisplay(0,60,230,32,1,BLACK,DGRAY, (void*)PASS_Temp);
       }
 }
 
@@ -264,8 +264,7 @@ void validity_cfg(void)
       
       ZTM_RectangleFill (0, 186,239, 210,BLUE); 
       TXM_StringDisplay(0,20,186,24,1,YELLOW ,BLUE, (void*)validity_disp_item[4][LANGUAGE]);//"   注册 码 ："
-      ZTM_RectangleFill (0, 210,239, 242,DGRAY); 
-      ZTM_RectangleFill (0, 243,239, 279,DGRAY); 
+      ZTM_RectangleFill (0, 210,239, 279,DGRAY); 
       OSTimeDlyHMSM(0, 0,0,10);
 
   
@@ -280,6 +279,10 @@ void validity_cfg(void)
       PS_Flag=0;  
       
       validity_display(Para_Choice);
+
+//////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////while(1)///////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
       
       while(1)
       {
@@ -306,9 +309,10 @@ void validity_cfg(void)
               
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[6][LANGUAGE]);//"密码正确"
+//              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[6][LANGUAGE]);//"密码正确"
               TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[8][LANGUAGE]);//"180 天"
-              OSTimeDlyHMSM(0, 0,2,0);
+              Framebuffer_display(75, 235, 0, 0, 24, YELLOW ,RED, validity_disp_item[6][LANGUAGE], "", 2000);
+//              OSTimeDlyHMSM(0, 0,2,0);
               break;
           }
 #if DU_FOR_TEST
@@ -339,7 +343,8 @@ void validity_cfg(void)
           else
           {
               
-            TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[7][LANGUAGE]);//"密码错误"
+//            TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[7][LANGUAGE]);//"密码错误"
+            Framebuffer_display(75, 235, 0, 0, 24, YELLOW ,RED, validity_disp_item[7][LANGUAGE], "", 1500);
             
             PASS_Buff = Temp;
             
@@ -347,6 +352,9 @@ void validity_cfg(void)
             {
               PASS_Temp[i] = PASS_Buff[i];
             } 
+            
+            Para_Choice=0;
+            validity_display(Para_Choice);
           }     
         }    
         
@@ -416,7 +424,7 @@ void validity_cfg(void)
               Para_Cnum = get_password_num(PASS_Buff[Para_Choice-1]);
               
               TXM_StringDisplay(0,60,290,24,1,RED ,BLACK, (void*)validity_disp_item[5][LANGUAGE]);//忽略 确定
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,DGRAY, "         ");
+//              TXM_StringDisplay(0,70,250,24,1,YELLOW ,DGRAY, "         ");
               PS_Flag = 1; 
           }
           

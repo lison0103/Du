@@ -1965,5 +1965,41 @@ INT8U ZTM_FileDownload (INT8U ucType, INT32U ulSize, INT8U *pucOption, INT8U ucO
 	return (1);
 }
 /*********************************************************************************************************
+** 函数名称:  ZTM_DisBufSwitch
+** 函数功能:  显示缓存操作指令
+** 输入参数:  ucCmd：操作命令，组合值
+** 输出参数:  无
+** 返 回 值:  无
+*********************************************************************************************************/
+void ZTM_DisBufSwitch (INT8U ucCmd)
+{
+    __SendHead();                                                       /* 发送帧头                     */
+
+    __SendDByte(0xE001);                                                /* 发送命令                     */
+    
+    __SendByte(ucCmd);                                                  /* 发送参数                     */
+
+    __SendTail();                                                       /* 发送帧尾                     */
+}
+/*******************************************************************************
+功能：图层显示
+参数：
+*******************************************************************************/
+void Framebuffer_display(u16 x1, u16 y1, u16 x2, u16 y2, u8 size, u16 usFcolor ,u16 usBcolor, const u8 *buf1, const u8 *buf2, u16 tms)
+{    
+    ZTM_DisBufSwitch(0x00);                                             /* 取消自动缓存管理             */
+    ZTM_DisBufSwitch(0x20);                                             /* 写指针指向备用缓存           */
+    
+    TXM_StringDisplay(0,x1,y1,size,1,usFcolor ,usBcolor,(void*)buf1);
+    TXM_StringDisplay(0,x2,y2,size,1,usFcolor ,usBcolor,(void*)buf2);
+    
+    ZTM_DisBufSwitch(0x40);                                             /* 将显示缓存设置为备用缓存     */
+    ZTM_Delay(tms);
+    
+    ZTM_DisBufSwitch(0x20);                                             /* 写指针指向主缓存             */
+    ZTM_DisBufSwitch(0x40);                                             /* 将显示缓存设置为主缓存       */
+    ZTM_DisBufSwitch(0x10);                                             /* 使能自动缓存管理             */   
+}
+/*********************************************************************************************************
 end of file
 *********************************************************************************************************/

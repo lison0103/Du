@@ -33,14 +33,14 @@ const char *input_item[][2]={
    "Enter New Password:"},
   {" «Î‘Ÿ¥Œ ‰»Î–¬√‹¬Î£∫",
    "Repeat Enter New:  "},
-  {"   √‹¬Î–ﬁ∏ƒ≥…π¶      ",
-   "modified successfully"},
-  {"   √‹¬Î–ﬁ∏ƒ ß∞‹      ",
-   "modification fails   "},
-  {"     √‹¬Î’˝»∑     ",//13
-   "     Correct     "},
-  {"     √‹¬Î¥ÌŒÛ     ",
-   "     Wrong       "}
+  {" √‹¬Î–ﬁ∏ƒ≥…π¶ ",
+   "successfully"},
+  {" √‹¬Î–ﬁ∏ƒ ß∞‹ ",
+   " fails "},
+  {" √‹¬Î’˝»∑ ",//13
+   " Correct "},
+  {" √‹¬Î¥ÌŒÛ ",
+   " Wrong "}
 }; 
 
 u8 USER_RIGHT_LEVEL = 0;
@@ -316,7 +316,8 @@ void menu_password_cfg(void)
                     DU_INPUT_PASS_DATE(0) = TimeBuff[2];
                     DU_INPUT_PASS_DATE(1) = TimeBuff[3];
                     du_sys_data_write();
-                    TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[13][LANGUAGE]);
+                    TXM_StringDisplay(0,65,180,24,1,YELLOW ,RED,  (void*)input_item[13][LANGUAGE]);
+                    OSTimeDlyHMSM(0, 0,1,0);
                     break;
                 }
             }
@@ -328,6 +329,8 @@ void menu_password_cfg(void)
                 DU_INPUT_PASS_DATE(0) = TimeBuff[2];
                 DU_INPUT_PASS_DATE(1) = TimeBuff[3];
                 du_sys_data_write();
+                TXM_StringDisplay(0,65,180,24,1,YELLOW ,RED,  (void*)input_item[13][LANGUAGE]);
+                OSTimeDlyHMSM(0, 0,1,0);
                 break;
             }
     #if DU_FOR_TEST
@@ -373,7 +376,7 @@ void menu_password_cfg(void)
                   du_sys_data_write();
                   ChangePassword_Flag = 0;
                   TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                     ");
-                  TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[11][LANGUAGE]);
+                  TXM_StringDisplay(0,60,180,24,1,YELLOW ,RED,  (void*)input_item[11][LANGUAGE]);
                   
                   OSTimeDlyHMSM(0, 0,1,0);
                   PS_Flag = 0;
@@ -385,7 +388,7 @@ void menu_password_cfg(void)
               {
                   ChangePassword_Flag = 0;
                   TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                      ");
-                  TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[12][LANGUAGE]);
+                  TXM_StringDisplay(0,60,180,24,1,YELLOW ,RED,  (void*)input_item[12][LANGUAGE]);
                   
                   OSTimeDlyHMSM(0, 0,1,0);
                   PS_Flag = 0;
@@ -404,7 +407,7 @@ void menu_password_cfg(void)
                     DU_INPUT_PASS_DATE(1) = 0;
                     du_sys_data_write();
                 }
-                TXM_StringDisplay(0,50,180,16,0,BLACK ,BLUE,  (void*)input_item[14][LANGUAGE]);
+                TXM_StringDisplay(0,65,180,24,1,YELLOW ,RED,  (void*)input_item[14][LANGUAGE]);
                 OSTimeDlyHMSM(0, 0,1,0);
                 
                 if(ChangePassword_Flag != 0)
@@ -416,7 +419,7 @@ void menu_password_cfg(void)
                 
             }
             
-            TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "               ");
+            TXM_StringDisplay(0,50,180,24,1,BLACK ,LGRAY, "                 ");
             PASS_Buff = Temp;
             
             for(i=0;i<6;i++)
