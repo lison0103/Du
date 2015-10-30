@@ -83,7 +83,6 @@ void du_hardware_test(void)
       else if(m_keydata[0] == KEY_ESC)
       {
           TXM_StringDisplay(0,150,280,24,1,RED ,CYAN, " ESC "); 
-          ZTM_SetBuzzer(30);
           OSTimeDlyHMSM(0, 0,2,0);//按ESC键2s后推出测试
           break;  
       }
@@ -93,39 +92,30 @@ void du_hardware_test(void)
           {
             case KEY_POWER:             
               TXM_StringDisplay(0,10,120,24,1,RED ,NAVY, " P  ");
-              ZTM_SetBuzzer(30);
               break;
             case KEY_F1:
               TXM_StringDisplay(0,70,120,24,1,RED ,DGREEN, " F1 ");   
-              ZTM_SetBuzzer(30);
               break;               
             case KEY_F2:             
               TXM_StringDisplay(0,130,120,24,1,RED ,DCYAN, " F2 ");   
-              ZTM_SetBuzzer(30);
               break; 
             case KEY_F3:
               TXM_StringDisplay(0,190,120,24,1,RED ,MAROON, " F3 "); 
-              ZTM_SetBuzzer(30);
               break; 
             case KEY_UP:             
               TXM_StringDisplay(0,100,160,24,1,RED ,PURPLE, " 上 ");
-              ZTM_SetBuzzer(30);
               break;
             case KEY_DOWN:
               TXM_StringDisplay(0,100,240,24,1,RED ,OLIVE, " 下 ");  
-              ZTM_SetBuzzer(30);
               break;               
             case KEY_LEFT:             
               TXM_StringDisplay(0,60,200,24,1,RED ,MAGENTA, " 左 ");    
-              ZTM_SetBuzzer(30);
               break; 
             case KEY_RIGHT:
               TXM_StringDisplay(0,140,200,24,1,RED ,YELLOW, " 右 "); 
-              ZTM_SetBuzzer(30);
               break;
             case KEY_SET:             
               TXM_StringDisplay(0,50,280,24,1,RED ,GREEN, " SET ");   
-              ZTM_SetBuzzer(30);
               break; 
 //            case KEY_ESC:
 //              TXM_StringDisplay(0,150,280,24,1,RED ,CYAN, " ESC "); 

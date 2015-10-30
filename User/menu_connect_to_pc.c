@@ -242,13 +242,8 @@ void menu_connect_to_pc_cfg(void)
             if(((*(vu32*)(FLASH_LOADER_ADDR+4))&0xFF000000)==0x08000000)//判断是否为0X08XXXXXX.
             {	 
               iap_load_app(FLASH_LOADER_ADDR);
-            }
-            else 
-            {
-//              printf("非FLASH应用程序,无法执行!\r\n");
-//              TXM_StringDisplay(0,20,250,24,1,RED ,BLUE, (void*)Status_Item_Descrip[7][LANGUAGE]);//状态：无APP程序                   
             }	 
-//            iap_load_app(FLASH_LOADER_ADDR);
+
             
             break;
         }        

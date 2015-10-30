@@ -9,6 +9,13 @@
 
 #include "includes.h"
 
+const u8 *Time_Calculate_Descrip[][2] = 
+{
+  {" 时钟异常！！"," RTC ERROR!!"},
+  {" 未知异常！！"," UNKNOW ERROR!!"}
+};
+
+
 u8 month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 
 /*******************************************************************************
@@ -136,7 +143,7 @@ void Rtc_Error_display(void)
     OSTimeDlyHMSM(0, 0,0,10);
     
     
-    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, " 时钟异常！！"); 
+    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, (void*)Time_Calculate_Descrip[0][LANGUAGE]); 
      
      ZTM_SetBuzzer(30);
      OSTimeDlyHMSM(0, 0,0,500);
@@ -159,7 +166,7 @@ void Unknow_Error_display(void)
     OSTimeDlyHMSM(0, 0,0,10);
     
     
-    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, " 未知异常！！"); 
+    TXM_StringDisplay(0,50,150,24,1,BLACK ,RED, (void*)Time_Calculate_Descrip[1][LANGUAGE]); 
      
      ZTM_SetBuzzer(30);
      OSTimeDlyHMSM(0, 0,0,500);

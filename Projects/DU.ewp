@@ -311,6 +311,7 @@
           <state>$PROJ_DIR$\..\uCOS-II\Config</state>
           <state>$PROJ_DIR$\..\USB\STM32_USB-FS-Device_Driver\inc</state>
           <state>$PROJ_DIR$\..\USB\USB_Virtual_COM_Port\inc</state>
+          <state>$PROJ_DIR$\..\IAP</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -2030,6 +2031,12 @@
         </excluded>
       </file>
     </group>
+  </group>
+  <group>
+    <name>IAP</name>
+    <file>
+      <name>$PROJ_DIR$\..\IAP\iap.c</name>
+    </file>
   </group>
   <group>
     <name>MALLOC</name>
