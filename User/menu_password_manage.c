@@ -51,6 +51,8 @@ u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 extern u8 m_buff_temp[3];
 u8 ChangePassword_Flag = 0;
+s8 HW_TEST_FLAG = 0;
+extern void du_hardware_test(void);
 /*******************************************************************************
 *******************************************************************************/
 void menu_password_display(u8 set_bit)
@@ -218,6 +220,8 @@ void menu_password_cfg(void)
             case KEY_ESC:
               
               PS_Flag = 0;
+              
+              ChangePassword_Flag = 0;
 
               for(i=0;i<PASS_LEN;i++)
               {
@@ -226,6 +230,8 @@ void menu_password_cfg(void)
               
               Para_Choice=0;
               TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//ÊäÈë
+              
+              TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                     ");
               
               break; 
             case KEY_SET:
@@ -267,6 +273,8 @@ void menu_password_cfg(void)
       } 
       else if((m_keydata[0]==KEY_F2) || (m_keydata[0]==KEY_F3) || (m_keydata[0]==KEY_SET))
       {
+          HW_TEST_FLAG = 0;
+          
           if(m_keydata[0]==KEY_F2)
           {
               TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, (void*)input_item[8][LANGUAGE]);
@@ -286,6 +294,40 @@ void menu_password_cfg(void)
           {
             PASS_Temp[i] = PASS_Buff[i];
           } 
+      }
+      else if((m_keydata[0] == KEY_F1) || (m_keydata[0] == KEY_UP) || (m_keydata[0] == KEY_DOWN))
+      {
+          if(m_keydata[0] == KEY_F1)
+          {
+              if(HW_TEST_FLAG == 0 || HW_TEST_FLAG == 1 || HW_TEST_FLAG == 4)
+                HW_TEST_FLAG++;
+              else
+                HW_TEST_FLAG = 0;
+              
+              if(HW_TEST_FLAG == 5)
+              {
+                du_hardware_test();
+                break;
+              }
+          }
+          else if(m_keydata[0] == KEY_UP)
+          {
+              if(HW_TEST_FLAG == 3)
+                HW_TEST_FLAG++;
+              else
+                HW_TEST_FLAG = 0;
+          }
+          else if(m_keydata[0] == KEY_DOWN)
+          {
+              if(HW_TEST_FLAG == 2)
+                HW_TEST_FLAG++;
+              else
+                HW_TEST_FLAG = 0;
+          }
+      }
+      else
+      {
+          HW_TEST_FLAG = 0;
       }
      
       menu_password_display(Para_Choice);

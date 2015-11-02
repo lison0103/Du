@@ -2,6 +2,7 @@
 #include "includes.h"
 
 #include "iap.h"
+#include "bkp.h"
 
 extern void GetCpuID(void);
 extern void du_hardware_test(void);
@@ -239,9 +240,13 @@ void menu_connect_to_pc_cfg(void)
             
             USB_Disconnect();
             
+            BKP_Init();
+            
+            BKP_Write(BKP_ADDR1(5),1);
+            
             if(((*(vu32*)(FLASH_LOADER_ADDR+4))&0xFF000000)==0x08000000)//ÅÐ¶ÏÊÇ·ñÎª0X08XXXXXX.
             {	 
-              iap_load_app(FLASH_LOADER_ADDR);
+                iap_load_app(FLASH_LOADER_ADDR);
             }	 
 
             
