@@ -65,9 +65,13 @@ void menu_password_display(u8 set_bit)
     for(i=0;i<set_bit;i++)
     {
       a[i] = PASS_Temp[i];
+      
+      if( '-' != a[i])
+          a[i] = '*';
     }  
     a[set_bit] = 0;
     TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)a);  
+
     
     a[0] = PASS_Temp[set_bit];
     a[1] = 0;
@@ -76,6 +80,8 @@ void menu_password_display(u8 set_bit)
     for(;i<PASS_LEN-1;i++)
     {
       a[i-set_bit] = PASS_Temp[i+1];
+      if( '-' != a[i-set_bit])
+        a[i-set_bit] = '*';
     }  
     a[i-set_bit] = 0;
     TXM_StringDisplay(0,86+(set_bit*16),130,32,1,BLACK,LGRAY, (void*)a);  
@@ -83,7 +89,16 @@ void menu_password_display(u8 set_bit)
   else
   {  
     PASS_Temp[PASS_LEN] = 0;
-    TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)PASS_Temp);
+    for(i=0;i<PASS_LEN;i++)
+    {
+      a[i] = PASS_Temp[i];
+      
+      if( '-' != a[i])
+        a[i] = '*';
+    }  
+    a[PASS_LEN] = 0;
+    TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)a);
+//    TXM_StringDisplay(0,70,130,32,1,BLACK,LGRAY, (void*)PASS_Temp);
   }  
 }
 
@@ -108,6 +123,8 @@ u8 get_password_num(u8 dat)
 void menu_password_cfg(void)
 {
   u8  i,*m_keydata,err=0;
+  u8  exitcount = 0;
+  u8  inputerror = 0;
   
   ZTM_RectangleFill (0,0,239,39,BLUE);
   OSTimeDlyHMSM(0, 0,0,10);
@@ -174,17 +191,32 @@ void menu_password_cfg(void)
   
   while(1)
   {
-    m_keydata = OSMboxPend(KeyMbox,60000,&err);
+    m_keydata = OSMboxPend(KeyMbox,500,&err);
     
     if(err == OS_ERR_TIMEOUT)
     {
-      break;
+        for(i=0;i<6;i++)
+        {
+            if( '-' != PASS_Temp[i])
+              TXM_StringDisplay(0,70+i*16,130,32,1,BLACK,LGRAY, "*");  
+        } 
+        exitcount++;
+        if(exitcount > 12)
+        {
+            exitcount = 0;
+            EARSE_CHIP = 0;
+            ChangePassword_Flag = 0;
+            inputerror = 0;
+            break;
+        }
     } 
     else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
     {
-      EARSE_CHIP = 0;
-      ChangePassword_Flag = 0;
-      break;
+        EARSE_CHIP = 0;
+        ChangePassword_Flag = 0;
+        exitcount = 0;
+        inputerror = 0;
+        break;
     }
 #if DU_FOR_TEST
     //擦除有效期管理的几个数据
@@ -213,6 +245,8 @@ void menu_password_cfg(void)
 #endif    
     else 
     {
+      exitcount = 0;
+      
       if(PS_Flag)
       {
           switch(m_keydata[0])
@@ -232,42 +266,61 @@ void menu_password_cfg(void)
               TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
               
               TXM_StringDisplay(0,50,100,16,1,BLACK ,LGRAY, "                     ");
+              TXM_StringDisplay(0,0,180,24,1,YELLOW ,LGRAY,  "                              ");
               
               break; 
             case KEY_SET:
             case KEY_F3:  
               if(ChangePassword_Flag != 0)
               {
-                  PS_Flag = 0;
-                  Set_Flag = 1;
-                  Para_Choice=0;                            
+                  for(int j=0;j<PASS_LEN;j++)
+                  {                  
+                      if( '-' == PASS_Temp[j])
+                      {
+                          inputerror = 1;
+                          if(LANGUAGE) TXM_StringDisplay(0,5,180,16,1,YELLOW ,RED,  "Please enter the 6 digit code");
+                          else TXM_StringDisplay(0,15,180,24,1,YELLOW ,RED,  "请输入6位数字密码");
+                          break;
+                      }
+                  }               
+                  if(0 == inputerror)
+                  {
+                    PS_Flag = 0;
+                    Set_Flag = 1;
+                    Para_Choice=0;                            
+                  }
+                  inputerror = 0;
               }
               else
-              {
+              {                               
                   PS_Flag = 0;
                   Set_Flag = 1;
                   Para_Choice=0;
-                  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入
+                  TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)input_item[0][LANGUAGE]);//输入                
               }
               break; 
               
             case KEY_UP:              
               if(Para_Cnum < PASS_DES_MAX) Para_Cnum++; else Para_Cnum=0;
               PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+              TXM_StringDisplay(0,0,180,24,1,YELLOW ,LGRAY,  "                              ");
               break; 
             case KEY_DOWN:              
               if(Para_Cnum) Para_Cnum--;else Para_Cnum=PASS_DES_MAX;
               PASS_Temp[Para_Choice-1] = Password_Code[Para_Cnum];
+              TXM_StringDisplay(0,0,180,24,1,YELLOW ,LGRAY,  "                              ");
               break; 
             case KEY_LEFT:
               if(Para_Choice>1) Para_Choice--; 
               else Para_Choice = PASS_LEN; 
               Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+              TXM_StringDisplay(0,0,180,24,1,YELLOW ,LGRAY,  "                              ");
               break; 
             case KEY_RIGHT:
               if(Para_Choice<PASS_LEN) Para_Choice++;
               else Para_Choice = 1; 
               Para_Cnum = get_password_num(PASS_Temp[Para_Choice-1]);
+              TXM_StringDisplay(0,0,180,24,1,YELLOW ,LGRAY,  "                              ");
               break; 
           }  
       } 
