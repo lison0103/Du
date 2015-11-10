@@ -5,6 +5,10 @@
 
 #include "ff.h"
 
+//@
+OS_STK task_WDT_Init_stk[TASK_WDT_INIT_STK_SIZE];
+//@end
+
 OS_STK startup_task_stk[STARTUP_TASK_STK_SIZE];		  //定义栈
 
 OS_STK task_menu_stk[TASK_MENU_STK_SIZE];		        //定义栈
@@ -41,6 +45,11 @@ void Task_Start(void *p_arg)
 	
   //sem = OSSemCreate(1);
 
+  //@
+    OSTaskCreate(Task_WDT_Init,(void *)0,		  	   
+    &task_WDT_Init_stk[TASK_WDT_INIT_STK_SIZE-1], TASK_WDT_INIT_PRIO);
+  //@end
+    
   OSTaskCreate(Task_LCM_Init,(void *)0,		  	   
     &task_LCM_Init_stk[TASK_LCM_INIT_STK_SIZE-1], TASK_LCM_INIT_PRIO);
   

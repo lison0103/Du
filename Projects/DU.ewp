@@ -1893,6 +1893,9 @@
     <file>
       <name>$PROJ_DIR$\..\App\validity_display.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\App\wdt.c</name>
+    </file>
   </group>
   <group>
     <name>BSP</name>
@@ -1910,6 +1913,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Bsp\bsp_usart.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Bsp\iwdg.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Bsp\spi.c</name>
@@ -1990,9 +1996,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_iwdg.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.c</name>

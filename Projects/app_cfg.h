@@ -41,6 +41,11 @@
 
 #define STARTUP_TASK_PRIO                       4
 
+//@
+#define TASK_WDT_INIT_PRIO                      8
+//@end
+
+
 #define TASK_LCM_INIT_PRIO                      10
 
 
@@ -81,6 +86,10 @@
 *                TASK STACK SIZES …Ë÷√’ª¥Û–°
 *********************************************************************************************************
 */
+
+//@
+#define TASK_WDT_INIT_STK_SIZE       200
+//@end
 
 #define STARTUP_TASK_STK_SIZE       200
 

@@ -169,6 +169,9 @@ void AppTask_Main(void *p_arg);
 void AppTask_COM(void *p_arg);
 void AppTask_KEY(void *p_arg);
 void Task_Menu(void *p_arg);
+//@
+void Task_WDT_Init(void *p_arg);
+//@end
 
 void Task_Display(void *p_arg);
 
