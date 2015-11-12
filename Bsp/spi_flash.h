@@ -130,7 +130,7 @@ void SPI_W25X_Wait_Busy(void);           //等待空闲
 void SPI_Flash_PowerDown(void);           //进入掉电模式
 void SPI_Flash_WAKEUP(void);			  //唤醒
 
-void Flash_W25X_Init(void);
+u8 Flash_W25X_Init(void);
 
 void Flash_W25X_Read(u8* pBuffer,u32 ReadAddr,u16 NumByteToRead);
 void Flash_W25X_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite);

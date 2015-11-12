@@ -424,7 +424,7 @@ void Flash_W25X_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite)
 
 /*******************************************************************************
 *******************************************************************************/
-void Flash_W25X_Init(void)
+u8 Flash_W25X_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   __IO uint32_t FLASH_ID = 0;
@@ -454,11 +454,13 @@ void Flash_W25X_Init(void)
   {
     /* OK: Set GPIO_LED pin 6 */
 //    GPIO_WriteBit(GPIO_LED, GPIO_Pin_6, Bit_SET);
+      return 0;
   }
   else
   {
     /* Error: Set GPIO_LED pin 7 */
 //    GPIO_WriteBit(GPIO_LED, GPIO_Pin_7, Bit_SET);
+      return 1;
   }
   
   

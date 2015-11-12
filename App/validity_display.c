@@ -334,9 +334,8 @@ void validity_cfg(void)
                             
               du_sys_data_write();
               
-              TXM_StringDisplay(0,70,250,24,1,YELLOW ,RED, (void*)validity_disp_item[6][LANGUAGE]);//"√‹¬Î’˝»∑"
               TXM_StringDisplay(0,100,66,24,1,BLACK ,DGRAY, (void*)validity_disp_item[8][LANGUAGE]);//"180 ÃÏ"
-              OSTimeDlyHMSM(0, 0,2,0);
+              Framebuffer_display(75, 235, 0, 0, 24, YELLOW ,RED, validity_disp_item[6][LANGUAGE], "", 2000);
               break;
           }
 #endif

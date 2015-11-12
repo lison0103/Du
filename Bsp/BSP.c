@@ -263,7 +263,12 @@ void BSP_Init(void)
 
   ini_device();
 
-  Flash_W25X_Init();
+  //@
+  if(Flash_W25X_Init())
+  {
+      Unknow_Error_display();
+  }
+  //@end  
 
   USART1_Init();
   USART2_Init();

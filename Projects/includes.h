@@ -265,7 +265,7 @@ void USB_Disconnect(void);
 void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length);
 uint32_t USB_Receive_Data(uint8_t *ptrBuffer);
 void USB_Receive_Data_Send(void);
-
+void Unknow_Error_display(void);
 //@end
 
 #endif //__INCLUDES_H__

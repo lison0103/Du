@@ -167,7 +167,8 @@ void menu_password_cfg(void)
   {
       for(u8 i=0;i<6;i++)
       {
-        DU_USER_RIGHT_PASSWORD(i) = i + 0x30;        
+        DU_USER_RIGHT_PASSWORD(i) = i + 0x30;   
+        PASS_NUMBER[i] = DU_USER_RIGHT_PASSWORD(i);
       }
       DU_USER_RIGHT_PASSWORD(6) = 1;
       du_sys_data_write();
