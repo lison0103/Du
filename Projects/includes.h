@@ -110,35 +110,34 @@
 #define ACTIVE_NEW
 
 //使用有效期标志
-#define USER_RIGHT_VALIDITY             DuSysBuff[12]
+#define USER_RIGHT_VALIDITY             DuSys_Data[30]
 
 //注册后已使用天数
-#define VALIDITY_USE_DATE               DuSysBuff[13]
+#define VALIDITY_USE_DATE               DuSys_Data[32]
 
 //注册后上次记录设置日期  6位日期
-#define VALIDITY_LAST_DATE(i)           DuSysBuff[14 + i]
+#define VALIDITY_LAST_DATE(i)           DuSys_Data[34 + i]
 
 //序列号 8位CPUID+2位number+6位日期
-#define DU_SERIAL_NUMBER(i)             DuSysBuff[20 + i]
+#define DU_SERIAL_NUMBER(i)             DuSys_Data[41 + i]
 
 //已注册次数
-#define DU_REGISTERED_NUMBER            DuSysBuff[36]
+#define DU_REGISTERED_NUMBER            DuSys_Data[58]
 
 //时钟异常次数
-#define DU_RTC_ERROR_NUMBER             DuSysBuff[37]
+#define DU_RTC_ERROR_NUMBER             DuSys_Data[60]
 //时钟异常允许次数
 #define ALLOWED_ERROR_NUM       20
 
 //最高权限密码 6位密码 1位标志位
-#define DU_USER_RIGHT_PASSWORD(i)       DuSysBuff[38 + i]
+#define DU_USER_RIGHT_PASSWORD(i)       DuSys_Data[62 + i]
 
 //记录输入密码的日期时间,2位 日和小时
-#define DU_INPUT_PASS_DATE(i)           DuSysBuff[45 + i]
+#define DU_INPUT_PASS_DATE(i)           DuSys_Data[70 + i]
 //密码输入有效使用时间设置宏，单位小时
 #define PASS_VALITITY_TIME      4
 //密码权限标志
-#define DU_USER_RIGHT_LEVEL             DuSysBuff[47]
-
+#define DU_USER_RIGHT_LEVEL             DuSys_Data[73]
 
 //@end
 

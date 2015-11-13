@@ -230,7 +230,7 @@ void menu_password_cfg(void)
         
         for(u8 i = 0;i<100;i++)
         {
-          DuSysBuff[i] = 0;
+          DuSys_Data[i] = 0;
         }
         du_sys_data_write();
         OSTimeDlyHMSM(0, 0,1,0);        

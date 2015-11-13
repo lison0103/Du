@@ -109,7 +109,7 @@ void menu_connect_to_pc_cfg(void)
               //激活时清除flash里的几个数据
               for(u8 i = 0;i<100;i++)
               {
-                DuSysBuff[i] = 0;
+                DuSys_Data[i] = 0;
               }
               du_sys_data_write();
               OSTimeDlyHMSM(0, 0,1,0);        
