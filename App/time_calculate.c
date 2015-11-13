@@ -50,7 +50,7 @@ u8 Leap_Year(u32 year)
 //功能:将月转化为天数
 //返回:转化完成的天数
 *******************************************************************************/
- u32 Month_To_Day(u8 Date[])
+u32 Month_To_Day(u8 Date[])
 {
          u32 i;
          u32 year = 2000 + Date[0]*10 + Date[1];
@@ -71,7 +71,7 @@ u8 Leap_Year(u32 year)
 //参数:begin 起始日期  end 结束日期，且begin <= end
 //返回:算出的时间差值
 *******************************************************************************/
- u32 Calculate(u8 begin[],u8 end[])
+s32 Calculate(u8 begin[],u8 end[])
 {
          u32 number_begin = begin[0]*100000 + begin[1]*10000 + begin[2]*1000 + begin[3]*100 + begin[4]*10 + begin[5];
          u32 number_end = end[0]*100000 + end[1]*10000 + end[2]*1000 + end[3]*100 + end[4]*10 + end[5];
@@ -93,9 +93,9 @@ u8 Leap_Year(u32 year)
 
 /*******************************************************************************
 //功能:判断日期的有效性
-//返回:有效 1， 无效 0
+//返回:有效：0， 无效:不为0
 *******************************************************************************/
-u32 Date_Validity(u8 Date[])
+u8 Date_Validity(u8 Date[])
 {
 
          u32 year = 2000 + Date[0]*10 + Date[1];
@@ -104,30 +104,30 @@ u32 Date_Validity(u8 Date[])
  
          if(year > 2099 || year < 2015)
          {
-            return 0;
+            return 1;
          }
          else if(mmonth > 12 || mmonth < 1)
          {
-            return 0;
+            return 2;
          }
          else if(mmonth == 2 && Leap_Year(year))
          {
               if(day > 29 || day < 1)
               {
-                  return 0;
+                  return 3;
               }
               else
               {
-                  return 1;
+                  return 0;
               }
          }
          else if(day > month[mmonth] || day < 1)
          {           
-           return 0;
+           return 4;
          }
          else
          {
-            return 1;
+            return 0;
          }
          
  

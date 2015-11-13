@@ -241,13 +241,13 @@ void Get_Current_Date(u8 date[], u8 *tb);
 extern u8 validity_date;
 extern u8 last_set_date[6],current_set_date[6];
 
-u32 Calculate(u8 begin[],u8 end[]);
+s32 Calculate(u8 begin[],u8 end[]);
 
 void SPI_W25X_ChipErase(void);
 
 extern u8 month[12];
 u8 Leap_Year(u32 year);
-u32 Date_Validity(u8 Date[]);
+u8 Date_Validity(u8 Date[]);
 
 //¶ÁÈ¡Ó²¼þ°æ±¾
 void hardware_init(void);

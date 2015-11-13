@@ -256,7 +256,7 @@ void AppTask_Main(void *p_arg)
           last_set_date[i] = VALIDITY_LAST_DATE(i);
         }
                   
-        if(Date_Validity(last_set_date) && Date_Validity(current_set_date))
+        if((!Date_Validity(last_set_date)) && (!Date_Validity(current_set_date)))
         {
           temp_data = Calculate(last_set_date,current_set_date);  
           

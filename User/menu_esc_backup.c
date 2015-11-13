@@ -14,7 +14,7 @@ const char EscBackup_Title[2][20]={"扶梯参数备份", "ESC PARA BACKUP"};
 const char *Menu_Esc_Backup_Descrip[][2] =
 {                                          
   {"当前备份编号：",
-   "Backup ID:    "},
+   "Backup ID:     "},
   {"当前主板无备份",
    "Current board 0 backup"},
   {"当前备份数量：",
