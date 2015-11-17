@@ -50,8 +50,8 @@ const char *Rt_Speed_Descrip[][2] =
 
 const char *Under_Menu_Descrip[][2] =
 {                                          
-  {"¸´Î» ²Ëµ¥ °ïÖú","Reset Menu Help"},
-  {"     ²Ëµ¥ °ïÖú","      Menu Help"},
+  {" ¸´Î» ²Ëµ¥ °ïÖú","Reset Menu Help"},
+  {"      ²Ëµ¥ °ïÖú","      Menu Help"},
 };
 
 //@end

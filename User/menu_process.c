@@ -34,8 +34,8 @@ const u8 *Menu_Item_Descrip[][2] =
 //@end
 u16 MenuItem=0,MenuItem_Max=0,Menu_Level=0,disFlag=0;
 
-//@
-#define MenuItemMax   10 
+//@ 10为添加连接电脑
+#define MenuItemMax   9 
 //@end
 
 /*******************************************************************************

@@ -1,6 +1,6 @@
 #include "iwdg.h"
 
-u32 count = 1563; //最大值0xFFF / 4095    Tout = ((4*2^prer)*count) / 40
+u32 count = 3125; //最大值0xFFF / 4095    Tout = ((4*2^prer)*count) / 40
 
 void wdt_init(void)
 {
