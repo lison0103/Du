@@ -51,7 +51,8 @@ const char *Menu_Esc_Backup_Descrip[][2] =
    "Mode3 3 sensor    "},
   {"X1&2·ÉÂÖ X6&8Ö÷Öá ",
    "Mode4 4 sensor    "},
-  {" Ñ¡Ôñ","Select"},
+  {"     Ñ¡Ôñ",
+   "   Select"},
   {"Ö÷°å·öÌÝ±àºÅ£º",
    "Mainboard Esc ID:"},
   {"Ñ¡Ôñ²ÎÊý×é£º",
@@ -386,7 +387,7 @@ void menu_para_restore(void)
 //  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "Ñ¡Ôñ");
 //  
 //  TXM_StringDisplay(0,8,45,24,0,NAVY ,0, "Ö÷°å·öÌÝ±àºÅ£º"); 
-  TXM_StringDisplay(0,168,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[19][LANGUAGE]);
+  TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[19][LANGUAGE]);
   
   TXM_StringDisplay(0,8,45,24,0,NAVY ,0, (void*)Menu_Esc_Backup_Descrip[20][LANGUAGE]);
   esc_sn_display(8,70,&ModBuff[1018],0);
@@ -439,11 +440,15 @@ void menu_para_restore(void)
       {
         switch(m_keydata[0])
         {
-          case KEY_F3:
+          //@          
+//          case KEY_F3:
           case KEY_ESC:
-            PS_Flag = 0;                                  
-            break; 
+            PS_Flag = 0;     
+            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[19][LANGUAGE]);
+            break;   
+            
           case KEY_F2:
+          case KEY_SET:
             PS_Flag = 0;                                  
             if(!ESC_Bk_Addr)
             {
@@ -452,7 +457,9 @@ void menu_para_restore(void)
             }
             
             para_restore_process(item_choice-1);
-            
+            TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[19][LANGUAGE]);
+            break;
+            //@end
           case KEY_UP:
             
             if(item_choice < RECORD_ESC_NUMBER)
