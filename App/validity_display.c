@@ -36,6 +36,11 @@ const u8 *validity_disp_item[][2]={
 "Verification code:"},
 }; 
 
+//30个0~81的随机数
+const u8 RamdomCode[30] = {5,62,24,44,55,2,16,68,37,11,  59,49,77,18,41,70,29,80,31,81,  8,47,26,38,53,79,61,13,34,76};
+//10位被乘数
+const u32 Multiplier[10] = {1111111,1992345,1511087,1710911,1411100,1345893,1809014,1611195,1080072,1210011};
+
 static char const Password_Code[11] = {"-0123456789"};
 static u8 *Temp = "--------";
 static u8 *PASS_Buff,PASS_Temp[20],Para_Cnum=0; 
@@ -131,7 +136,7 @@ u32 GetDynamicPassNum(void)
 {
   u32 Pass_Num,Lock_Num;
   
-  Lock_Num = GetLockCode() + DU_REGISTERED_NUMBER*1111111;
+  Lock_Num = GetLockCode() + (RamdomCode[DU_REGISTERED_NUMBER] + DU_SERIAL_NUMBER(14) + DU_SERIAL_NUMBER(15))*(Multiplier[DU_SERIAL_NUMBER(13)]);
 
   Pass_Num = ((Lock_Num*2)/3) + 3;
   
