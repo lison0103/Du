@@ -157,6 +157,7 @@ u8 modbus_write(USART_TypeDef* USARTx, u16 start_addr, u16 len)
   return(rxFlag);
 }
 
+#define DTS_USB         0         
 /***************************************************************************************************
 //DTS上位机信息
 //用于下载图片等上位机应用
@@ -165,8 +166,13 @@ void DTS_simulation(u16 rxlen, u8 *rxbuff)
 {
   u8 a[2]={0,0},flag=0;
   u16 len=0,i,waitms=0;
-  
+u8 TestFlag = 0;
+#if DTS_USB  
+  Delay_us(180000);
+//  Delay_us(10000);
+#else
   Delay_us(10000);
+#endif
   //OSTimeDly(50);
   //清除之前的通信内容
   len = BSP_USART_Receive(LCM_COM_PORT,buff,0);
@@ -176,36 +182,44 @@ void DTS_simulation(u16 rxlen, u8 *rxbuff)
   {      
     if(len && (buff[0] == 0xaa) && (buff[len-4]==0XCC) && (buff[len-3]==0X33) && (buff[len-2]==0XC3) && (buff[len-1]==0X3C))
     {
-      waitms = 0;
-      if((buff[1]==0x94))
-      {
-        i = (buff[6]<<8) | buff[7];
-        i += 12; 
-        if((len == i) && (flag==0)) //
-        {
-          BSP_USART_Send(LCM_COM_PORT,buff,len);
-         
-          Delay_us(10000);
-          //OSTimeDlyHMSM(0, 0,0,10); 
-          
-          a[1] = buff[6];
-          a[0] = buff[7];
-          BSP_USART_Send(USART3,a,2);
-          flag=1; 
-        }
-        else 
-        {
-          while(1);
-        }  
-      }  
-      else
-      {  
-        BSP_USART_Send(LCM_COM_PORT,buff,len);
-      }
+          waitms = 0;
+          if((buff[1]==0x94))
+          {
+            i = (buff[6]<<8) | buff[7];
+            i += 12; 
+            if((len == i) && (flag==0)) //
+            {
+              BSP_USART_Send(LCM_COM_PORT,buff,len);
+             
+              Delay_us(10000);
+              //OSTimeDlyHMSM(0, 0,0,10); 
+              
+              a[1] = buff[6];
+              a[0] = buff[7];
+    #if DTS_USB
+              USB_Send_Data(a,2);
+    #else
+              BSP_USART_Send(USART3,a,2);
+    #endif          
+              flag=1; 
+            }
+            else 
+            {
+              while(1);
+            }  
+          }  
+          else
+          {  
+            BSP_USART_Send(LCM_COM_PORT,buff,len);
+          }
     }
     else if(len)
     {
-      len = BSP_USART_Receive(USART3,buff,0);
+      #if DTS_USB
+            len = USB_Receive_Data(buff);
+      #else
+            len = BSP_USART_Receive(USART3,buff,0);
+      #endif      
     }  
     
     len = BSP_USART_Receive(LCM_COM_PORT,buff,0);
@@ -216,12 +230,22 @@ void DTS_simulation(u16 rxlen, u8 *rxbuff)
     }
     if(len)
     {
+#if DTS_USB
+      USB_Send_Data(buff,len);
+//      Delay_us(1000);
+#else
       BSP_USART_Send(USART3,buff,len);
+#endif
+      TestFlag++;
     }  
     
     if(flag==0) 
     {
+#if DTS_USB
+      len = USB_Receive_Data(buff);
+#else
       len = BSP_USART_Receive(USART3,buff,0);
+#endif      
     }
     else
     {
@@ -246,11 +270,22 @@ void AppTask_COM(void *p_arg)
   Mutex_Modbus = OSMutexCreate (32, &err);  
   
   msgEvent_MCLCM = OSSemCreate(1); 
+
+#if DTS_USB  
+  USB_Disconnect();
+  OSTimeDlyHMSM(0, 0,0,100);
+  Connect_To_COM();
+#endif
+  
   while (1)
   {
     if(test_enable==0)
     {  
+      #if DTS_USB
+      len = USB_Receive_Data(buff);
+      #else
       len = BSP_USART_Receive(USART3,buff,0);
+      #endif
       if(len && (buff[0] == 0xaa) && (buff[len-4]==0XCC) && (buff[len-3]==0X33) && (buff[len-2]==0XC3) && (buff[len-1]==0X3C))
       {
         //接收到DTS上位机信息

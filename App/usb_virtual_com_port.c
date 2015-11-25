@@ -51,7 +51,21 @@ void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length)
 {
     if (bDeviceState == CONFIGURED)
     {
-        CDC_Send_DATA (ptrBuffer,Send_length);
+          if(Send_length > 63)
+          {      
+              u8 SendCount = Send_length / 63;
+              Send_length = Send_length%63;
+              while(SendCount--)
+              {
+                  CDC_Send_DATA (ptrBuffer,63);
+                  ptrBuffer += 63;
+              }
+              CDC_Send_DATA (ptrBuffer,Send_length);
+          }
+          else
+          {
+              CDC_Send_DATA (ptrBuffer,Send_length);
+          }
     }
 }
 
@@ -64,21 +78,24 @@ uint32_t USB_Receive_Data(uint8_t *ptrBuffer)
     {
 //      CDC_Receive_DATA();
 
-      if (Receive_length  != 0)
+      while (Receive_length  != 0)
       {
           for(uint32_t i = 0; i < Receive_length; i++)
           {
               ptrBuffer[i] = Receive_Buffer[i];
 
           }
-          receive_length = Receive_length;
+          receive_length += Receive_length;
+          
+          ptrBuffer += Receive_length;
           
           Receive_length = 0;
           
           CDC_Receive_DATA();//接收完一次数据后就会无法接收，需要再次设置接收生效。发送同理
           
-          return receive_length;
+          Delay_us(100);//要有一定延时，否则USB节点没那么快重新接收到数据          
       }
+      return receive_length;
     }
     
     return 0;
