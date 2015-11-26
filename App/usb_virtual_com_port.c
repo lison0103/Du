@@ -53,12 +53,14 @@ void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length)
     {
           if(Send_length > 63)
           {      
-              u8 SendCount = Send_length / 63;
+              s8 SendCount = Send_length / 63;
               Send_length = Send_length%63;
               while(SendCount--)
               {
                   CDC_Send_DATA (ptrBuffer,63);
                   ptrBuffer += 63;
+                  
+                  Delay_us(100);//不加延时，会出现连接有问题
               }
               CDC_Send_DATA (ptrBuffer,Send_length);
           }

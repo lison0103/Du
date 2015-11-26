@@ -156,8 +156,8 @@ u8 modbus_write(USART_TypeDef* USARTx, u16 start_addr, u16 len)
 
   return(rxFlag);
 }
-
-#define DTS_USB         0         
+//@
+#define DTS_USB         1         
 /***************************************************************************************************
 //DTS上位机信息
 //用于下载图片等上位机应用
@@ -168,8 +168,8 @@ void DTS_simulation(u16 rxlen, u8 *rxbuff)
   u16 len=0,i,waitms=0;
 u8 TestFlag = 0;
 #if DTS_USB  
-  Delay_us(180000);
-//  Delay_us(10000);
+//  Delay_us(180000);
+  Delay_us(10000);
 #else
   Delay_us(10000);
 #endif
@@ -299,6 +299,6 @@ void AppTask_COM(void *p_arg)
     OSTimeDlyHMSM(0, 0,0,20);  
   }
 }
-
+//@end
 /***************************************************************************************************
 ***************************************************************************************************/
