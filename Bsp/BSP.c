@@ -271,7 +271,8 @@ void BSP_Init(void)
   //@end  
 
   USART1_Init();
-  USART2_Init();
+  USART2_Init(115200);
+//  USART2_Init(921600);
   USART3_Init();
   
   //SystemInit(); //72M

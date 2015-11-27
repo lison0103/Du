@@ -272,6 +272,14 @@ void AppTask_COM(void *p_arg)
   msgEvent_MCLCM = OSSemCreate(1); 
 
 #if DTS_USB  
+//  u8 high_baud[] = {0xAA, 0xE0, 0x55, 0xAA, 0x5A, 0xA5, 0x00, 0x0E, 0x10, 0x00, 0x75, 0x5F, 0x00, 0x01, 0xCC, 0x33, 0xC3, 0x3C};
+//  
+//  len = sizeof(high_baud)/sizeof(char);
+//  
+//  BSP_USART_Send(LCM_COM_PORT,high_baud,len);
+//  
+//  USART2_Init(921600);
+  
   USB_Disconnect();
   OSTimeDlyHMSM(0, 0,0,100);
   Connect_To_COM();

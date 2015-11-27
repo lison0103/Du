@@ -55,17 +55,24 @@ void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length)
           {      
               s8 SendCount = Send_length / 63;
               Send_length = Send_length%63;
+//              Delay_us(10000);
               while(SendCount--)
               {
-                  CDC_Send_DATA (ptrBuffer,63);
-                  ptrBuffer += 63;
+                  while( 0 == packet_sent );
+                      
+                      CDC_Send_DATA (ptrBuffer,63);
+                      ptrBuffer += 63;
                   
-                  Delay_us(100);//不加延时，会出现连接有问题
+//                  Delay_us(1);//不加延时，会出现连接有问题
               }
+              while( 0 == packet_sent );
               CDC_Send_DATA (ptrBuffer,Send_length);
+              Delay_us(1);
+//            CDC_Send_DATA (ptrBuffer,63);
           }
           else
           {
+              while( 0 == packet_sent );
               CDC_Send_DATA (ptrBuffer,Send_length);
           }
     }
@@ -80,7 +87,8 @@ uint32_t USB_Receive_Data(uint8_t *ptrBuffer)
     {
 //      CDC_Receive_DATA();
 
-      while (Receive_length  != 0)
+//      while (Receive_length  != 0)
+      while ( 1 == packet_receive )
       {
           for(uint32_t i = 0; i < Receive_length; i++)
           {
@@ -89,13 +97,12 @@ uint32_t USB_Receive_Data(uint8_t *ptrBuffer)
           }
           receive_length += Receive_length;
           
-          ptrBuffer += Receive_length;
+          ptrBuffer += Receive_length;          
+//          Receive_length = 0;
+                       
+          CDC_Receive_DATA();//接收完一次数据后就会无法接收，需要再次设置接收生效。发送同理                
           
-          Receive_length = 0;
-          
-          CDC_Receive_DATA();//接收完一次数据后就会无法接收，需要再次设置接收生效。发送同理
-          
-          Delay_us(100);//要有一定延时，否则USB节点没那么快重新接收到数据          
+          Delay_us(100);//要有一定延时，否则USB节点没那么快重新接收到数据  
       }
       return receive_length;
     }
