@@ -985,29 +985,41 @@ void base_para_display(void)
 
 /*******************************************************************************
 *******************************************************************************/
+//@
+void menu_para_base_init(void)
+{
+
+    ZTM_FullScreenImageDisp(312);
+    OSTimeDlyHMSM(0, 0,0,100); 
+    
+    ZTM_RectangleFill (0,0,239,39,NAVY);
+    OSTimeDlyHMSM(0, 0,0,10);
+    TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscBasepara_Title[LANGUAGE]); 
+
+    Para_Number = 0;
+    base_para_get();
+    
+    base_para_display();   
+
+    ZTM_RectangleFill (0, 280,239, 319,BLACK);   
+//  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");
+//  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
+    TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[0][LANGUAGE]);
+    TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, (void*)Menu_Base_Para_Descrip[3][LANGUAGE]);   
+}
+//@end
+/*******************************************************************************
+*******************************************************************************/
+
 extern u8 USER_RIGHT_LEVEL;
 void menu_para_base(void)
 {
   u8 *m_keydata,err=0;
   
-  ZTM_FullScreenImageDisp(312);
-  OSTimeDlyHMSM(0, 0,0,100); 
-  
-  ZTM_RectangleFill (0,0,239,39,NAVY);
-  OSTimeDlyHMSM(0, 0,0,10);
-  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscBasepara_Title[LANGUAGE]); 
-
-  Para_Number = 0;
-  base_para_get();
-  
-  base_para_display();   
-  //@
-  ZTM_RectangleFill (0, 280,239, 319,BLACK);   
-//  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, "设置");
-//  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, " 选择参数           "); 
-  TXM_StringDisplay(0,192,290,24,1,RED ,BLACK, (void*)Menu_Base_Para_Descrip[0][LANGUAGE]);
-  TXM_StringDisplay(0,0,50,24,1,LGRAY ,BLUE, (void*)Menu_Base_Para_Descrip[3][LANGUAGE]);   
+  //@  
+  menu_para_base_init();
   //@end
+  
   while(1)
   {
     m_keydata = OSMboxPend(KeyMbox,10000,&err);
@@ -1075,6 +1087,7 @@ void menu_para_base(void)
             base_para_get();
             break;
           case KEY_F3:
+          case KEY_SET:
             //@密码输入有效使用时间判断
             if(DU_USER_RIGHT_LEVEL > 0 && DU_INPUT_PASS_DATE(0) == TimeBuff[2] && (TimeBuff[3] - DU_INPUT_PASS_DATE(1)) < PASS_VALITITY_TIME)
             {   
@@ -1103,6 +1116,12 @@ void menu_para_base(void)
                     DU_INPUT_PASS_DATE(0) = 0;
                     DU_INPUT_PASS_DATE(1) = 0;
                     du_sys_data_write();
+                }
+                
+                if(USER_RIGHT_VALIDITY == 1)
+                {
+                    menu_password_cfg();//密码管理
+                    menu_para_base_init();//退回参数设置页面
                 }
             }
             //@end

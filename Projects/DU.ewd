@@ -1046,7 +1046,6 @@
       </data>
     </settings>
     <settings>
-      <name>CMSISDAP_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
         <version>0</version>
@@ -2307,7 +2306,6 @@
       </data>
     </settings>
     <settings>
-      <name>CMSISDAP_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
         <version>0</version>
