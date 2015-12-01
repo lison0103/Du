@@ -135,7 +135,7 @@
 //记录输入密码的日期时间,2位 日和小时
 #define DU_INPUT_PASS_DATE(i)           DuSys_Data[70 + i]
 //密码输入有效使用时间设置宏，单位小时
-#define PASS_VALITITY_TIME      4
+#define PASS_VALITITY_TIME      8
 //密码权限标志
 #define DU_USER_RIGHT_LEVEL             DuSys_Data[73]
 
