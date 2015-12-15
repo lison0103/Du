@@ -121,7 +121,7 @@ u8 Date_Validity(u8 Date[])
                   return 0;
               }
          }
-         else if(day > month[mmonth] || day < 1)
+         else if(day > month[mmonth - 1] || day < 1)
          {           
            return 4;
          }
