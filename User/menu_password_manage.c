@@ -46,7 +46,7 @@ const char *input_item[][2]={
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
 u8 SN[16];
-const u8 *Version = {"V1.0"};
+const u8 *Version = {"V1.1"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 extern u8 m_buff_temp[3];
@@ -217,6 +217,7 @@ void menu_password_cfg(void)
         ChangePassword_Flag = 0;
         exitcount = 0;
         inputerror = 0;
+        HW_TEST_FLAG = 0;
         break;
     }
 #if DU_FOR_TEST
@@ -360,6 +361,7 @@ void menu_password_cfg(void)
               
               if(HW_TEST_FLAG == 5)
               {
+                HW_TEST_FLAG = 0;
                 du_hardware_test();
                 break;
               }

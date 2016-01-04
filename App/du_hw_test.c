@@ -51,8 +51,8 @@ void du_hardware_test(void)
     OSTimeDlyHMSM(0, 0,0,10);
 
 //°´¼ü²âÊÔ    
-    TXM_StringDisplay(0,10,120,24,1,RED ,DGRAY, " P  ");   
-    OSTimeDlyHMSM(0, 0,0,10);   
+//    TXM_StringDisplay(0,10,120,24,1,RED ,DGRAY, " P  ");   
+//    OSTimeDlyHMSM(0, 0,0,10);   
     TXM_StringDisplay(0,70,120,24,1,RED ,DGRAY, " F1 ");           
     OSTimeDlyHMSM(0, 0,0,10);   
     TXM_StringDisplay(0,130,120,24,1,RED ,DGRAY, " F2 ");            

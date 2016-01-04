@@ -4,6 +4,8 @@
 /*******************************************************************************
 *******************************************************************************/
 static u8 Para_Choice=0,PS_Flag=0;
+s8 HW_TEST_FLAG2 = 0;
+extern void du_hardware_test(void);
 
 const u8 *Menu_Language_Item[][2] =
 {                                                           
@@ -71,10 +73,12 @@ void menu_language_cfg(void)
     
     if(err == OS_ERR_TIMEOUT)
     {
+      HW_TEST_FLAG2 = 0;
       break;
     } 
     else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
     {
+      HW_TEST_FLAG2 = 0;
       break;
     } 
     else 
@@ -119,8 +123,41 @@ void menu_language_cfg(void)
 //        TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "È·¶¨");
         TXM_StringDisplay(0,180,290,24,1,RED ,BLACK, (void*)Menu_Language_Descrip[1][LANGUAGE]);
         PS_Flag = 1; 
+        HW_TEST_FLAG2 = 0;
       }
-      
+      //@
+      else if((m_keydata[0] == KEY_F1) || (m_keydata[0] == KEY_UP) || (m_keydata[0] == KEY_DOWN))
+      {
+          if(m_keydata[0] == KEY_F1)
+          {
+              if(HW_TEST_FLAG2 == 0 || HW_TEST_FLAG2 == 1 || HW_TEST_FLAG2 == 4)
+                HW_TEST_FLAG2++;
+              else
+                HW_TEST_FLAG2 = 0;
+              
+              if(HW_TEST_FLAG2 == 5)
+              {
+                HW_TEST_FLAG2 = 0;
+                du_hardware_test();
+                break;
+              }
+          }
+          else if(m_keydata[0] == KEY_UP)
+          {
+              if(HW_TEST_FLAG2 == 3)
+                HW_TEST_FLAG2++;
+              else
+                HW_TEST_FLAG2 = 0;
+          }
+          else if(m_keydata[0] == KEY_DOWN)
+          {
+              if(HW_TEST_FLAG2 == 2)
+                HW_TEST_FLAG2++;
+              else
+                HW_TEST_FLAG2 = 0;
+          }
+      }      
+      //@end
       menu_language_display();
     }  
   }  
