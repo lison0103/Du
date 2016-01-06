@@ -263,7 +263,11 @@ void AppTask_Main(void *p_arg)
           if(temp_data > 0)
           {
             VALIDITY_USE_DATE += temp_data;
-          }      
+          }
+          else if(temp_data < 0)
+          {
+              Rtc_Error_display();
+          }
           
 //          validity_date = 180 - (VALIDITY_USE_DATE + Calculate(last_set_date,current_set_date));
         }

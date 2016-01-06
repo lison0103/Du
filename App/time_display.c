@@ -254,7 +254,7 @@ void menu_time_set(void)
             switch(Para_Choice)
             {
               case 1://Äê
-                if(Para_Data[Para_Choice-1]>15) Para_Data[Para_Choice-1]--;
+                if(Para_Data[Para_Choice-1]>16) Para_Data[Para_Choice-1]--;
                 break;
               case 2://ÔÂ
                 if(Para_Data[Para_Choice-1]>1) Para_Data[Para_Choice-1]--;

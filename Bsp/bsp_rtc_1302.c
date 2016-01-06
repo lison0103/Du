@@ -1,5 +1,6 @@
 
 #include "bsp_rtc_1302.h" 
+//#include "includes.h"
 
 #define RTCC_SDA_PORT   GPIOB
 #define RTCC_SCL_PORT   GPIOB
@@ -190,7 +191,7 @@ void RTCC_Init(void)
   //WrEnDisCmd    0x8e  //写允许/禁止指令代码
 	WrCmd_1302(0x8e,0); //写允许
 	
-	//WrCmd_1302(0x80,0x80); //时钟不允许
+//	WrCmd_1302(0x80,0x80); //时钟不允许
 	ReadByte_1302(0x81,7,a);	
 	WrCmd_1302(0x80,a[0]&0x7f); //时钟允许
 	if(a[2]&0x80) WrCmd_1302(0x84,a[0]&0x7f); // 24小时制
@@ -201,11 +202,20 @@ void RTCC_Init(void)
   WrCmd_1302(0x8e,0x80); //写不允许
   
 
+//WrCmd_1302(0x8E,0x00); //关闭写保护
+//WrCmd_1302(0x90,0x03);    //禁止涓流充电
+//WrCmd_1302(0x84,0x00); //设置成24小时制
+//WrCmd_1302(0x80 ,0x00); //使能时钟运行
+//WrCmd_1302(0x8E,0x80); //打开写保护  
+  
+  
+
 	RTCC_GetTime(a);
 	
-	if((a[0]<10) || (a[0]>99) || (!a[1]) || (!a[2]))
+	//if((a[0]<10) || (a[0]>99) || (!a[1]) || (!a[2]))
+        if((a[0]<16) || (a[0]>99) || (a[1]<1) || (a[1]>12)  || (a[2]<1) || (a[2]>31) || (a[3]>23)  || (a[4]>59) || (a[5]>59))
 	{
-		a[0] = 15;
+		a[0] = 16;
 		a[1] = 1;
 		a[2] = 1;
 
@@ -220,6 +230,22 @@ void RTCC_Init(void)
   
           
         }
+//        else if(USER_RIGHT_VALIDITY && (a[0] < (VALIDITY_LAST_DATE(0)*10+VALIDITY_LAST_DATE(1)) 
+//          || a[1] < (VALIDITY_LAST_DATE(2)*10+VALIDITY_LAST_DATE(3)) || a[2] < (VALIDITY_LAST_DATE(4)*10+VALIDITY_LAST_DATE(5))))
+//        {
+//		a[0] = 16;
+//		a[1] = 1;
+//		a[2] = 1;
+//
+//		a[3] = 0;
+//		a[4] = 0;
+//		a[5] = 0;
+//		
+//		RTCC_SetTime(a);
+//                
+//         //@
+//                Rtc_Init_Error = 1;        
+//        }
         else
         {
              Rtc_Init_Error = 0;
