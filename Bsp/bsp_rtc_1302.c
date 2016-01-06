@@ -192,9 +192,9 @@ void RTCC_Init(void)
 	WrCmd_1302(0x8e,0); //写允许
 	
 //	WrCmd_1302(0x80,0x80); //时钟不允许
-	ReadByte_1302(0x81,7,a);	
-	WrCmd_1302(0x80,a[0]&0x7f); //时钟允许
-	if(a[2]&0x80) WrCmd_1302(0x84,a[0]&0x7f); // 24小时制
+	ReadByte_1302(0xbf,7,a);	
+	if(a[0]&0x80) WrCmd_1302(0x80,a[0]&0x7f);  //时钟允许
+	if(a[2]&0x80) WrCmd_1302(0x84,a[2]&0x3f); // 24小时制
 	
 	WrCmd_1302(0x90,0); //不充电
 	
