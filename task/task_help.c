@@ -29,7 +29,7 @@ const char *Menu_Help_Descrip2[][2] =
   {"◆软件版本可在显示板ECT-01-D菜 单10中查看","◆ software version can be viewed in the display panel 10 ECT-01D menu"},
   {"◆DU必须与软件版本为2.0以上的主板相匹配使用","◆ DU must with software version 2.0 or higher of the board to match the use"},
   {"◆显示板按键区域有箭头，即为V3.0显示板","◆ display panel area with the arrow keys, a display panel that is V3.0"},
-  {"◆ECT-01 V2.3与V3.0 外围端子相同，原则上ECT-01 V3.0主板可以完全兼容ECT-01 V2.3主板","◆ ECT-01 V2.3 and V3.0 the same peripheral terminals, in principle, ECT-01 V3.0 motherboard is fully compatible with ECT-01 V2.3 Motherboard"},
+  {"◆ECT-01 V2.3与V3.0 外围端子相同，原则上ECT-01 V3.0主板可以完全兼容ECT-01 V2.3主板","◆ ECT-01 V2.3 and V3.0 the same peripheral terminals, in principle, ECT-01 V3.0 mainboard is fully compatible with ECT-01 V2.3 mainboard"},
   {"◆ECT-01 V3.0的软件版本为V3.0及以上","◆ Software version ECT-01 V3.0 is V3.0 and higher"},
   {"◆ECT-01 V2.3的软件版本为V2.6","◆ECT-01 V2.3 software version is V2.6"},
 };
@@ -46,7 +46,7 @@ const char *Menu_Help_Descrip4[][2] =
   {"◆按住控制柜复位按钮1~3秒内松开","◆Hold down the control panel reset button is released within 1 to 3 seconds"},
   {"◆按住显示板SET键1~3秒内松开","◆Press and hold the display panel SET key is released within 1 to 3 seconds"},
   {"◆按住DU的F1键1~3秒内松开","◆Hold down the F1 key DU 1 to 3 seconds release"},
-  {"◆如主板与显示板ECT-01-D显示板已连接，在使用DU时，必须断开显示板","◆Such as the motherboard and display panel ECT-01-D display panel is connected, in the use of DU, you must disconnect the display panel"},
+  {"◆如主板与显示板ECT-01-D显示板已连接，在使用DU时，必须断开显示板","◆Such as the mainboard and display panel ECT-01-D display panel is connected, in the use of DU, you must disconnect the display panel"},
 };
 
 const char *Menu_Help_Descrip5[][2] =
@@ -63,7 +63,7 @@ const char *Menu_Help_Descrip6[][2] =
 {                                          
   {"参数恢复","Parameter recovers"},
   {"选择主板扶梯编号或参数组的编号，下载已备份的参数到当前扶梯主板，可根据项目需求修改少数参数从而快速完成主板的参数设置",
-  "Select board escalator number or parameter group number, parameter download has been backed up to the current escalator motherboard, \
+  "Select board escalator number or parameter group number, parameter download has been backed up to the current escalator mainboard, \
 a few parameters can be modified according to the project needs to quickly complete board parameter settings"},
 };
 
