@@ -44,6 +44,9 @@ void Task_LCM_Init(void *p_arg)
   LCM_Light_Setting(50);
   
   ZTM_FullScreenImageDisp(2);
+
+  //¹Ø±Õ´¥ÃþÆÁ
+  ZTM_Disable_Touch();
   
   //@
 //  OSTimeDlyHMSM(0,0,1,0);
