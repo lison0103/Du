@@ -18,7 +18,9 @@ void AppTask_KEY(void *p_arg)
   
   u8 key_temp=0,key_valid=0,key_data=0,key_state=0;
   u16 key_cnt=0,key_dlyms1=0,key_speed_up=0;
-
+  //@
+  u8 buzz = 1;
+  //@end
   key_init();   
   
   KeyMbox = OSMboxCreate((void*)&KeyDataMsg);
@@ -30,6 +32,9 @@ void AppTask_KEY(void *p_arg)
     //GPIOB->ODR |= 0x1000;
     key_temp = key_scan();
     key_data = 0;
+    //@
+    buzz = 1;
+    //@end
     //GPIOB->ODR &= ~0x1000;
     
     if(key_temp == KEY_F1)
@@ -81,19 +86,28 @@ void AppTask_KEY(void *p_arg)
             if((key_temp==KEY_UP) || (key_temp==KEY_DOWN))
             { 
               key_dlyms1++;
-              if((key_cnt < 800) && (key_dlyms1>100))
+              //@
+              if((key_cnt < 250) && (key_dlyms1>50))
               {
                  key_dlyms1 = 0;  
                  key_speed_up=1;
               }  
-              else if((key_cnt < 1500) && (key_dlyms1>60))
+              else if((key_cnt > 250) && (key_cnt < 500) && (key_dlyms1>35))
               {
                  key_dlyms1 = 0;  
+                 buzz = 0;
               }  
-              else if((key_dlyms1>30))
+              else if((key_cnt > 500) && (key_cnt < 800) && (key_dlyms1>20))
               {
                  key_dlyms1 = 0;  
+                 buzz = 0;
+              }                
+              else if((key_cnt > 800) && (key_dlyms1>10))
+              {
+                 key_dlyms1 = 0;  
+                 buzz = 0;
               }
+              //@end
               if(key_dlyms1 == 0) 
               {
                 key_data = key_temp;
@@ -121,7 +135,8 @@ void AppTask_KEY(void *p_arg)
       KeyDataMsg = key_data;
       OSMboxPost(KeyMbox,(void *)&KeyDataMsg);
       //@
-      ZTM_SetBuzzer(10);                          //按键按下，蜂鸣器响一声
+      if( buzz == 1 )
+        ZTM_SetBuzzer(10);                          //按键按下，蜂鸣器响一声
       //@end
     }  
     

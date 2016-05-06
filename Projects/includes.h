@@ -248,6 +248,8 @@ extern u8 month[12];
 u8 Leap_Year(u32 year);
 u8 Date_Validity(u8 Date[]);
 
+extern const u8 *Version;
+
 //¶ÁÈ¡Ó²¼þ°æ±¾
 void hardware_init(void);
 u8 GetHardwareVerison(void);
@@ -265,6 +267,7 @@ void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length);
 uint32_t USB_Receive_Data(uint8_t *ptrBuffer);
 void USB_Receive_Data_Send(void);
 void Unknow_Error_display(void);
+void menu_version_display_cfg(void);
 //@end
 
 #endif //__INCLUDES_H__

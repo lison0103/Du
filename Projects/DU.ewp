@@ -582,7 +582,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>1</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -590,7 +590,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>DU.hex</state>
+          <state>DU.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -2081,6 +2081,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\User\menu_statistic.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\User\menu_version_display.c</name>
     </file>
   </group>
   <group>

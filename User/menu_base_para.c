@@ -1,7 +1,7 @@
 
 #include "includes.h"
 
-#define BASEMAX     43
+#define BASEMAX     45
 
 //@添加中英文翻译
 const char *Menu_Base_Para_Descrip[][2] =
@@ -648,14 +648,14 @@ const ParaItem BaseParameter[]=
     	    
 		4,	     
     {                                                                    
-    {" X1&2飞轮探头测速   "," 主轴测速  2 探头   "," 主轴测速  3 探头   "," X1&2飞轮 X6&8主轴  "},
-    {" Mode1 2 sensor     "," Mode2 2 sensor     "," Mode3 3 sensor     "," Mode4 4 sensor     "},
+    {" Mode1  X1&2 飞轮"," Mode2  X1&2 主轴"," Mode3 主轴 3探头"," Mode4 飞轮 +主轴"," Mode5  X6&8 主轴"},
+    {" Mode1 X1&2 Motor"," Mode2  X1&2  MS"," Mode3  3 sensors"," Mode4  4 sensors"," Mode5  X6&8  MS"},
     },
                   
     1145,1,   
         
       "",
-    0,3,0
+    0,4,0
   },  
  	      
   {     
@@ -795,38 +795,79 @@ const ParaItem BaseParameter[]=
     0,	 
     3600,0  
   },
+  
+//@
 
   //44
   {     
     BASEMAX,44,1,
     
-		{"  系统参数PARA04 ","  SYSTEM PARA 04 "},
+    {" 44 钥匙开梯模式    "," 44 Key star mode   "},
   
-    0,
-    {{0},{0}},	  
-          
-    1154, 1,
-  
-      "",
+    2,
+    {
+    {"    钥匙归位开梯","    打住钥匙开梯"},
+    {"  Key ON-OFF Start  ","  Key ON -> Start  "},
+    },	  
+              
+    1158, 1,
+    
+    "",
     0,	 
-    250,0  
+    1,0  
   },
 
   //45
   {     
     BASEMAX,45,1,
     
-		{"  系统参数PARA05 ","  SYSTEM PARA 05 "},
+    {" 45 故障复位方式  "," 45 Fault reset mode"},
   
-    0,
-    {{0},{0}},	  
+    2,
+    {
+    {"        松开复位","        按住复位"},
+    {"  ON-OFF -> Reset  ","  BOTTON ON->Reset  "},
+    },	  
           
-    1155, 1,
+    1150, 1,
   
-      "",
+    "",
     0,	 
-    250,0  
+    1,0  
   },
+
+  //44
+//  {     
+//    BASEMAX,44,1,
+//    
+//		{"  系统参数PARA04 ","  SYSTEM PARA 04 "},
+//  
+//    0,
+//    {{0},{0}},	  
+//          
+//    1154, 1,
+//  
+//      "",
+//    0,	 
+//    250,0  
+//  },
+//
+//  //45
+//  {     
+//    BASEMAX,45,1,
+//    
+//		{"  系统参数PARA05 ","  SYSTEM PARA 05 "},
+//  
+//    0,
+//    {{0},{0}},	  
+//          
+//    1155, 1,
+//  
+//      "",
+//    0,	 
+//    250,0  
+//  },
+//@end
 
   //46
   {     

@@ -29,13 +29,14 @@ const u8 *Menu_Item_Descrip[][2] =
   {" 07 时间日期设置  "," 07 TIME & DATE   "},
   {" 08 密码管理      "," 08 USER RIGHT    "},
   {" 09 语言/LANGUAGE "," 09 LANGUAGE/语言 "},
-  {" 10 连接电脑      "," 10 CONNECT TO PC "},
+//  {" 10 连接电脑      "," 10 CONNECT TO PC "},
+  {" 10 版本信息      "," 10 Version       "},
 }; 
 //@end
 u16 MenuItem=0,MenuItem_Max=0,Menu_Level=0,disFlag=0;
 
 //@ 10为添加连接电脑
-#define MenuItemMax   9 
+#define MenuItemMax   10 
 //@end
 
 /*******************************************************************************
@@ -230,7 +231,8 @@ void menu_process(void)
               break;
             //@连接电脑
             case 9:
-              menu_connect_to_pc_cfg();
+//              menu_connect_to_pc_cfg();
+              menu_version_display_cfg();
               break;
             //@end
           }
