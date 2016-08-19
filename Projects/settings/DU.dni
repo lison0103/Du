@@ -36,18 +36,6 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
-[Interrupts]
-Enabled=1
-[MemoryMap]
-Enabled=0
-Base=0
-UseAuto=0
-TypeViolation=1
-UnspecRange=1
-ActionState=1
-[Trace1]
-Enabled=0
-ShowSource=1
 [array_types]
 Fmt0=char[30]	5	0
 Fmt1=u8[10000]	4	0
@@ -74,12 +62,6 @@ Title0=I0
 Symbol0=0 4
 LiveEnabled=0
 LiveFile=PowerLogLive.log
-[DataLog]
-LogEnabled=0
-SumEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
 [EventLog]
 LogEnabled=0
 SumEnabled=0
@@ -99,13 +81,6 @@ Event0=1 1 1
 Event1=1 1 1
 Event2=1 1 1
 Event3=1 1 1
-[InterruptLog]
-LogEnabled=0
-SumEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
-SumSortOrder=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -137,11 +112,35 @@ Mode=3
 Graph=0
 Symbiont=0
 Exclusions=
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[DataLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[Trace1]
+Enabled=0
+ShowSource=1
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\App\usb_virtual_com_port.c}.97.7" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Aliases]
 A0=_ "F:\TKE\³ÌÐò\DUT 00\DU00\DU IAR\Projects\main.c" ""
 A1=_ "F:\TKE\³ÌÐò\DUT 00\DU00\DU IAR\task\task_lcm_init.c" ""

@@ -126,7 +126,7 @@ void menu_version_display_cfg(void)
 
       break;
     } 
-    else if((!PS_Flag) && (m_keydata[0] == KEY_ESC))
+    else if((!PS_Flag) && ((m_keydata[0] == KEY_ESC) || (m_keydata[0] == KEY_F3)) )
     {
 
       break;

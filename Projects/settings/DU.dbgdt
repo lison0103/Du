@@ -49,7 +49,7 @@
         <expressions>
           
           
-        <item>strbuff</item><item>Para_Cnum</item><item>Temp</item><item>PASS_Buff</item><item>PASS_Temp</item><item>USER_RIGHT_LEVEL</item><item>earse_buff</item><item>USER_RIGHT_VALIDITY</item><item>VALIDITY_USE_DATE</item><item>DuSys_Data</item><item>last_set_date</item><item>current_set_date</item><item>number_begin</item><item>number_end</item><item>year</item><item>mmonth</item><item>day</item><item>sum</item><item>validity_date</item><item>LANGUAGE</item><item>Para_Choice</item><item>Para_Data</item><item>month[Para_Data[1]-1]</item><item>key_temp</item><item>key_data</item><item>key_state</item><item>key_cnt</item><item>j</item><item>i</item><item>k</item><item>buff_num</item><item>display_receive_buff</item><item></item></expressions>
+        <item>strbuff</item><item>Para_Cnum</item><item>Temp</item><item>PASS_Buff</item><item>PASS_Temp</item><item>USER_RIGHT_LEVEL</item><item>earse_buff</item><item>USER_RIGHT_VALIDITY</item><item>VALIDITY_USE_DATE</item><item>DuSys_Data</item><item>last_set_date</item><item>current_set_date</item><item>number_begin</item><item>number_end</item><item>year</item><item>mmonth</item><item>day</item><item>sum</item><item>validity_date</item><item>LANGUAGE</item><item>Para_Choice</item><item>Para_Data</item><item>month[Para_Data[1]-1]</item><item>key_temp</item><item>key_data</item><item>key_state</item><item>key_cnt</item><item>j</item><item>i</item><item>k</item><item>buff_num</item><item>display_receive_buff</item><item/></expressions>
         <col-names>
           
           

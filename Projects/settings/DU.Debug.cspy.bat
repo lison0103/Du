@@ -19,6 +19,22 @@
 @REM 
 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 6.5\common\bin\cspybat" "C:\Program Files\IAR Systems\Embedded Workbench 6.5\arm\bin\armproc.dll" "C:\Program Files\IAR Systems\Embedded Workbench 6.5\arm\bin\armsim2.dll"  %1 --plugin "C:\Program Files\IAR Systems\Embedded Workbench 6.5\arm\bin\armbat.dll" --backend -B "--endian=little" "--cpu=ARM7TDMI" "--fpu=None" "--semihosting" 
+@echo off 
 
+if not "%~1" == "" goto debugFile 
 
+@echo on 
+
+"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\Users\lisonchen\1project\b_DU IAR\Projects\settings\DU.Debug.general.xcl" --backend -f "C:\Users\lisonchen\1project\b_DU IAR\Projects\settings\DU.Debug.driver.xcl" 
+
+@echo off 
+goto end 
+
+:debugFile 
+
+@echo on 
+
+"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\Users\lisonchen\1project\b_DU IAR\Projects\settings\DU.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\lisonchen\1project\b_DU IAR\Projects\settings\DU.Debug.driver.xcl" 
+
+@echo off 
+:end
