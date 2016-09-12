@@ -67,7 +67,28 @@ const ParaIOCgcItem ParaInputMBCgcItem[]=
 		1163,
 		0,
 		160
-	},			
+	},
+	{
+		"  X17  ",
+		DescripInputItem,
+		1257,
+		0,
+		160
+	},
+	{
+		"  X18  ",
+		DescripInputItem,
+		1258,
+		0,
+		160
+	},
+	{
+		"  X19  ",
+		DescripInputItem,
+		1259,
+		0,
+		160
+	},        
 	{
 		"  X20  ",
 		DescripInputItem,
@@ -796,23 +817,22 @@ const DescripItem DescripInputItem[]=
 		{"",""},
 		{"可配置SF输入03  ","Config SF input3"}, 
 	},
-
 	{	25,
-		{"",""},
-		{"可配置SF输入04  ","Config SF input4"}, 
+		{"",""},  
+		{"相位继电器","Power phase"},                     
 	},
 	{	26,
 		{"",""},
-		{"可配置SF输入05  ","Config SF input5"}, 
+		{"主机热保护","Motor PTC"},           
 	},
 	{	27,
-		{"",""},
-		{"可配置SF输入06  ","Config SF input6"}, 
+		{"",""},  
+		{"F6.1电机热保护","F6.1 PTC"}, 
 	},
 	{	28,
 		{"",""},
-		{"可配置SF输入07  ","Config SF input7"}, 
-	},
+		{"F6.2电机热保护","F6.2 PTC"}, 
+	}, 
 	{	29,
 		{"",""},
 		{"可配置SF输入08  ","Config SF input8"}, 
@@ -1878,7 +1898,7 @@ void menu_para_io(u8 item)
               Para_Number_Max = 8;
               break;           
     default:  ParaIoPoint = ParaInputMBCgcItem;     
-              Para_Number_Max = 28;
+              Para_Number_Max = 31;
               break;           
   }  
   

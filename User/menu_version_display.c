@@ -58,7 +58,10 @@ void Version_Converter(u8 *version, u8 dat)
         version[0] = ' ';
         version[1] = ' ';
         version[2] = ' ';
-        version[3] = ' ';      
+        version[3] = ' ';
+        version[4] = ' ';
+        version[5] = ' ';
+        version[6] = ' ';
     }   
 }  
   
@@ -79,11 +82,11 @@ void menu_version_display(void)
     OSTimeDlyHMSM(0, 0,0,5);
     
     Version_Converter(version_str, ModBuff[411]);
-    TXM_StringDisplay(0,150,80,24,0,BLACK ,BLACK, (void*)version_str);
+    TXM_StringDisplay(0,162,80,24,0,BLACK ,BLACK, (void*)version_str);
     OSTimeDlyHMSM(0, 0,0,5);
     
     Version_Converter(version_str, ModBuff[351]);
-    TXM_StringDisplay(0,150,110,24,0,BLACK ,BLACK, (void*)version_str);
+    TXM_StringDisplay(0,162,110,24,0,BLACK ,BLACK, (void*)version_str);
     OSTimeDlyHMSM(0, 0,0,5);
     
     Version_Converter(version_str, ModBuff[352]);
