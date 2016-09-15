@@ -88,7 +88,7 @@
 */
 
 //@
-#define TASK_WDT_INIT_STK_SIZE       200
+#define TASK_WDT_INIT_STK_SIZE       100
 //@end
 
 #define STARTUP_TASK_STK_SIZE       200
@@ -98,13 +98,13 @@
 
 #define TASK_DISPLAY_STK_SIZE       200
 
-#define AppTask_MAIN_STK_SIZE       200
-#define AppTask_COM_STK_SIZE        200
+#define AppTask_MAIN_STK_SIZE       300
+#define AppTask_COM_STK_SIZE        300
 #define AppTask_KEY_STK_SIZE        200
 
 #define TASK_LCM_INIT_STK_SIZE      200
 
-#define TASK_READ_ECT_STK_SIZE      200
+#define TASK_READ_ECT_STK_SIZE      300
 
 //#define  APP_CFG_TASK_START_STK_SIZE         128
 //#define  APP_CFG_TASK_PB_STK_SIZE            128

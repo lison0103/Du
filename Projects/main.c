@@ -13,7 +13,7 @@ OS_STK startup_task_stk[STARTUP_TASK_STK_SIZE];		  //定义栈
 
 OS_STK task_menu_stk[TASK_MENU_STK_SIZE];		        //定义栈
 
-OS_STK app_task_main_stk[AppTask_COM_STK_SIZE];	  //定义栈
+OS_STK app_task_main_stk[AppTask_MAIN_STK_SIZE];	  //定义栈
 OS_STK app_task_com_stk[AppTask_COM_STK_SIZE];	  //定义栈
 OS_STK app_task_key_stk[AppTask_KEY_STK_SIZE];	  //定义栈
 
@@ -64,10 +64,12 @@ void Task_Start(void *p_arg)
   
 	OSTaskCreate(AppTask_KEY,(void *)0,		   	  
 	   &app_task_key_stk[AppTask_KEY_STK_SIZE-1], AppTask_KEY_PRIO);
-
+//@
+/*        
 	OSTaskCreate(Task_Display,(void *)0,		   	 
 	   &task_display_stk[TASK_DISPLAY_STK_SIZE-1], TASK_DISPLAY_PRIO);
-  
+*/
+//@end        
 	OSTaskCreate(Task_READ_ECT,(void *)0,		    
 	   &task_READ_ECT_stk[TASK_READ_ECT_STK_SIZE-1], TASK_READ_ECT_PRIO);
 
