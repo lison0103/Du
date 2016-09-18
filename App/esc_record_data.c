@@ -150,12 +150,6 @@ u16 esc_bk_num_check(void)
 void du_sys_data_write(void)
 {
   u16 i;
-//@
-#if OS_CRITICAL_METHOD == 3u
-   int cpu_sr;
-#endif
-  OS_ENTER_CRITICAL();
-//@end
   
   i = CRC16( DuSys_Data, 98 );
   DuSys_Data[98] = i;
@@ -164,23 +158,13 @@ void du_sys_data_write(void)
   Flash_W25X_Write(DuSys_Data,DU_OFFSET_ADR,100);  
       
   Flash_W25X_Write(DuSys_Data,DU_OFFSET_ADR+200,100);  
-
-//@  
-  OS_EXIT_CRITICAL();
-//@end  
+ 
 }
 
 void esc_bk_init(void)
 {
   u16 i;
   u8 errorflag = 0;
-
-//@
-#if OS_CRITICAL_METHOD == 3u
-   int cpu_sr;
-#endif
-  OS_ENTER_CRITICAL();  
-//@end
   
   Flash_W25X_Read(DuSys_Data,DU_OFFSET_ADR,100);  
   if(CRC16(DuSys_Data, 100))
@@ -202,9 +186,7 @@ void esc_bk_init(void)
   {
     
   }  
-//@  
-  OS_EXIT_CRITICAL();
-  
+//@    
   if(errorflag)
   {       
       errorflag = 0;

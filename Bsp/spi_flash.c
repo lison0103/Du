@@ -150,8 +150,9 @@ void SPI_W25X_Write_Enable(void)
 *******************************************************************************/
 void SPI_W25X_SectorErase(uint32_t SectorAddr)
 {
-  Flash_W25X_Read(aaa,SectorAddr*4096,4096);
-
+//@
+//  Flash_W25X_Read(aaa,SectorAddr*4096,4096);
+//@end 
   SPI_W25X_Write_Enable();
 
   SPI_W25X_CS_LOW();
@@ -163,8 +164,9 @@ void SPI_W25X_SectorErase(uint32_t SectorAddr)
   SPI_W25X_CS_HIGH();
 
   SPI_W25X_Wait_Busy();
-  
-  Flash_W25X_Read(aaa,SectorAddr,4096);
+//@  
+//  Flash_W25X_Read(aaa,SectorAddr,4096);
+//@end   
 }
 
 void SPI_W25X_BlockErase_32K(uint32_t SectorAddr)
@@ -276,6 +278,13 @@ u16 SPI_W25X_ReadID(void)
 void Flash_W25X_Read(u8* pBuffer,u32 ReadAddr,u16 NumByteToRead)   
 { 
  	u16 i;   										  
+
+//@
+#if OS_CRITICAL_METHOD == 3u
+   int cpu_sr;
+#endif
+  OS_ENTER_CRITICAL();
+//@end 
   
   //使能器件   
 	SPI_W25X_CS=0;  
@@ -289,7 +298,11 @@ void Flash_W25X_Read(u8* pBuffer,u32 ReadAddr,u16 NumByteToRead)
     pBuffer[i] = SPI_ReadWriteByte(SPI_W25Q, 0XFF);  //循环读数  
   }
   
-  SPI_W25X_CS=1;  				    	      
+  SPI_W25X_CS=1;  
+  
+//@  
+  OS_EXIT_CRITICAL();
+//@end   
 }  
 
 /*******************************************************************************
@@ -361,7 +374,14 @@ void Flash_W25X_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite)
 	u16 secoff;
 	u16 secremain;	   
  	u16 i;    
-	u8 * SPI_FLASH_BUF;	  
+	u8 * SPI_FLASH_BUF;
+        
+//@
+#if OS_CRITICAL_METHOD == 3u
+   int cpu_sr;
+#endif
+  OS_ENTER_CRITICAL();
+//@end        
   
   SPI_FLASH_BUF=SPI_FLASH_BUFFER; 	     
  	secpos=WriteAddr/4096;//扇区地址   
@@ -395,9 +415,9 @@ void Flash_W25X_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite)
     {  
       SPI_W25Q_Write_NoCheck(pBuffer,WriteAddr,secremain);//写已经擦除了的,直接写入扇区剩余区间. 				   
     }
-    
-    Flash_W25X_Read(aaa,1000,100);
-    
+//@    
+//    Flash_W25X_Read(aaa,1000,100);
+//@end     
     if(NumByteToWrite==secremain)
     {
       break;  //写入结束了
@@ -420,6 +440,10 @@ void Flash_W25X_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite)
       }
     }   
   };
+  
+//@  
+  OS_EXIT_CRITICAL();
+//@end   
 }
 
 /*******************************************************************************

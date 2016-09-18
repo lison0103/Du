@@ -46,7 +46,7 @@ const char *input_item[][2]={
 u8 USER_RIGHT_LEVEL = 0;
 u8 Temp[] = "------";
 u8 SN[16];
-const u8 *Version = {"V1.2.1"};
+const u8 *Version = {"V1.2.2"};
 u8 Set_Flag = 0;
 u8 EARSE_CHIP = 0;
 extern u8 m_buff_temp[3];
