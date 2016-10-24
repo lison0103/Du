@@ -60,12 +60,13 @@ void uartInit (INT32U ulBaud)
 *********************************************************************************************************/
 void uartSendBuff (INT8U ucDat[],INT16U len)
 {
-  INT32U i;
+  
   while(ZTM_BusyStat())
   {
-    i++;
+    ZTM_Delay(1);
   }  
-	BSP_USART_Send(USART2,ucDat,len);
+  BSP_USART_Send(USART2,ucDat,len);
+  OSTimeDlyHMSM(0, 0,0,25);
 }
 
 /*********************************************************************************************************

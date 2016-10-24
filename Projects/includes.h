@@ -50,6 +50,8 @@
 #include "spi.h"
 #include "string.h"
 
+#include "bkp.h"
+
 //位带操作,实现51类似的GPIO控制功能
 //具体实现思想,参考<<CM3权威指南>>第五章(87页~92页).
 //IO口操作宏定义
@@ -265,6 +267,8 @@ void USB_Send_Data(uint8_t *ptrBuffer, uint8_t Send_length);
 uint32_t USB_Receive_Data(uint8_t *ptrBuffer);
 void USB_Receive_Data_Send(void);
 void Unknow_Error_display(void);
+void GetCpuID();
+u8 LCM_HandOn_Check(void);
 //@end
 
 #endif //__INCLUDES_H__

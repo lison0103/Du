@@ -140,8 +140,7 @@ Exclusions=
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\App\usb_virtual_com_port.c}.97.7" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Aliases]
 A0=_ "F:\TKE\³ÌÐò\DUT 00\DU00\DU IAR\Projects\main.c" ""
 A1=_ "F:\TKE\³ÌÐò\DUT 00\DU00\DU IAR\task\task_lcm_init.c" ""

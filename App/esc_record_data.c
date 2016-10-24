@@ -162,18 +162,38 @@ void du_sys_data_write(void)
   DuSys_Data[99] = i>>8;
       
   Flash_W25X_Write(DuSys_Data,DU_OFFSET_ADR,100);  
-      
+  OSTimeDlyHMSM(0, 0,0,100);    
   Flash_W25X_Write(DuSys_Data,DU_OFFSET_ADR+200,100);  
 
 //@  
   OS_EXIT_CRITICAL();
 //@end  
+  
+  BKP_Write(BKP_ADDR2(1),LANGUAGE);
+  BKP_Write(BKP_ADDR2(2),RECORD_ESC_NUMBER);
+  BKP_Write(BKP_ADDR2(3),USER_RIGHT_VALIDITY);
+  BKP_Write(BKP_ADDR2(4),VALIDITY_USE_DATE);
+  for( u8 j = 0; j < 6; j++ )
+  {
+    BKP_Write(BKP_ADDR2(5+j),VALIDITY_LAST_DATE(j));
+  }  
+  BKP_Write(BKP_ADDR2(11),DU_REGISTERED_NUMBER);
+  BKP_Write(BKP_ADDR2(12),DU_RTC_ERROR_NUMBER);
+  for( u8 j = 0; j < 7; j++ )
+  {
+    BKP_Write(BKP_ADDR2(13+j),DU_USER_RIGHT_PASSWORD(j));
+  }
+  BKP_Write(BKP_ADDR2(20),DU_INPUT_PASS_DATE(0));
+  BKP_Write(BKP_ADDR2(21),DU_INPUT_PASS_DATE(1));
+  BKP_Write(BKP_ADDR2(22),DU_USER_RIGHT_LEVEL);
 }
 
 void esc_bk_init(void)
 {
   u16 i;
   u8 errorflag = 0;
+  
+  BKP_Init();
 
 //@
 #if OS_CRITICAL_METHOD == 3u
@@ -185,14 +205,44 @@ void esc_bk_init(void)
   Flash_W25X_Read(DuSys_Data,DU_OFFSET_ADR,100);  
   if(CRC16(DuSys_Data, 100))
   {
-    OSTimeDlyHMSM(0, 0,0,10);
+    OSTimeDlyHMSM(0, 0,0,100);
     Flash_W25X_Read(DuSys_Data,DU_OFFSET_ADR+200,100);  
     if(CRC16(DuSys_Data, 100))
     {
+      
       for(i=0;i<100;i++)
       {
         DuSys_Data[i] = 0;
-      }  
+      } 
+      
+      DU_REGISTERED_NUMBER = BKP_Read(BKP_ADDR2(5));
+      
+      if( DU_REGISTERED_NUMBER )
+      { 
+          LANGUAGE = BKP_Read(BKP_ADDR2(1));
+          RECORD_ESC_NUMBER = BKP_Read(BKP_ADDR2(2));
+          USER_RIGHT_VALIDITY = BKP_Read(BKP_ADDR2(3));
+          VALIDITY_USE_DATE = BKP_Read(BKP_ADDR2(4));
+          for( u8 j = 0; j < 6; j++ )
+          {
+            VALIDITY_LAST_DATE(j) = BKP_Read(BKP_ADDR2(5+j));
+          }  
+          DU_REGISTERED_NUMBER = BKP_Read(BKP_ADDR2(11));
+          DU_RTC_ERROR_NUMBER = BKP_Read(BKP_ADDR2(12));
+          for( u8 j = 0; j < 7; j++ )
+          {
+            DU_USER_RIGHT_PASSWORD(j) = BKP_Read(BKP_ADDR2(13+j));
+          }
+          DU_INPUT_PASS_DATE(0) = BKP_Read(BKP_ADDR2(20));
+          DU_INPUT_PASS_DATE(1) = BKP_Read(BKP_ADDR2(21)); 
+          DU_USER_RIGHT_LEVEL = BKP_Read(BKP_ADDR2(22)); 
+          GetCpuID();
+      }
+      else
+      {
+          DU_REGISTERED_NUMBER = 0u;
+      }
+      
       du_sys_data_write();
       
       errorflag = 1;

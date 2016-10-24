@@ -202,9 +202,7 @@ void AppTask_Main(void *p_arg)
 */  
 
   
-  
   esc_bk_init();
-  
   
 //@   ±÷”“Ï≥£≈–∂œ
 

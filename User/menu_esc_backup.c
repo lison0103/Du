@@ -500,17 +500,17 @@ void menu_para_backup(void)
   u8 *m_keydata,err=0;
 
   ZTM_RectangleFill (0,0,239,39,NAVY);
-  OSTimeDlyHMSM(0, 0,0,10);
+  OSTimeDlyHMSM(0, 0,0,25);
   ZTM_RectangleFill (0,40,239,279,LGRAY);
-  OSTimeDlyHMSM(0, 0,0,10);
+  OSTimeDlyHMSM(0, 0,0,25);
   ZTM_RectangleFill (0,280,239,319,BLACK);
-  
+  OSTimeDlyHMSM(0, 0,0,25);
 //  TXM_StringDisplay(0,8,2,32,0,WHITE ,0, (void*)EscBackup_Title[LANGUAGE]); 
   TXM_StringDisplay(0,8,7,24,0,WHITE ,0, (void*)EscBackup_Title[LANGUAGE]);
-  
+  OSTimeDlyHMSM(0, 0,0,25);
 //  TXM_StringDisplay(0,190,290,24,1,RED ,BLACK, "±¸·Ý");
   TXM_StringDisplay(0,130,290,24,1,RED ,BLACK, (void*)Menu_Esc_Backup_Descrip[24][LANGUAGE]);
- 
+ OSTimeDlyHMSM(0, 0,0,25);
   //esc_sn_display(u16 x,u16 y,char *buff,u8 set_bit);
   
   ESC_Bk_Addr = esc_bk_pos_check(&ModBuff[1018]);
